@@ -1,0 +1,43 @@
+﻿@model Open_Shift.Models.Home
+
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Enter your information and click the Sign-Up button to sign up.</p>
+@using (Html.BeginForm("SignUp", "Profile", FormMethod.Post))
+{
+    <div class="section-bottom">
+        <div>@Html.LabelFor(model => model.User.FirstName)</div>
+        <div>@Html.TextBoxFor(model => model.User.FirstName)</div>
+    </div>
+    <div class="section-bottom">
+        <div>@Html.LabelFor(model => model.User.LastName)</div>
+        <div>@Html.TextBoxFor(model => model.User.LastName)</div>
+    </div>
+    <div class="section-bottom">
+        <div>@Html.LabelFor(model => model.User.Email)</div>
+        <div>@Html.TextBoxFor(model => model.User.Email)</div>
+    </div>
+    <div class="section-bottom">
+        <div>@Html.LabelFor(model => model.User.UserID)</div>
+        <div>@Html.TextBoxFor(model => model.User.UserID)</div>
+    </div>
+    <div>
+        <div>@Html.LabelFor(model => model.User.Password)</div>
+        <div>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+    </div>
+    <div class="section-top2">
+        <button class="button-action" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
+        @if (Model.User.LoginFailed)
+        {
+            <span class="login-failed">Failed to login. Please try again.</span>
+        }
+    </div>
+}
+<script type="text/javascript">
+	$("#User_FirstName").focus();
+</script>

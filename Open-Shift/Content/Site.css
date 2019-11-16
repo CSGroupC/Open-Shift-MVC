@@ -1,0 +1,368 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin: 0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.w3-container {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+#frankie-bar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+}
+
+#public-groups a, #private-groups a {
+    text-decoration: none;
+}
+
+#primary-image {
+    display: inline-block;
+    float: left;
+}
+
+.image-container {
+    border: 1px solid gray;
+    -webkit-border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    border-radius: 0.3em;
+    padding: 0.4em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    display: inline-block;
+}
+
+#workspace {
+    margin: 0 1em 0 2em;
+    padding-bottom: 1em;
+}
+
+.login-failed {
+    border: 1px solid darkgrey;
+    padding: 0.5em;
+    background-color: #fcec91;
+    -webkit-border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    border-radius: 0.3em;
+}
+
+.section-top {
+    margin-top: 1.5em;
+    display: block;
+}
+
+.section-top2 {
+    margin-top: 2em;
+    display: block;
+}
+
+.section-bottom {
+    margin-bottom: 1.5em;
+    display: block;
+}
+
+.section-bottom2 {
+    margin-bottom: 2em;
+    display: block;
+}
+
+.item {
+    overflow: visible;
+    display: inline;
+    float: left;
+}
+
+.id-lists {
+    display: inline-block;
+}
+
+.right-margin025 {
+    margin-right: 0.25em;
+}
+
+.right-margin05 {
+    margin-right: 0.5em;
+}
+
+.right-margin75 {
+    margin-right: 0.75em;
+}
+
+.right-margin1 {
+    margin-right: 1.0em;
+}
+
+h3 {
+    margin-top: 0.5em;
+}
+
+#public-groups, #private-groups {
+    margin-bottom: 1em;
+}
+
+.group-item input {
+    width: 25em;
+}
+
+.group-item textarea {
+    width: 25em;
+}
+
+.profile-item input {
+    width: 25em;
+}
+
+#GroupImage, #UserImage {
+    width: 25em;
+}
+
+#group-data {
+    display: inline-block;
+    float: left;
+}
+
+#group-image {
+    margin-right: 1em;
+    display: inline-block;
+    float: left;
+}
+
+
+.thumbnail {
+    height: 12em;
+}
+
+.thumbnail2 {
+    width: 25em;
+}
+
+.home-item {
+    display: inline-block;
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    border-radius: 0.4em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    padding: 0.5em;
+    min-width: 15em;
+    vertical-align: top;
+}
+
+.group-link {
+    text-decoration: none;
+}
+
+.group {
+    display: inline-block;
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    border-radius: 0.4em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    padding: 0.5em;
+    max-width: 15em;
+    min-height: 7em;
+    vertical-align: top;
+}
+
+.home-item-name {
+    font-size: 1.1em;
+    color: #37793a;
+    margin-top: 0.5em;
+}
+
+.group:hover {
+    border: 1px solid darkgrey;
+    box-shadow: 1px 1px 1px #cbc9c9;
+}
+
+.group-desc {
+    font-style: italic
+}
+
+.cut-text-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 12em;
+    white-space: nowrap;
+}
+
+.cut-text-desc {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 14.0em;
+    white-space: nowrap;
+}
+
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+button, input[type=submit], input[type=button] {
+    cursor: pointer;
+    padding: 6px 15px 6px 15px;
+    border: 1px solid darkgrey;
+    -webkit-border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    border-radius: 0.2em;
+    margin-right: 0.5em;
+}
+
+    button:hover, input[type=submit]:hover, input[type=button]:hover {
+        border: 1px solid black;
+    }
+
+.button-action {
+    background-color: #4caf50;
+    color: #FFFFFF;
+}
+
+    .button-action:hover {
+        background-color: #37793a;
+        color: White;
+    }
+
+.button-cancel {
+    background-color: #E4E4E4;
+}
+
+    .button-cancel:hover {
+        background-color: #cbc9c9;
+    }
+
+.button-alert {
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
+    .button-alert:hover {
+        background-color: #ae1212;
+        color: White;
+    }
+
+.not-active {
+    background-color: #E4E4E4;
+}
+
+.full-content {
+    display: inline;
+}
+
+.mobile-content {
+    display: none;
+}
+
+@media only screen and (max-width : 42em) {
+    #workspace {
+        margin-left: 1.0em;
+        padding-bottom: 0.25em;
+    }
+}
+
+@media only screen and (max-width : 35em) {
+
+    #workspace {
+        margin-right: 0.5em;
+        padding-right: 0.5em;
+    }
+
+    .full-content {
+        display: none;
+    }
+
+    .mobile-content {
+        display: inline;
+    }
+
+    .id-lists {
+        display: block;
+        margin-bottom: 1em;
+    }
+
+    #group-name input {
+        width: 100%;
+    }
+
+    #group-description textarea {
+        width: 100%;
+    }
+
+    #GroupImage, #UserImage, select, input[type=text], input[type=password], textarea {
+        display: block;
+        width: 100%;
+    }
+
+    button {
+        margin-right: 0;
+    }
+
+    #btnNewGroup {
+        margin-top: 1em;
+    }
+
+        #btnClose i, #btnUpdate i, #btnDelete i, #btnCancel i, #btnSignIn i, #btnSignUp i, #btnNewGroup i {
+            display: none;
+        }
+
+    .thumbnail {
+        width: 100%;
+        height: auto;
+        margin-right: 0.25em;
+        padding-right: 0;
+    }
+
+    .thumbnail2 {
+        width: 100%;
+        margin-right: 0;
+        padding-right: 0;
+    }
+
+    .home-item {
+        display: block;
+        width: 100%;
+        margin-right: 0.25em;
+    }
+
+    .thumbnail {
+        display: block;
+    }
+
+    .cut-text {
+        width: 18.25em;
+    }
+}
+

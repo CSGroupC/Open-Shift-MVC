@@ -1,0 +1,29 @@
+﻿@model Open_Shift.Models.Home
+
+@{
+    ViewBag.Title = "Delete Profile?";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>Are you sure you want to delete your profile?</p>
+
+@using (Html.BeginForm("Delete", "Profile", FormMethod.Post))
+{
+    <div class="section-bottom">
+        <div><b>@Html.LabelFor(model => model.User.FirstName)</b>: @Model.User.FirstName</div>
+    </div>
+    <div class="section-bottom">
+        <div><b>@Html.LabelFor(model => model.User.LastName)</b>: @Model.User.LastName</div>
+    </div>
+    <div class="section-bottom">
+        <div><b>@Html.LabelFor(model => model.User.Email)</b>: @Model.User.Email</div>
+    </div>
+    <div class="section-bottom">
+        <div><b>@Html.LabelFor(model => model.User.UserID)</b>: @Model.User.UserID</div>
+    </div>
+    <div class="section-top2">
+        <button class="button-alert" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
+        <button class="button-cancel" id="btnCancel" name="btnSubmit" value="cancel"><i class="fa fa-window-close"></i> Cancel</button>
+    </div>
+}

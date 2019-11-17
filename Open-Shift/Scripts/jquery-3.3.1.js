@@ -462,8 +462,8 @@ jQuery.extend( {
 		return concat.apply( [], ret );
 	},
 
-	// A global GUID counter for objects
-	guid: 1,
+	// A global GAssociateID counter for objects
+	gAssociateID: 1,
 
 	// jQuery.support is not used in Core but other projects attach their
 	// properties to it so it needs to exist.
@@ -4002,10 +4002,10 @@ var acceptData = function( owner ) {
 
 
 function Data() {
-	this.expando = jQuery.expando + Data.uid++;
+	this.expando = jQuery.expando + Data.AssociateID++;
 }
 
-Data.uid = 1;
+Data.AssociateID = 1;
 
 Data.prototype = {
 
@@ -4932,8 +4932,8 @@ function on( elem, types, selector, data, fn, one ) {
 			return origFn.apply( this, arguments );
 		};
 
-		// Use same guid so caller can remove using origFn
-		fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
+		// Use same gAssociateID so caller can remove using origFn
+		fn.gAssociateID = origFn.gAssociateID || ( origFn.gAssociateID = jQuery.gAssociateID++ );
 	}
 	return elem.each( function() {
 		jQuery.event.add( this, types, fn, data, selector );
@@ -4974,8 +4974,8 @@ jQuery.event = {
 		}
 
 		// Make sure that the handler has a unique ID, used to find/remove it later
-		if ( !handler.guid ) {
-			handler.guid = jQuery.guid++;
+		if ( !handler.gAssociateID ) {
+			handler.gAssociateID = jQuery.gAssociateID++;
 		}
 
 		// Init the element's event structure and main handler, if this is the first
@@ -5020,7 +5020,7 @@ jQuery.event = {
 				origType: origType,
 				data: data,
 				handler: handler,
-				guid: handler.guid,
+				gAssociateID: handler.gAssociateID,
 				selector: selector,
 				needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
 				namespace: namespaces.join( "." )
@@ -5044,8 +5044,8 @@ jQuery.event = {
 			if ( special.add ) {
 				special.add.call( elem, handleObj );
 
-				if ( !handleObj.handler.guid ) {
-					handleObj.handler.guid = handler.guid;
+				if ( !handleObj.handler.gAssociateID ) {
+					handleObj.handler.gAssociateID = handler.gAssociateID;
 				}
 			}
 
@@ -5102,7 +5102,7 @@ jQuery.event = {
 				handleObj = handlers[ j ];
 
 				if ( ( mappedTypes || origType === handleObj.origType ) &&
-					( !handler || handler.guid === handleObj.guid ) &&
+					( !handler || handler.gAssociateID === handleObj.gAssociateID ) &&
 					( !tmp || tmp.test( handleObj.namespace ) ) &&
 					( !selector || selector === handleObj.selector ||
 						selector === "**" && handleObj.selector ) ) {
@@ -7698,7 +7698,7 @@ jQuery.extend( {
 				// Support: IE <=9 - 11 only
 				// elem.tabIndex doesn't always return the
 				// correct value when it hasn't been explicitly set
-				// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
+				// https://web.archive.org/web/20141116233347/http://flAssociateIDproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
 				// Use proper attribute retrieval(#12072)
 				var tabindex = jQuery.find.attr( elem, "tabindex" );
 
@@ -10268,8 +10268,8 @@ jQuery.proxy = function( fn, context ) {
 		return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
 	};
 
-	// Set the guid of unique handler to the same of original handler, so it can be removed
-	proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+	// Set the gAssociateID of unique handler to the same of original handler, so it can be removed
+	proxy.gAssociateID = fn.gAssociateID = fn.gAssociateID || jQuery.gAssociateID++;
 
 	return proxy;
 };

@@ -16,21 +16,32 @@ namespace Open_Shift.Models
 			try
 			{
 				User u = new User();
-				u.UID = (long)dr["UID"];
-				u.UserID = dr["UserID"].ToString();
-				u.FirstName = dr["FirstName"].ToString();
-				u.LastName = dr["LastName"].ToString();
-				u.Email = dr["Email"].ToString();
-				u.Password = dr["Password"].ToString();
+				u.AssociateID = (long)dr["AssociateID"];
+				u.FirstName = dr["User.FirstName"].ToString();
+				u.LastName = dr["User.LastName"].ToString();
+				u.Birthday = dr["User.Birthday"].ToString();
+				u.Address = dr["User.Address"].ToString();
+				u.City = dr["User.City"].ToString();
+				u.State = dr["User.State"].ToString();
+				u.Zip = dr["User.Zip"].ToString();
+				u.StoreLocation = dr["User.StoreLocation"].ToString();
+				u.EmployeeNumber = dr["User.EmployeeNumber"].ToString();
+				u.AssociateTitle = dr["User.AssociateTitle"].ToString();
+				u.Phonenumber = dr["User.Phonenumber"].ToString();
+				u.Email = dr["User.Email"].ToString();
+				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
+				u.UserID = dr["User.UserID"].ToString();
+				u.UserID = dr["User.UserID"].ToString();
+				u.Password = dr["User.Password"].ToString();
 
-				
-				u.UserImage = GetUserImage(u.UID);
+
+				u.UserImage = GetUserImage(u.AssociateID);
 
 				return u;
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
-		public List<User> GetUsers(long UID = 0, byte StatusID = 0, byte PrivacyID = 0)
+		public List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
 		{
 			try
 			{
@@ -42,7 +53,7 @@ namespace Open_Shift.Models
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-				if (UID > 0) SetParameter(ref da, "@uid", UID, SqlDbType.BigInt);
+				if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
 				try
 				{
 					da.Fill(ds);
@@ -65,7 +76,7 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
-		public bool DeleteUser(long UID)
+		public bool DeleteUser(long AssociateID)
 		{
 			try
 			{
@@ -73,7 +84,7 @@ namespace Open_Shift.Models
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("DELETE_USERS", cn);
 
-				SetParameter(ref cm, "@uid", UID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@AssociateID", AssociateID, SqlDbType.BigInt);
 
 				try
 				{
@@ -86,7 +97,7 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-		public Image GetUserImage(long UID = 0, long UserImageID = 0)
+		public Image GetUserImage(long AssociateID = 0, long UserImageID = 0)
 		{
 			try
 			{
@@ -98,7 +109,7 @@ namespace Open_Shift.Models
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-				if (UID > 0) SetParameter(ref da, "@uid", UID, SqlDbType.BigInt);
+				if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
 				if (UserImageID > 0) SetParameter(ref da, "@user_image_id", UserImageID, SqlDbType.BigInt);
 
 				try
@@ -127,6 +138,9 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
+
+		
+
 		public long InsertUserImage(User u)
 		{
 			try
@@ -136,7 +150,7 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("INSERT_USER_IMAGE", cn);
 
 				SetParameter(ref cm, "@user_image_id", null, SqlDbType.BigInt, Direction: ParameterDirection.Output);
-				SetParameter(ref cm, "@uid", u.UID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt);
 				if (u.UserImage.Primary)
 					SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
 				else
@@ -165,13 +179,25 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("INSERT_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@uid", u.UID, SqlDbType.BigInt, Direction: ParameterDirection.Output);
-				SetParameter(ref cm, "@user_id", u.UserID, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@password", u.Password, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt, Direction: ParameterDirection.Output);
+				
+				
 				SetParameter(ref cm, "@first_name", u.FirstName, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@last_name", u.LastName, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@birthday", u.Birthday, SqlDbType.DateTime);
+				SetParameter(ref cm, "@address", u.Address, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@city", u.City, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@state", u.State, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@zip", u.Zip, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@storeLocation", u.StoreLocation, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@employeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@associateTitle", u.AssociateTitle, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@phonenumber", u.Phonenumber, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@email", u.Email, SqlDbType.NVarChar);
-			
+				SetParameter(ref cm, "@confirmEmail", u.ConfirmEmail, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@user_id", u.UserID, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@password", u.Password, SqlDbType.NVarChar);
+
 				SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader();
@@ -182,7 +208,7 @@ namespace Open_Shift.Models
 				switch (intReturnValue)
 				{
 					case 1: //new user created
-						return (long)cm.Parameters["@uid"].Value;
+						return (long)cm.Parameters["@AssociateID"].Value;
 					default:
 						return 0;
 				}
@@ -213,13 +239,23 @@ namespace Open_Shift.Models
 					{
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
-						newUser.UID = (long)dr["UID"];
+						newUser.AssociateID = (long)dr["AssociateID"];
 						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];
 						newUser.LastName = (string)dr["strLastName"];
+						newUser.Birthday = (string)dr["strBirthday"];
+						newUser.Address = (string)dr["strAddress"];
+						newUser.City = (string)dr["strCity"];
+						newUser.State = (string)dr["strState"];
+						newUser.Zip = (string)dr["strZip"];
+						newUser.StoreLocation = (string)dr["strStoreLocation"];
+						newUser.AssociateTitle = (string)dr["strAssociateTitle "];
+						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = (string)dr["strEmail"];
-						}
+						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
+
+					}
 				}
 				catch (Exception ex2)
 				{
@@ -233,6 +269,49 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
+
+		//Not sure if this will work, so
+		public Models.User ResetPassword(Models.User u)
+		{
+			try
+			{
+				SqlConnection cn = new SqlConnection();
+				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+				SqlDataAdapter da = new SqlDataAdapter("Password", cn);
+				DataSet ds;
+				User newUser = null;
+
+				da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+				SetParameter(ref da, "@user_id", u.UserID, SqlDbType.NVarChar);
+				SetParameter(ref da, "@password", u.Password, SqlDbType.NVarChar);
+
+				try
+				{
+					ds = new DataSet();
+					da.Fill(ds);
+					if (ds.Tables[0].Rows.Count > 0)
+					{
+						newUser = new User();
+						DataRow dr = ds.Tables[0].Rows[0];
+						newUser.AssociateID = (long)dr["AssociateID"];
+						newUser.UserID = u.UserID;
+						newUser.Password = u.Password;
+					}
+				}
+				catch (Exception ex2)
+				{
+					SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+				}
+				finally
+				{
+					CloseDBConnection(ref cn);
+				}
+				return newUser; //alls well in the world
+			}
+			catch (Exception ex) { throw new Exception(ex.Message); }
+		}
+
 		public long UpdateUserImage(User u)
 		{
 			try
@@ -271,13 +350,23 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("UPDATE_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@uid", u.UID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt);
 				SetParameter(ref cm, "@user_id", u.UserID, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@password", u.Password, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@first_name", u.FirstName, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@last_name", u.LastName, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@birthday", u.Birthday, SqlDbType.DateTime);
+				SetParameter(ref cm, "@address", u.Address, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@city", u.City, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@state", u.State, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@zip", u.Zip, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@storeLocation", u.StoreLocation, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@employeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@associateTitle", u.AssociateTitle, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@phonenumber", u.Phonenumber, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@email", u.Email, SqlDbType.NVarChar);
-				
+				SetParameter(ref cm, "@confirmEmail", u.ConfirmEmail, SqlDbType.NVarChar);
+			
 				SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader();

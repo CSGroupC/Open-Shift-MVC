@@ -5,7 +5,7 @@
 }
 @using (Html.BeginForm("Index", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    if (Model.User.UID == Model.ViewUser.UID || ViewContext.RouteData.Values["id"] == null)
+    if (Model.User.AssociateID == Model.ViewUser.AssociateID || ViewContext.RouteData.Values["id"] == null)
     { //allow edits
         <h2>@Model.User.FirstName @Model.User.LastName</h2>
         <p>To make changes to your profile enter your information below and click the Update button.</p>
@@ -39,24 +39,66 @@
                 <div class="profile-item">@Html.TextBoxFor(model => model.User.LastName)</div>
             </div>
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Email)</div>
-                <div class="profile-item">@Html.TextBoxFor(model => model.User.Email)</div>
-            </div>
-            <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.UserID)</div>
-                <div class="profile-item">@Html.TextBoxFor(model => model.User.UserID)</div>
-            </div>
-            <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Password)</div>
-                <div class="profile-item">@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+                <div>@Html.LabelFor(model => model.User.Birthday)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Birthday)</div>
             </div>
 
-            <div class="section-top2">
-                <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
-                <button class="button-cancel" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
-                <button class="button-cancel" id="btnClose" name="btnSubmit" value="close-to-home"><i class='fa fa-home'></i> Home</button>
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Address)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Address)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.City)</div>
+                <div required>@Html.TextBoxFor(model => model.User.City)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.State)</div>
+                <div required>@Html.TextBoxFor(model => model.User.State)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Zip)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Zip)</div>
             </div>
         </div>
+
+        <div class="container" value="Store Info">
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.StoreLocation)</div>
+                <div>@Html.TextBoxFor(model => model.User.StoreLocation)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
+                <div>@Html.TextBoxFor(model => model.User.EmployeeNumber)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.AssociateTitle)</div>
+                <div>@Html.TextBoxFor(model => model.User.AssociateTitle)</div>
+            </div>
+        </div>
+
+        <div class="container" value="Contact Info">
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Phonenumber)</div>
+            </div>
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Email)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Email)</div>
+            </div>
+        </div>
+
+        <div class="section-top2">
+            <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
+            <button class="button-cancel" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
+            <button class="button-action" id="btnResetPassword" name="btnSubmit" value="resetpassword"><i class="fa fa-comment">Reset password </button>
+            <button class="button-cancel" id="btnClose" name="btnSubmit" value="close-to-home"><i class='fa fa-home'></i> Home</button>
+        </div>
+       
     }
     else
     {//show read-only
@@ -87,5 +129,5 @@
     }
 }
 <script type="text/javascript">
-	$("#User_FirstName").focus();
+    $("#User_FirstName").focus();
 </script>

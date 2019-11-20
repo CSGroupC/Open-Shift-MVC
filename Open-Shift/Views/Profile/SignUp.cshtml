@@ -10,34 +10,102 @@
 <p>Enter your information and click the Sign-Up button to sign up.</p>
 @using (Html.BeginForm("SignUp", "Profile", FormMethod.Post))
 {
-    <div class="section-bottom">
-        <div>@Html.LabelFor(model => model.User.FirstName)</div>
-        <div>@Html.TextBoxFor(model => model.User.FirstName)</div>
+    <div class="container" value="Personal Info">
+        <div class="section-bottom">
+            <div >@Html.LabelFor(model => model.User.FirstName)</div>
+            <div required>@Html.TextBoxFor(model => model.User.FirstName)</div>
+        </div>
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.LastName)</div>
+            <div required>@Html.TextBoxFor(model => model.User.LastName)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Birthday)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Birthday)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Address)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Address)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.City)</div>
+            <div required>@Html.TextBoxFor(model => model.User.City)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.State)</div>
+            <div required>@Html.TextBoxFor(model => model.User.State)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Zip)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Zip)</div>
+        </div>
     </div>
-    <div class="section-bottom">
-        <div>@Html.LabelFor(model => model.User.LastName)</div>
-        <div>@Html.TextBoxFor(model => model.User.LastName)</div>
+
+    <div class="container" value="Store Info">
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.StoreLocation)</div>
+            <div>@Html.TextBoxFor(model => model.User.StoreLocation)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
+            <div>@Html.TextBoxFor(model => model.User.EmployeeNumber)</div>
+        </div>
+
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.AssociateTitle)</div>
+            <div>@Html.TextBoxFor(model => model.User.AssociateTitle)</div>
+        </div>
     </div>
-    <div class="section-bottom">
-        <div>@Html.LabelFor(model => model.User.Email)</div>
-        <div>@Html.TextBoxFor(model => model.User.Email)</div>
+
+    <div class="container" value="Contact Info">
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Phonenumber)</div>
+        </div>
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Email)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Email)</div>
+        </div>
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>
+            <div required>@Html.TextBoxFor(model => model.User.ConfirmEmail)</div>
+        </div>
     </div>
-    <div class="section-bottom">
-        <div>@Html.LabelFor(model => model.User.UserID)</div>
-        <div>@Html.TextBoxFor(model => model.User.UserID)</div>
+
+    <div class="container" value="Creditential Setup">
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.UserID)</div>
+            <div required>@Html.TextBoxFor(model => model.User.UserID)</div>
+        </div>
+
+        <div>
+            <div>@Html.LabelFor(model => model.User.Password)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+        </div>
+        /* TOdo not sure how to go by confirm password in the user class **/
     </div>
-    <div>
-        <div>@Html.LabelFor(model => model.User.Password)</div>
-        <div>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+
+    <div class="container" value="Notification">
+        <input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
+        <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>
     </div>
+
     <div class="section-top2">
         <button class="button-action" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
         @if (Model.User.LoginFailed)
         {
             <span class="login-failed">Failed to login. Please try again.</span>
         }
+        <button class="button-action" id="btnClear" name="btnSubmit" value="clear">Clear</button>
+        <button class="button-action" id="btnClose" name="btnSubmit" value="close">Cancel</button>
     </div>
-}
-<script type="text/javascript">
-	$("#User_FirstName").focus();
-</script>
+        }
+        <script type="text/javascript">
+            $("#User_FirstName").focus();
+        </script>

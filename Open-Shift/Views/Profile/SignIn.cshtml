@@ -1,7 +1,8 @@
 ﻿@model Open_Shift.Models.Home
 @{
-    ViewBag.Title = "Sign-In";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+                /**/
+
+                Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 <h2>@ViewBag.Title</h2>
 <p>Please enter your sign-in information below.</p>
@@ -15,14 +16,17 @@
         <div>@Html.LabelFor(model => model.User.Password)</div>
         <div>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
     </div>
-    <div class="section-top2">
-        <button class="button-action" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button>
-        @if (Model.User.LoginFailed)
-        {
-            <span class="login-failed">Failed to login. Please try again.</span>
-        }
-    </div>
 }
+    <div class="section-top2"> 
+        <button class="button-action" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button></br>
+        <li  ID="RegisterHyperLink" class="button-action" id="btnSignUp" name="btnSubmit" value="signup"><i class="fa fa-file-image-o">First time User?</li> </br>
+    <li  ID="RegisterHyperLink"class="button-action" id="btnResetPassword" name="btnSubmit" value="resetpassword"> forget your password </li>
+    @if (Model.User.LoginFailed)
+    {
+        <span class="login-failed">Failed to login. Please try again.</span>
+    }
+</div>
+
 <script type="text/javascript">
-	$("#User_UserID").focus();
+    $("#User_UserID").focus();
 </script>

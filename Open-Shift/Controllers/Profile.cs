@@ -44,7 +44,7 @@ namespace Open_Shift.Controllers
 				Models.Home h = new Models.Home();
 
 				if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
-				if (col["btnSubmit"] == "close-to-home") return RedirectToAction("Index", "Home");
+				if (col["btnSubmit"] == "close") return RedirectToAction("Index", "Home");
 
 				if (col["btnSubmit"] == "update")
 				{
@@ -52,10 +52,20 @@ namespace Open_Shift.Controllers
 
 					u.FirstName = col["User.FirstName"];
 					u.LastName = col["User.LastName"];
+					u.Birthday = col["User.Birthday"];
+					u.Address = col["User.Address"];
+					u.City = col["User.City"];
+					u.State = col["User.State"];
+					u.Zip = col["User.Zip"];
+					u.StoreLocation = col["User.StoreLocation"];
+					u.EmployeeNumber = col["User.EmployeeNumber"];
+					u.AssociateTitle = col["User.AssociateTitle"];
+					u.Phonenumber = col["User.Phonenumber"];
 					u.Email = col["User.Email"];
+					u.ConfirmEmail = col["User.ConfirmEmail"];
 					u.UserID = col["User.UserID"];
 					u.Password = col["User.Password"];
-					
+
 					//NEW CODE
 					u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
 
@@ -82,11 +92,21 @@ namespace Open_Shift.Controllers
 					}
 					else
 					{ //user failed to log in
-						h.User.UserID = col["User.UserID"];
-						h.User.Password = col["User.Password"];
-						h.User.Email = col["User.Email"];
 						h.User.FirstName = col["User.FirstName"];
 						h.User.LastName = col["User.LastName"];
+						h.User.Birthday = col["User.Birthday"];
+						h.User.Address = col["User.Address"];
+						h.User.City = col["User.City"];
+						h.User.State = col["User.State"];
+						h.User.Zip = col["User.Zip"];
+						h.User.StoreLocation = col["User.StoreLocation"];
+						h.User.EmployeeNumber = col["User.EmployeeNumber"];
+						h.User.AssociateTitle = col["User.AssociateTitle"];
+						h.User.Phonenumber = col["User.Phonenumber"];
+						h.User.Email = col["User.Email"];
+						h.User.ConfirmEmail = col["User.ConfirmEmail"];
+						h.User.UserID = col["User.UserID"];
+						h.User.Password = col["User.Password"];
 					}
 				}
 				return View(h);
@@ -150,13 +170,13 @@ namespace Open_Shift.Controllers
 		{
 			try
 			{
-				Models.User u = new Models.User(col["User.UserID"], col["User.Password"]);
+				Models.User u = new Models.User(col["UserID"], col["Password"]);
 				u.Login();
 
 				if (u.IsAuthenticated)
 				{ //user found
 					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Home");
+					return RedirectToAction("Index", "Main");
 				}
 				else
 				{ //user failed to log in
@@ -207,21 +227,34 @@ namespace Open_Shift.Controllers
 		{
 			try
 			{
-				Models.User u = new Models.User(col["User.UserID"], col["User.Password"], col["User.FirstName"], col["User.LastName"], col["User.Email"]);
+				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], col["User.Birthday"],
+										col["User.Address"], col["User.City"], col["User.State"], col["User.Zip"], col["User.StoreLocation"],
+										col["User.EmployeeNumber"], col["User.AssociateTitle"], col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
+										col["User.UserID"], col["User.Password"]);
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found
 					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Profile");
+					return RedirectToAction("Index", "Main");
 				}
 				else
 				{ //user failed to log in
 					Models.Home h = new Models.Home();
-					h.User.UserID = col["User.UserID"];
-					h.User.Password = col["User.Password"];
-					h.User.Email = col["User.Email"];
 					h.User.FirstName = col["User.FirstName"];
 					h.User.LastName = col["User.LastName"];
+					h.User.Birthday= col["User.Birthday"];
+					h.User.Address = col["User.Address"];
+					h.User.City = col["User.City"];
+					h.User.State = col["User.State"];
+					h.User.Zip = col["User.Zip"];
+					h.User.StoreLocation = col["User.StoreLocation"];
+					h.User.EmployeeNumber = col["User.EmployeeNumber"];
+					h.User.AssociateTitle = col["User.AssociateTitle"];
+					h.User.Phonenumber = col["User.Phonenumber"];
+					h.User.Email = col["User.Email"];
+					h.User.ConfirmEmail = col["User.ConfirmEmail"];
+					h.User.UserID = col["User.UserID"];
+					h.User.Password = col["User.Password"];
 					return View(h);
 				}
 			}
@@ -231,5 +264,37 @@ namespace Open_Shift.Controllers
 				return RedirectToAction("Index", "Error");
 			}
 		}
+
+		public ActionResult ResetPassword()
+		{
+			try
+			{
+				Models.Home h = new Models.Home();
+				return View(h);
+			}
+			catch (Exception ex)
+			{
+				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+				return RedirectToAction("Index", "Error");
+			}
 		}
+
+		[HttpPost]
+		public ActionResult ResetPassword(Models.User m, FormCollection col)
+		{
+			try
+			{
+				Models.Home h = new Models.Home();
+				h.User.Password = col["User.NewPassword"];
+					return View(h);
+				
+			}
+			catch (Exception ex)
+			{
+				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+				return RedirectToAction("Index", "Error");
+			}
+		}
+
+	}
 	}

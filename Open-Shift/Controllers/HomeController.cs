@@ -14,7 +14,7 @@ namespace Open_Shift.Controllers
 			try
 			{
 				Models.Home h = new Models.Home();
-				//Models.Database db = new Models.Database();
+				Models.Database db = new Models.Database();
 
 				return View(h);
 			}

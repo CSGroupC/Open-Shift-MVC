@@ -9,7 +9,7 @@ namespace Open_Shift.Models
 {
 	public class User
 	{
-		public long UID = 0;
+		public long AssociateID = 0;
 
 		[DisplayName("User ID")]
 		public string UserID { get; set; }
@@ -20,19 +20,54 @@ namespace Open_Shift.Models
 		[DisplayName("Last Name")]
 		public string LastName { get; set; }
 
+		[DisplayName("Birthday")]
+		public string Birthday { get; set; }
+
+		[DisplayName("Address")]
+		public string Address { get; set; }
+
+		[DisplayName("City")]
+		public string City { get; set; }
+
+		[DisplayName("State")]
+		public string State { get; set; }
+
+		[DisplayName("Zip")]
+		public string Zip { get; set; }
+
+		[DisplayName("StoreLocation")]
+		public string StoreLocation { get; set; }
+
+		[DisplayName("EmployeeNumber")]
+		public string EmployeeNumber { get; set; }
+
+		[DisplayName("AssociateTitle")]
+		public string AssociateTitle { get; set; }
+
+		[DisplayName("Phonenumber")]
+		public string Phonenumber { get; set; }
+
 		[DisplayName("E-Mail")]
 		public string Email { get; set; }
 
+		[DisplayName("ConfirmEmail")]
+		public string ConfirmEmail { get; set; }
+
+		[DisplayName("NewPassword")]
+		public string NewPassword { get; set; }
+
 		[DisplayName("Password")]
 		public string Password { get; set; }
+
 		public bool LoginAttempted = false;
+
 		public bool LoginFailed
 		{
 			get
 			{
 				try
 				{
-					if (UID == 0 && LoginAttempted == true) { return true; }
+					if (AssociateID == 0 && LoginAttempted == true) { return true; }
 					return false;
 				}
 				catch (Exception ex)
@@ -49,7 +84,7 @@ namespace Open_Shift.Models
 			{
 				try
 				{
-					if (UID > 0) return true;
+					if (AssociateID > 0) return true;
 					return false;
 				}
 				catch (Exception ex)
@@ -62,12 +97,12 @@ namespace Open_Shift.Models
 
 		public Image UserImage = new Image();
 
-		public static List<User> GetUsers(long UID = 0, byte StatusID = 0, byte PrivacyID = 0)
+		public static List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
 		{
 			try
 			{
 				Database db = new Database();
-				List<User> users = db.GetUsers(UID, StatusID, PrivacyID);
+				List<User> users = db.GetUsers(AssociateID, StatusID, PrivacyID);
 				return users;
 			}
 			catch (Exception ex)
@@ -88,17 +123,40 @@ namespace Open_Shift.Models
 				newUser = db.Login(this);
 				if (newUser != null)
 				{
-					UID = newUser.UID;
+					AssociateID = newUser.AssociateID;
 					Password = newUser.Password;
 					UserID = newUser.UserID;
 					FirstName = newUser.FirstName;
 					LastName = newUser.LastName;
 					Email = newUser.Email;
+					Birthday = newUser.Birthday;
+					Address = newUser.Address;
+					City = newUser.City;
+					State = newUser.State;
+					Zip = newUser.Zip;
+					StoreLocation = newUser.StoreLocation;
+					EmployeeNumber = newUser.EmployeeNumber;
+					AssociateTitle = newUser.AssociateTitle;
+					Phonenumber = newUser.Phonenumber;
 					return true;
 				}
 				else { return false; }
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
+		}
+
+		//Not sure if this works
+		public bool ResetPassword()
+		{
+		//try
+		//	{
+				User u = new User();
+		//		u = (User)HttpContext.Current.Session["CurrentUser"];
+		//		Database db = new Database();
+		//		u.Password = db.ResetPassword(u.Password);
+				return true;
+		//	}
+		//	catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
 		public bool RemoveUserSession()
@@ -122,7 +180,7 @@ namespace Open_Shift.Models
 				}
 				u = (User)HttpContext.Current.Session["CurrentUser"];
 				Database db = new Database();
-				u.UserImage = db.GetUserImage(u.UID);
+				u.UserImage = db.GetUserImage(u.AssociateID);
 				return u;
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
@@ -144,7 +202,7 @@ namespace Open_Shift.Models
 			try
 			{
 				Database db = new Database();
-				db.DeleteUser(this.UID);
+				db.DeleteUser(this.AssociateID);
 				RemoveUserSession();
 				return true;
 			}
@@ -156,11 +214,11 @@ namespace Open_Shift.Models
 			try
 			{
 				Models.Database db = new Database();
-				long NewUID;
-				if (UID == 0)
+				long NewAssociateID;
+				if (AssociateID == 0)
 				{
-					NewUID = db.InsertUser(this);
-					if (NewUID > 0) UID = NewUID;
+					NewAssociateID = db.InsertUser(this);
+					if (NewAssociateID > 0) AssociateID = NewAssociateID;
 				}
 				else
 				{
@@ -177,11 +235,11 @@ namespace Open_Shift.Models
 			try
 			{
 				Models.Database db = new Database();
-				long NewUID;
+				long NewAssociateID;
 				if (this.UserImage.ImageID == 0)
 				{
-					NewUID = db.InsertUserImage(this);
-					if (NewUID > 0) UserImage.ImageID = NewUID;
+					NewAssociateID = db.InsertUserImage(this);
+					if (NewAssociateID > 0) UserImage.ImageID = NewAssociateID;
 				}
 				else
 				{
@@ -207,15 +265,43 @@ namespace Open_Shift.Models
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			Email = string.Empty;
+			Birthday = string.Empty;
+		    Address =  string.Empty;
+			City = string.Empty;
+			State = string.Empty;
+			Zip = string.Empty;
+			StoreLocation = string.Empty;
+			EmployeeNumber = string.Empty;
+			AssociateTitle = string.Empty;
+			Phonenumber = string.Empty;
+			ConfirmEmail = string.Empty;
+			this.NewPassword = NewPassword;
+
 		}
 
-		public User(string UserID, string Password, string FirstName, string LastName, string Email)
+		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string Address, string City, string State, string Zip,
+			 String StoreLocation,string EmployeeNumber,string AssociateTitle,string Phonenumber, string Email, string ConfirmEmail )
 		{
 			this.UserID = UserID;
 			this.Password = Password;
 			this.FirstName = FirstName;
 			this.LastName = LastName;
 			this.Email = Email;
+			this.Birthday = Birthday;
+			this.Address = Address;
+			this.City = City;
+			this.State = State;
+			this.Zip = Zip;
+			this.StoreLocation = StoreLocation;
+			this.EmployeeNumber = EmployeeNumber;
+			this.AssociateTitle = AssociateTitle;
+			this.Phonenumber = Phonenumber;
+			this.ConfirmEmail = ConfirmEmail;
+			this.NewPassword = NewPassword;
+
+
+
+
 		}
 	}
 }

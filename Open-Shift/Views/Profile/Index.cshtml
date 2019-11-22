@@ -44,23 +44,18 @@
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Address)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Address)</div>
+                <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine1)</div>
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.City)</div>
-                <div required>@Html.TextBoxFor(model => model.User.City)</div>
+                <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine2)</div>
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.State)</div>
-                <div required>@Html.TextBoxFor(model => model.User.State)</div>
-            </div>
-
-            <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Zip)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Zip)</div>
+                <div>@Html.LabelFor(model => model.User.PostalCode)</div>
+                <div required>@Html.TextBoxFor(model => model.User.PostalCode)</div>
             </div>
         </div>
 

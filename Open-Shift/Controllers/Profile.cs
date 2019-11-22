@@ -53,10 +53,9 @@ namespace Open_Shift.Controllers
 					u.FirstName = col["User.FirstName"];
 					u.LastName = col["User.LastName"];
 					u.Birthday = col["User.Birthday"];
-					u.Address = col["User.Address"];
-					u.City = col["User.City"];
-					u.State = col["User.State"];
-					u.Zip = col["User.Zip"];
+					u.AddressLine1 = col["User.AddressLine1"];
+                    u.AddressLine2 = col["User.AddressLine2"];
+					u.PostalCode = col["User.PostalCode"];
 					u.StoreLocation = col["User.StoreLocation"];
 					u.EmployeeNumber = col["User.EmployeeNumber"];
 					u.AssociateTitle = col["User.AssociateTitle"];
@@ -95,10 +94,8 @@ namespace Open_Shift.Controllers
 						h.User.FirstName = col["User.FirstName"];
 						h.User.LastName = col["User.LastName"];
 						h.User.Birthday = col["User.Birthday"];
-						h.User.Address = col["User.Address"];
-						h.User.City = col["User.City"];
-						h.User.State = col["User.State"];
-						h.User.Zip = col["User.Zip"];
+						h.User.AddressLine1 = col["User.AddressLine1"];
+						h.User.PostalCode = col["User.PostalCode"];
 						h.User.StoreLocation = col["User.StoreLocation"];
 						h.User.EmployeeNumber = col["User.EmployeeNumber"];
 						h.User.AssociateTitle = col["User.AssociateTitle"];
@@ -228,7 +225,7 @@ namespace Open_Shift.Controllers
 			try
 			{
 				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], col["User.Birthday"],
-										col["User.Address"], col["User.City"], col["User.State"], col["User.Zip"], col["User.StoreLocation"],
+										col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], col["User.StoreLocation"],
 										col["User.EmployeeNumber"], col["User.AssociateTitle"], col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
 										col["User.UserID"], col["User.Password"]);
 				u.Save();
@@ -243,10 +240,9 @@ namespace Open_Shift.Controllers
 					h.User.FirstName = col["User.FirstName"];
 					h.User.LastName = col["User.LastName"];
 					h.User.Birthday= col["User.Birthday"];
-					h.User.Address = col["User.Address"];
-					h.User.City = col["User.City"];
-					h.User.State = col["User.State"];
-					h.User.Zip = col["User.Zip"];
+					h.User.AddressLine1 = col["User.AddressLine1"];
+                    h.User.AddressLine2 = col["User.AddressLine2"];
+					h.User.PostalCode = col["User.PostalCode"];
 					h.User.StoreLocation = col["User.StoreLocation"];
 					h.User.EmployeeNumber = col["User.EmployeeNumber"];
 					h.User.AssociateTitle = col["User.AssociateTitle"];

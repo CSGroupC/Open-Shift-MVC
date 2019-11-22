@@ -23,14 +23,17 @@ namespace Open_Shift.Models
 		[DisplayName("Birthday")]
 		public string Birthday { get; set; }
 
-		[DisplayName("AddressLine1")]
-		public string AddressLine1 { get; set; }
+		[DisplayName("Address")]
+		public string Address { get; set; }
 
-		[DisplayName("AddressLine2")]
-		public string AddressLine2 { get; set; }
+		[DisplayName("City")]
+		public string City { get; set; }
 
-		[DisplayName("PostalCode")]
-		public string PostalCode { get; set; }
+		[DisplayName("State")]
+		public string State { get; set; }
+
+		[DisplayName("Zip")]
+		public string Zip { get; set; }
 
 		[DisplayName("StoreLocation")]
 		public string StoreLocation { get; set; }
@@ -127,9 +130,10 @@ namespace Open_Shift.Models
 					LastName = newUser.LastName;
 					Email = newUser.Email;
 					Birthday = newUser.Birthday;
-					AddressLine1 = newUser.AddressLine1;
-                    AddressLine2 = newUser.AddressLine2;
-					PostalCode = newUser.PostalCode;
+					Address = newUser.Address;
+					City = newUser.City;
+					State = newUser.State;
+					Zip = newUser.Zip;
 					StoreLocation = newUser.StoreLocation;
 					EmployeeNumber = newUser.EmployeeNumber;
 					AssociateTitle = newUser.AssociateTitle;
@@ -262,9 +266,10 @@ namespace Open_Shift.Models
 			LastName = string.Empty;
 			Email = string.Empty;
 			Birthday = string.Empty;
-		    AddressLine1 =  string.Empty;
-            AddressLine2 = string.Empty;
-			PostalCode = string.Empty;
+		    Address =  string.Empty;
+			City = string.Empty;
+			State = string.Empty;
+			Zip = string.Empty;
 			StoreLocation = string.Empty;
 			EmployeeNumber = string.Empty;
 			AssociateTitle = string.Empty;
@@ -274,7 +279,7 @@ namespace Open_Shift.Models
 
 		}
 
-		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string AddressLine1, string AddressLine2, string PostalCode,
+		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string Address, string City, string State, string Zip,
 			 String StoreLocation,string EmployeeNumber,string AssociateTitle,string Phonenumber, string Email, string ConfirmEmail )
 		{
 			this.UserID = UserID;
@@ -283,9 +288,10 @@ namespace Open_Shift.Models
 			this.LastName = LastName;
 			this.Email = Email;
 			this.Birthday = Birthday;
-			this.AddressLine1 = AddressLine1;
-            this.AddressLine2 = AddressLine2;
-			this.PostalCode = PostalCode;
+			this.Address = Address;
+			this.City = City;
+			this.State = State;
+			this.Zip = Zip;
 			this.StoreLocation = StoreLocation;
 			this.EmployeeNumber = EmployeeNumber;
 			this.AssociateTitle = AssociateTitle;

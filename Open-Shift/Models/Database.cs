@@ -387,18 +387,19 @@ namespace Open_Shift.Models
 
 		private bool GetDBConnection(ref SqlConnection SQLConn)
 		{
-			try
-			{
-				if (SQLConn == null) SQLConn = new SqlConnection();
+            try
+            {
+                if (SQLConn == null) SQLConn = new SqlConnection();
 				if (SQLConn.State != ConnectionState.Open)
 				{
-					SQLConn.ConnectionString = ConfigurationManager.AppSettings["DatabaseConnection"];
+					SQLConn.ConnectionString = ConfigurationManager.ConnectionStrings["OpenShift"].ConnectionString;
 					SQLConn.Open();
 				}
 				return true;
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+            }
+            catch (Exception ex)
+            { throw new Exception(ex.Message); }
+        }
 
 		private bool CloseDBConnection(ref SqlConnection SQLConn)
 		{

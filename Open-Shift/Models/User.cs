@@ -56,7 +56,13 @@ namespace Open_Shift.Models
 		[DisplayName("Password")]
 		public string Password { get; set; }
 
-		public bool LoginAttempted = false;
+        [DisplayName("Manager")]
+        public string Manager { get; set; }
+
+        [DisplayName("Status")]
+        public string Status { get; set; }
+
+        public bool LoginAttempted = false;
 
 		public bool LoginFailed
 		{

@@ -45,8 +45,39 @@ namespace Open_Shift.Controllers
 
 				if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
 				if (col["btnSubmit"] == "close") return RedirectToAction("Index", "Home");
+				if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPassword", "Profile");
+				if (col["btnSubmit"] == "update") return RedirectToAction("Update", "Profile");
+				return View(h);
+			}
+			catch (Exception ex)
+			{
+				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+				return RedirectToAction("Index", "Error");
+			}
+		}
 
-				if (col["btnSubmit"] == "update")
+		public ActionResult Update()
+		{
+			try
+			{
+				Models.Home h = new Models.Home();
+				h.User = h.User.GetUserSession();
+				return View(h);
+			}
+			catch (Exception ex)
+			{
+				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+				return RedirectToAction("Index", "Error");
+			}
+		}
+
+		[HttpPost]
+		public ActionResult Update(HttpPostedFileBase UserImage,Models.User m, FormCollection col)
+		{
+			try
+			{
+				Models.User u = new Models.User();
+				Models.Home h = new Models.Home();
 				{
 					u = u.GetUserSession();
 
@@ -107,7 +138,7 @@ namespace Open_Shift.Controllers
 						h.User.Password = col["User.Password"];
 					}
 				}
-				return View(h);
+				return View(u);
 			}
 			catch (Exception ex)
 			{

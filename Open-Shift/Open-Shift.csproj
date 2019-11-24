@@ -231,6 +231,7 @@
     <Content Include="Views\Availbility.cshtml" />
     <Content Include="Views\Schedule.cshtml" />
     <Content Include="Views\Schedule\ManagerSchedule.cshtml" />
+    <Content Include="Views\Profile\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

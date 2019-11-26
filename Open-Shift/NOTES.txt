@@ -1,0 +1,10 @@
+﻿
+ASP.NET MVC tutorial:
+https://www.youtube.com/watch?v=E7Voso411Vs
+
+NOTES:
+
+ -	Models.SysLog.UpdateLogFile is defined in Models/SysLog.cs
+	It attempts to log an error in a file with the name ConfigurationManager.AppSettings["SystemLogFileName"]
+	ConfigurationManager.AppSettings is populated with key/value pairs from the appSettings section of Web.config
+	Previously, there were no "SystemLogFileName" and "LogFilePath" keys in appSettings

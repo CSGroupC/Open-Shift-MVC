@@ -15,6 +15,7 @@ namespace Open_Shift.Models
 				string strFileName = ConfigurationManager.AppSettings["SystemLogFileName"];
 				string strPathAndFile = string.Concat(strPath, "\\", strFileName);
 
+                string ahhhhh = Directory.GetCurrentDirectory();
 				if (!Directory.Exists(strPath))
 				{ //folder doesn't not exist; get out
 					return false;

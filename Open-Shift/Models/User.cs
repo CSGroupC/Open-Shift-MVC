@@ -9,7 +9,7 @@ namespace Open_Shift.Models
 {
 	public class User
 	{
-		public long AssociateID = 0;
+		public int AssociateID = 0;
 
 		[DisplayName("User ID")]
 		public string UserID { get; set; }
@@ -21,7 +21,7 @@ namespace Open_Shift.Models
 		public string LastName { get; set; }
 
 		[DisplayName("Birthday")]
-		public string Birthday { get; set; }
+		public DateTime? Birthday { get; set; }
 
 		[DisplayName("Address Line One")]
 		public string AddressLine1 { get; set; }
@@ -33,13 +33,13 @@ namespace Open_Shift.Models
 		public string PostalCode { get; set; }
 
 		[DisplayName("Store Location")]
-		public string StoreLocation { get; set; }
+		public int? StoreLocation { get; set; }
 
 		[DisplayName("Employee Number")]
-		public string EmployeeNumber { get; set; }
+		public int? EmployeeNumber { get; set; }
 
 		[DisplayName("Associate Title")]
-		public string AssociateTitle { get; set; }
+		public int? AssociateTitle { get; set; }
 
 		[DisplayName("Phone Number")]
 		public string Phonenumber { get; set; }
@@ -56,11 +56,11 @@ namespace Open_Shift.Models
 		[DisplayName("Password")]
 		public string Password { get; set; }
 
-        [DisplayName("Manager")]
-        public string Manager { get; set; }
+        [DisplayName("blnIsManager")]
+        public string blnIsManager { get; set; }
 
         [DisplayName("Status")]
-        public string Status { get; set; }
+        public int? Status { get; set; }
 
         public bool LoginAttempted = false;
 
@@ -216,7 +216,7 @@ namespace Open_Shift.Models
 			try
 			{
 				Models.Database db = new Database();
-				long NewAssociateID;
+				int NewAssociateID;
 				if (AssociateID == 0)
 				{
 					NewAssociateID = db.InsertUser(this);
@@ -259,6 +259,7 @@ namespace Open_Shift.Models
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			Email = string.Empty;
+			Birthday = null;
 		}
 		public User(string UserID, string Password)
 		{
@@ -267,21 +268,22 @@ namespace Open_Shift.Models
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			Email = string.Empty;
-			Birthday = string.Empty;
+		    Birthday = null;
 		    AddressLine1 =  string.Empty;
 			AddressLine2 = string.Empty;
 			PostalCode = string.Empty;
-			StoreLocation = string.Empty;
-			EmployeeNumber = string.Empty;
-			AssociateTitle = string.Empty;
+			StoreLocation = null;
+			EmployeeNumber = null;
+			AssociateTitle = null;
 			Phonenumber = string.Empty;
 			ConfirmEmail = string.Empty;
 			this.NewPassword = NewPassword;
 
 		}
 
-		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
-			 String StoreLocation,string EmployeeNumber,string AssociateTitle,string Phonenumber, string Email, string ConfirmEmail )
+		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
+			 int StoreLocation,int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
+			 string blnIsManager,int Status, string UserID, string Password )
 		{
 			this.UserID = UserID;
 			this.Password = Password;
@@ -298,10 +300,32 @@ namespace Open_Shift.Models
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
 			this.NewPassword = NewPassword;
+			this.blnIsManager = blnIsManager;
+			this.Status = Status;
 
 
 
 
 		}
+
+		//public User(string UserID, string Password, string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2, string PostalCode,
+		//	 String StoreLocation, string EmployeeNumber, string AssociateTitle, string Phonenumber, string Email, string ConfirmEmail)
+		//{
+		//	this.UserID = UserID;
+		//	this.Password = Password;
+		//	this.FirstName = FirstName;
+		//	this.LastName = LastName;
+		//	this.Email = Email;
+		//	this.Birthday = Birthday;
+		//	this.AddressLine1 = AddressLine1;
+		//	this.AddressLine2 = AddressLine2;
+		//	this.PostalCode = PostalCode;
+		//	this.StoreLocation = StoreLocation;
+		//	this.EmployeeNumber = EmployeeNumber;
+		//	this.AssociateTitle = AssociateTitle;
+		//	this.Phonenumber = Phonenumber;
+		//	this.ConfirmEmail = ConfirmEmail;
+		//	this.NewPassword = NewPassword;
+		//}
 	}
 }

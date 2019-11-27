@@ -83,13 +83,13 @@ namespace Open_Shift.Controllers
 
 					u.FirstName = col["User.FirstName"];
 					u.LastName = col["User.LastName"];
-					u.Birthday = col["User.Birthday"];
+					u.Birthday = Convert.ToDateTime( col["User.Birthday"]);
 					u.AddressLine1 = col["User.AddressLine1"];
 					u.AddressLine2 = col["User.AddressLine2"];
 					u.PostalCode = col["User.PostalCode"];
-					u.StoreLocation = col["User.StoreLocation"];
-					u.EmployeeNumber = col["User.EmployeeNumber"];
-					u.AssociateTitle = col["User.AssociateTitle"];
+					u.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
+					u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+					u.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
 					u.Phonenumber = col["User.Phonenumber"];
 					u.Email = col["User.Email"];
 					u.ConfirmEmail = col["User.ConfirmEmail"];
@@ -124,13 +124,13 @@ namespace Open_Shift.Controllers
 					{ //user failed to log in
 						h.User.FirstName = col["User.FirstName"];
 						h.User.LastName = col["User.LastName"];
-						h.User.Birthday = col["User.Birthday"];
+						h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
 						h.User.AddressLine1 = col["User.AddressLine1"];
 						h.User.AddressLine2 = col["User.AddressLine2"];
 						h.User.PostalCode = col["User.PostalCode"];
-						h.User.StoreLocation = col["User.StoreLocation"];
-						h.User.EmployeeNumber = col["User.EmployeeNumber"];
-						h.User.AssociateTitle = col["User.AssociateTitle"];
+						h.User.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
+						h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+						h.User.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
 						h.User.Phonenumber = col["User.Phonenumber"];
 						h.User.Email = col["User.Email"];
 						h.User.ConfirmEmail = col["User.ConfirmEmail"];
@@ -256,10 +256,9 @@ namespace Open_Shift.Controllers
 		{
 			try
 			{
-				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], col["User.Birthday"],
-										col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], col["User.StoreLocation"],
-										col["User.EmployeeNumber"], col["User.AssociateTitle"], col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
-										col["User.UserID"], col["User.Password"]);
+				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]), col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], Convert.ToInt32( col["User.StoreLocation"]),
+										Convert.ToInt32(col["User.EmployeeNumber"]), Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
+										col["User.blnIsManager"],Convert.ToInt32(col["User.Status"]),col["User.UserID"], col["User.Password"]);
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found
@@ -271,17 +270,21 @@ namespace Open_Shift.Controllers
 					Models.Home h = new Models.Home();
 					h.User.FirstName = col["User.FirstName"];
 					h.User.LastName = col["User.LastName"];
-					h.User.Birthday= col["User.Birthday"];
+					h.User.Birthday= Convert.ToDateTime(col["User.Birthday"]);
 					h.User.AddressLine1 = col["User.AddressLine1"];
 					h.User.AddressLine2 = col["User.AddressLine2"];
 					h.User.PostalCode = col["User.PostalCode"];
-					h.User.StoreLocation = col["User.StoreLocation"];
-					h.User.EmployeeNumber = col["User.EmployeeNumber"];
-					h.User.AssociateTitle = col["User.AssociateTitle"];
+					h.User.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
+					h.User.EmployeeNumber = Convert.ToInt32( col["User.EmployeeNumber"]);
+					h.User.AssociateTitle = Convert.ToInt32( col["User.AssociateTitle"]);
 					h.User.Phonenumber = col["User.Phonenumber"];
 					h.User.Email = col["User.Email"];
 					h.User.ConfirmEmail = col["User.ConfirmEmail"];
-					h.User.UserID = col["User.UserID"];
+					h.User.blnIsManager = col["User.blnIsManager"];
+					h.User.Status = Convert.ToInt32(col["User.Status"]);
+				
+	
+						h.User.UserID = col["User.UserID"];
 					h.User.Password = col["User.Password"];
 					return View(h);
 				}

@@ -44,23 +44,18 @@
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Address)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Address)</div>
+                <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine1)</div>
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.City)</div>
-                <div required>@Html.TextBoxFor(model => model.User.City)</div>
+                <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine2)</div>
             </div>
 
             <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.State)</div>
-                <div required>@Html.TextBoxFor(model => model.User.State)</div>
-            </div>
-
-            <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Zip)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Zip)</div>
+                <div>@Html.LabelFor(model => model.User.PostalCode)</div>
+                <div required>@Html.TextBoxFor(model => model.User.PostalCode)</div>
             </div>
         </div>
 
@@ -96,7 +91,7 @@
             <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
             <button class="button-cancel" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
             <button class="button-action" id="btnResetPassword" name="btnSubmit" value="resetpassword"><i class="fa fa-comment">Reset password </button>
-            <button class="button-cancel" id="btnClose" name="btnSubmit" value="close-to-home"><i class='fa fa-home'></i> Home</button>
+            <button class="button-cancel" id="btnClose" name="btnSubmit" value="close"><i class='fa fa-home'></i> Home</button>
         </div>
        
     }

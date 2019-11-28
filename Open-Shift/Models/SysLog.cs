@@ -2,6 +2,7 @@
 using System.Text;
 using System.IO;
 using System.Configuration;
+using System.Web;
 
 namespace Open_Shift.Models
 {
@@ -11,11 +12,12 @@ namespace Open_Shift.Models
 		{
 			try
 			{
-				string strPath = ConfigurationManager.AppSettings["LogFilePath"];
-				string strFileName = ConfigurationManager.AppSettings["SystemLogFileName"];
+                string strPath = System.Web.HttpContext.Current.Server.MapPath("App_Log");
+                string strFileName = ConfigurationManager.AppSettings["SystemLogFileName"];
 				string strPathAndFile = string.Concat(strPath, "\\", strFileName);
 
-				if (!Directory.Exists(strPath))
+
+                if (!Directory.Exists(strPath))
 				{ //folder doesn't not exist; get out
 					return false;
 				}

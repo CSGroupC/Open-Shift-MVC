@@ -20,10 +20,9 @@ namespace Open_Shift.Models
 				u.FirstName = dr["User.FirstName"].ToString();
 				u.LastName = dr["User.LastName"].ToString();
 				u.Birthday = dr["User.Birthday"].ToString();
-				u.Address = dr["User.Address"].ToString();
-				u.City = dr["User.City"].ToString();
-				u.State = dr["User.State"].ToString();
-				u.Zip = dr["User.Zip"].ToString();
+				u.AddressLine1 = dr["User.AddressLine1"].ToString();
+				u.AddressLine2 = dr["User.AddressLine2"].ToString();
+				u.PostalCode = dr["User.PostalCode"].ToString();
 				u.StoreLocation = dr["User.StoreLocation"].ToString();
 				u.EmployeeNumber = dr["User.EmployeeNumber"].ToString();
 				u.AssociateTitle = dr["User.AssociateTitle"].ToString();
@@ -182,23 +181,23 @@ namespace Open_Shift.Models
 				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt, Direction: ParameterDirection.Output);
 				
 				
-				SetParameter(ref cm, "@first_name", u.FirstName, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@last_name", u.LastName, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@birthday", u.Birthday, SqlDbType.DateTime);
-				SetParameter(ref cm, "@address", u.Address, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@city", u.City, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@state", u.State, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@zip", u.Zip, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@storeLocation", u.StoreLocation, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@employeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@associateTitle", u.AssociateTitle, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@phonenumber", u.Phonenumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@email", u.Email, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@confirmEmail", u.ConfirmEmail, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@user_id", u.UserID, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@password", u.Password, SqlDbType.NVarChar);
-
-				SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPostalCode", u.PostalCode, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@strAddressLine1", u.AddressLine1, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@strAddressLine2", u.AddressLine2, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPhoneNumber", u.Phonenumber, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.DateTime);
+                SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@intStoreID", u.StoreLocation, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@blnIsManager", u.Manager, SqlDbType.Bit);
+                SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
+                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
+                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader();
 
@@ -245,10 +244,9 @@ namespace Open_Shift.Models
 						newUser.FirstName = (string)dr["strFirstName"];
 						newUser.LastName = (string)dr["strLastName"];
 						newUser.Birthday = (string)dr["strBirthday"];
-						newUser.Address = (string)dr["strAddress"];
-						newUser.City = (string)dr["strCity"];
-						newUser.State = (string)dr["strState"];
-						newUser.Zip = (string)dr["strZip"];
+						newUser.AddressLine1 = (string)dr["strAddressLine1"];
+						newUser.AddressLine2 = (string)dr["strAddressLine2"];
+						newUser.PostalCode = (string)dr["strPostalCode"];
 						newUser.StoreLocation = (string)dr["strStoreLocation"];
 						newUser.AssociateTitle = (string)dr["strAssociateTitle "];
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
@@ -350,24 +348,25 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("UPDATE_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt);
-				SetParameter(ref cm, "@user_id", u.UserID, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@password", u.Password, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@first_name", u.FirstName, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@last_name", u.LastName, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@birthday", u.Birthday, SqlDbType.DateTime);
-				SetParameter(ref cm, "@address", u.Address, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@city", u.City, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@state", u.State, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@zip", u.Zip, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@storeLocation", u.StoreLocation, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@employeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@associateTitle", u.AssociateTitle, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@phonenumber", u.Phonenumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@email", u.Email, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@confirmEmail", u.ConfirmEmail, SqlDbType.NVarChar);
-			
-				SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+				SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.BigInt);
+
+				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPostalCode", u.PostalCode, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strAddressLine1", u.AddressLine1, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strAddressLine2", u.AddressLine2, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPhoneNumber", u.Phonenumber, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.DateTime);
+                SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@intStoreID", u.StoreLocation, SqlDbType.Int);
+				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);        /*TODO update with password hashing*/
+                SetParameter(ref cm, "@blnIsManager", u.Manager, SqlDbType.Bit);
+                SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
+                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar);  /*TODO update with password hashing*/
+                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar);   /*TODO update with password hashing*/
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader();
 
@@ -387,18 +386,19 @@ namespace Open_Shift.Models
 
 		private bool GetDBConnection(ref SqlConnection SQLConn)
 		{
-			try
-			{
-				if (SQLConn == null) SQLConn = new SqlConnection();
+            try
+            {
+                if (SQLConn == null) SQLConn = new SqlConnection();
 				if (SQLConn.State != ConnectionState.Open)
 				{
-					SQLConn.ConnectionString = ConfigurationManager.AppSettings["DatabaseConnection"];
+					SQLConn.ConnectionString = ConfigurationManager.ConnectionStrings["OpenShift"].ConnectionString;
 					SQLConn.Open();
 				}
 				return true;
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+            }
+            catch (Exception ex)
+            { throw new Exception(ex.Message); }
+        }
 
 		private bool CloseDBConnection(ref SqlConnection SQLConn)
 		{

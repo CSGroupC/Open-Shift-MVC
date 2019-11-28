@@ -23,43 +23,46 @@ namespace Open_Shift.Models
 		[DisplayName("Birthday")]
 		public string Birthday { get; set; }
 
-		[DisplayName("Address")]
-		public string Address { get; set; }
+		[DisplayName("Address Line One")]
+		public string AddressLine1 { get; set; }
 
-		[DisplayName("City")]
-		public string City { get; set; }
+		[DisplayName("Address Line Two")]
+		public string AddressLine2 { get; set; }
 
-		[DisplayName("State")]
-		public string State { get; set; }
+		[DisplayName("Postal Code")]
+		public string PostalCode { get; set; }
 
-		[DisplayName("Zip")]
-		public string Zip { get; set; }
-
-		[DisplayName("StoreLocation")]
+		[DisplayName("Store Location")]
 		public string StoreLocation { get; set; }
 
-		[DisplayName("EmployeeNumber")]
+		[DisplayName("Employee Number")]
 		public string EmployeeNumber { get; set; }
 
-		[DisplayName("AssociateTitle")]
+		[DisplayName("Associate Title")]
 		public string AssociateTitle { get; set; }
 
-		[DisplayName("Phonenumber")]
+		[DisplayName("Phone Number")]
 		public string Phonenumber { get; set; }
 
 		[DisplayName("E-Mail")]
 		public string Email { get; set; }
 
-		[DisplayName("ConfirmEmail")]
+		[DisplayName("Confirm Email")]
 		public string ConfirmEmail { get; set; }
 
-		[DisplayName("NewPassword")]
+		[DisplayName("New Password")]
 		public string NewPassword { get; set; }
 
 		[DisplayName("Password")]
 		public string Password { get; set; }
 
-		public bool LoginAttempted = false;
+        [DisplayName("Manager")]
+        public string Manager { get; set; }
+
+        [DisplayName("Status")]
+        public string Status { get; set; }
+
+        public bool LoginAttempted = false;
 
 		public bool LoginFailed
 		{
@@ -130,10 +133,9 @@ namespace Open_Shift.Models
 					LastName = newUser.LastName;
 					Email = newUser.Email;
 					Birthday = newUser.Birthday;
-					Address = newUser.Address;
-					City = newUser.City;
-					State = newUser.State;
-					Zip = newUser.Zip;
+					AddressLine1 = newUser.AddressLine1;
+					AddressLine2 = newUser.AddressLine2;
+					PostalCode = newUser.PostalCode;
 					StoreLocation = newUser.StoreLocation;
 					EmployeeNumber = newUser.EmployeeNumber;
 					AssociateTitle = newUser.AssociateTitle;
@@ -266,10 +268,9 @@ namespace Open_Shift.Models
 			LastName = string.Empty;
 			Email = string.Empty;
 			Birthday = string.Empty;
-		    Address =  string.Empty;
-			City = string.Empty;
-			State = string.Empty;
-			Zip = string.Empty;
+		    AddressLine1 =  string.Empty;
+			AddressLine2 = string.Empty;
+			PostalCode = string.Empty;
 			StoreLocation = string.Empty;
 			EmployeeNumber = string.Empty;
 			AssociateTitle = string.Empty;
@@ -279,7 +280,7 @@ namespace Open_Shift.Models
 
 		}
 
-		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string Address, string City, string State, string Zip,
+		public User(string UserID, string Password, string FirstName, string LastName, string Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
 			 String StoreLocation,string EmployeeNumber,string AssociateTitle,string Phonenumber, string Email, string ConfirmEmail )
 		{
 			this.UserID = UserID;
@@ -288,10 +289,9 @@ namespace Open_Shift.Models
 			this.LastName = LastName;
 			this.Email = Email;
 			this.Birthday = Birthday;
-			this.Address = Address;
-			this.City = City;
-			this.State = State;
-			this.Zip = Zip;
+			this.AddressLine1 = AddressLine1;
+			this.AddressLine2 = AddressLine2;
+			this.PostalCode = PostalCode;
 			this.StoreLocation = StoreLocation;
 			this.EmployeeNumber = EmployeeNumber;
 			this.AssociateTitle = AssociateTitle;

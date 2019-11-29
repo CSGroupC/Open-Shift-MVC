@@ -16,16 +16,16 @@ namespace Open_Shift.Models
 			try
 			{
 				User u = new User();
-				u.AssociateID = (long)dr["AssociateID"];
+				u.AssociateID = (int)dr["AssociateID"];
 				u.FirstName = dr["User.FirstName"].ToString();
 				u.LastName = dr["User.LastName"].ToString();
-				u.Birthday = dr["User.Birthday"].ToString();
+				u.Birthday = (DateTime)dr["User.Birthday"];
 				u.AddressLine1 = dr["User.AddressLine1"].ToString();
 				u.AddressLine2 = dr["User.AddressLine2"].ToString();
 				u.PostalCode = dr["User.PostalCode"].ToString();
-				u.StoreLocation = dr["User.StoreLocation"].ToString();
-				u.EmployeeNumber = dr["User.EmployeeNumber"].ToString();
-				u.AssociateTitle = dr["User.AssociateTitle"].ToString();
+				u.StoreLocation = (int)dr["User.StoreLocation"];
+				u.EmployeeNumber = (int)dr["User.EmployeeNumber"];
+				u.AssociateTitle = (int)dr["User.AssociateTitle"];
 				u.Phonenumber = dr["User.Phonenumber"].ToString();
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
@@ -83,7 +83,7 @@ namespace Open_Shift.Models
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("DELETE_USERS", cn);
 
-				SetParameter(ref cm, "@AssociateID", AssociateID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@AssociateID", AssociateID, SqlDbType.Int);
 
 				try
 				{
@@ -108,8 +108,8 @@ namespace Open_Shift.Models
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-				if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
-				if (UserImageID > 0) SetParameter(ref da, "@user_image_id", UserImageID, SqlDbType.BigInt);
+				if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.Int);
+				if (UserImageID > 0) SetParameter(ref da, "@user_image_id", UserImageID, SqlDbType.Int);
 
 				try
 				{
@@ -149,7 +149,7 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("INSERT_USER_IMAGE", cn);
 
 				SetParameter(ref cm, "@user_image_id", null, SqlDbType.BigInt, Direction: ParameterDirection.Output);
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int);
 				if (u.UserImage.Primary)
 					SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
 				else
@@ -169,7 +169,7 @@ namespace Open_Shift.Models
 			}
 		}
 
-		public long InsertUser(User u)
+		public int InsertUser(User u)
 		{
 			try
 			{
@@ -178,7 +178,7 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("INSERT_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.BigInt, Direction: ParameterDirection.Output);
+				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
 				
 				
 				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
@@ -189,17 +189,17 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strPhoneNumber", u.Phonenumber, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.DateTime);
                 SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@intStoreID", u.StoreLocation, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@intStoreID", u.StoreLocation, SqlDbType.Int);
+				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
+				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
 				SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@blnIsManager", u.Manager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsblnIsManager", u.blnIsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
-                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
-                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
+                //SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
+                //SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
-				cm.ExecuteReader();
+				cm.ExecuteReader(); //fails here
 
 				intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
 				CloseDBConnection(ref cn);
@@ -207,7 +207,7 @@ namespace Open_Shift.Models
 				switch (intReturnValue)
 				{
 					case 1: //new user created
-						return (long)cm.Parameters["@AssociateID"].Value;
+						return (int)cm.Parameters["@AssociateID"].Value;
 					default:
 						return 0;
 				}
@@ -238,17 +238,18 @@ namespace Open_Shift.Models
 					{
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
-						newUser.AssociateID = (long)dr["AssociateID"];
+						newUser.AssociateID = (int)dr["AssociateID"];
 						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];
 						newUser.LastName = (string)dr["strLastName"];
-						newUser.Birthday = (string)dr["strBirthday"];
+						newUser.Birthday = (DateTime)dr["dtmBirthday"];
 						newUser.AddressLine1 = (string)dr["strAddressLine1"];
 						newUser.AddressLine2 = (string)dr["strAddressLine2"];
 						newUser.PostalCode = (string)dr["strPostalCode"];
-						newUser.StoreLocation = (string)dr["strStoreLocation"];
-						newUser.AssociateTitle = (string)dr["strAssociateTitle "];
+						newUser.StoreLocation = (int)dr["intStoreID"];
+						newUser.EmployeeNumber = (int)dr["intEmployeeNumber"];
+						newUser.AssociateTitle = (int)dr["intAssociateTitleID"];
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = (string)dr["strEmail"];
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
@@ -292,7 +293,7 @@ namespace Open_Shift.Models
 					{
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
-						newUser.AssociateID = (long)dr["AssociateID"];
+						newUser.AssociateID = (int)dr["AssociateID"];
 						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 					}
@@ -348,7 +349,7 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("UPDATE_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.BigInt);
+				SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int);
 
 				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
 				SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
@@ -359,10 +360,10 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.DateTime);
                 SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intStoreID", u.StoreLocation, SqlDbType.Int);
-				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.NVarChar);
+				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
+				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);        /*TODO update with password hashing*/
-                SetParameter(ref cm, "@blnIsManager", u.Manager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsblnIsManager", u.blnIsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar);  /*TODO update with password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar);   /*TODO update with password hashing*/

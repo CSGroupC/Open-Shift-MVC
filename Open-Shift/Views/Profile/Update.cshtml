@@ -1,0 +1,122 @@
+﻿@model Open_Shift.Models.Home
+@{
+    /**/
+
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+<h3 position="fixed">Kotetsu Scheduling App</h3>
+@using (Html.BeginForm("Update", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <h2>@Model.User.FirstName @Model.User.LastName</h2>
+    <p>To make changes to your profile enter your information below and click the Update button.</p>
+
+    <div id="group-image">
+        @if (Model.User.UserImage.ImageID > 0)
+        {
+            <div class="image-container">
+                <img class="thumbnail2" src="@string.Concat("data:Image/",
+                        Model.User.UserImage.FileExtension, ";base64,",
+                        Model.User.UserImage.BytesBase64)" />
+            </div>
+        }
+    </div>
+    <div id="group-data">
+        @Html.TextBoxFor(model => model.User.UserImage.ImageID, new { style = "display: none;" })
+        <div class="section-bottom">
+            <div class="">
+                <div>User Profile Image</div>
+                <div>
+                    <input class="profile-item" type="file" name="UserImage" id="UserImage" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-main">
+        <div class="container">
+            <div>
+                <div>@Html.LabelFor(model => model.User.FirstName)</div>
+                <div required>@Html.TextBoxFor(model => model.User.FirstName)</div>
+            </div>
+            <div>
+                <div>@Html.LabelFor(model => model.User.LastName)</div>
+                <div required>@Html.TextBoxFor(model => model.User.LastName)</div>
+            </div>
+
+            <div>
+                <div>@Html.LabelFor(model => model.User.Birthday)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Birthday)</div>
+            </div>
+
+            <div>
+                <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine1)</div>
+            </div>
+
+            <div>
+                <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
+                <div required>@Html.TextBoxFor(model => model.User.AddressLine2)</div>
+            </div>
+
+            <div>
+                <div>@Html.LabelFor(model => model.User.PostalCode)</div>
+                <div required>@Html.TextBoxFor(model => model.User.PostalCode)</div>
+            </div>
+        </div>
+
+        <div class="container float" value="Store Info">
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.StoreLocation)</div>
+                <div>@Html.TextBoxFor(model => model.User.StoreLocation)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
+                <div>@Html.TextBoxFor(model => model.User.EmployeeNumber)</div>
+            </div>
+
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.AssociateTitle)</div>
+                <div>@Html.TextBoxFor(model => model.User.AssociateTitle)</div>
+            </div>
+        </div>
+
+        <div class="container right" value="Contact Info">
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Phonenumber)</div>
+            </div>
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.Email)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Email)</div>
+            </div>
+            <div class="section-bottom">
+                <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>
+                <div required>@Html.TextBoxFor(model => model.User.ConfirmEmail)</div>
+            </div>
+        </div>
+
+        <div class="container container1" value="Creditential Setup">
+
+            <div>
+                <div>@Html.LabelFor(model => model.User.Password)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+            </div>
+            <div>
+                <div>@Html.LabelFor(model => model.User.Password)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+            </div>
+        </div>
+
+        <div value="Notification">
+            <input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
+            <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>
+        </div>
+
+    </div>
+
+    <div class="inline">
+        <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
+        <button class="button-action" id="btnClose" name="btnSubmit" value="close">Cancel</button>
+    </div>
+}

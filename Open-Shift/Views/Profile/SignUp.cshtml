@@ -1,47 +1,47 @@
 ﻿@model Open_Shift.Models.Home
 
 @{
-    ViewBag.Title = "Sign Up";
+    ViewBag.Title = "";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-
-<p>Enter your information and click the Sign-Up button to sign up.</p>
+<h2>Kotetsu Scheduling App</h2>
+<p>Fill the following form to sign up</p>
 @using (Html.BeginForm("SignUp", "Profile", FormMethod.Post))
 {
-    <div class="container" value="Personal Info">
-        <div class="section-bottom">
-            <div >@Html.LabelFor(model => model.User.FirstName)</div>
+<div class="container-main">
+    <div class="container">
+        <div>
+            <div>@Html.LabelFor(model => model.User.FirstName)</div>
             <div required>@Html.TextBoxFor(model => model.User.FirstName)</div>
         </div>
-        <div class="section-bottom">
+        <div>
             <div>@Html.LabelFor(model => model.User.LastName)</div>
             <div required>@Html.TextBoxFor(model => model.User.LastName)</div>
         </div>
 
-        <div class="section-bottom">
-            <div>@Html.LabelFor(model => model.User.Birthday)</div>
+        <div>
+            <div>@Html.LabelFor(model => model.User.Birthday)</div> 
             <div required>@Html.TextBoxFor(model => model.User.Birthday)</div>
         </div>
 
-        <div class="section-bottom">
+        <div>
             <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
             <div required>@Html.TextBoxFor(model => model.User.AddressLine1)</div>
         </div>
 
-        <div class="section-bottom">
+        <div>
             <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
             <div required>@Html.TextBoxFor(model => model.User.AddressLine2)</div>
         </div>
 
-        <div class="section-bottom">
+        <div>
             <div>@Html.LabelFor(model => model.User.PostalCode)</div>
             <div required>@Html.TextBoxFor(model => model.User.PostalCode)</div>
         </div>
     </div>
 
-    <div class="container" value="Store Info">
+    <div class="container float"  value="Store Info">
         <div class="section-bottom">
             <div>@Html.LabelFor(model => model.User.StoreLocation)</div>
             <div>@Html.TextBoxFor(model => model.User.StoreLocation)</div>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="container" value="Contact Info">
+    <div class="container right" value="Contact Info">
         <div class="section-bottom">
             <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
             <div required>@Html.TextBoxFor(model => model.User.Phonenumber)</div>
@@ -73,23 +73,24 @@
         </div>
     </div>
 
-    <div class="container" value="Creditential Setup">
-        <div class="section-bottom">
-            <div>@Html.LabelFor(model => model.User.UserID)</div>
-            <div required>@Html.TextBoxFor(model => model.User.UserID)</div>
-        </div>
+    <div class="container container1" value="Creditential Setup">
 
         <div>
             <div>@Html.LabelFor(model => model.User.Password)</div>
             <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
         </div>
-        /* TOdo not sure how to go by confirm password in the user class **/
+        <div>
+            <div>@Html.LabelFor(model => model.User.Password)</div>
+            <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+        </div>
     </div>
 
-    <div class="container" value="Notification">
+    <div value="Notification">
         <input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
         <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>
     </div>
+
+</div>
 
     <div class="section-top2">
         <button class="button-action" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>

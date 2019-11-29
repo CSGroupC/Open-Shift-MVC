@@ -81,9 +81,9 @@ namespace Open_Shift.Models
 			{
 				SqlConnection cn = new SqlConnection();
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-				SqlCommand cm = new SqlCommand("DELETE_USERS", cn);
+				SqlCommand cm = new SqlCommand("DELETE_USER", cn);
 
-				SetParameter(ref cm, "@AssociateID", AssociateID, SqlDbType.Int);
+				SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
 
 				try
 				{
@@ -178,7 +178,7 @@ namespace Open_Shift.Models
 				SqlCommand cm = new SqlCommand("INSERT_USER", cn);
 				int intReturnValue = -1;
 
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
+				SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
 				
 				
 				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
@@ -195,8 +195,8 @@ namespace Open_Shift.Models
 				SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@blnIsblnIsManager", u.blnIsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
-                //SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
-                //SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
+                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
+                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
 				cm.ExecuteReader(); //fails here
@@ -238,7 +238,7 @@ namespace Open_Shift.Models
 					{
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
-						newUser.AssociateID = (int)dr["AssociateID"];
+						newUser.AssociateID = (int)dr["intAssociateID"];
 						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];

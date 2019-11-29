@@ -1,0 +1,43 @@
+﻿Database notes
+	Tables are auto-incrementing
+ADD_AVAILABILITY
+•	Adds an availability
+ADD_STORE
+•	Adds a store location
+ADD_STORE_HOURS
+•	Adds store hours
+DELETE_USER
+• Requires parameter @intAssociateID
+• sets user's status to inactive. NOTE* Does not actually delete user
+GET_ACTIVE_ASSOCIATES
+•	Does not accept parameters
+•	Returns all fields from TAssociates where the associate is labeled ‘active’
+GET_ASSOCIATE_TITLES
+•	Gets all associate titles
+•	Intended to drop down box on pages for user to select when adding or updating a user
+GET_AVAILABLE_ASSOCIATES
+•	Gets associates with availability  during time frame
+•	Accepts parameters 	@dtmStartTime[datetime] &	@dtmEndTime[datetime]
+•	Returns intAssociateID & intAssociateTitleID & blnIsManager
+
+GET_STATUSES
+•	Gets statuses
+•	Intended for drop down box so user can select when adding or updating
+INSERT_SHIFT
+•	Inserts a shift
+INSERT_USER
+•	Inserts a user
+SELECT_AVAILABILITY  
+•	Requires input parameter @intAvailabiltyID
+•	Assumes that each displayed availability is associated with its availabilityID
+•	Returns everything from the availability table related to that availabilityID and the associate’s first name, last name & associate title
+SELECT_SHIFT  - 
+•	selects a shift for viewing
+•	Takes a parameter @intShiftID
+•	Assumes @intShiftID is saved with the shift when it is on the calendar
+
+UPDATE_USER
+•	Updates user information
+•	Takes parameter @intAssociateID
+•	Assumes @intAssociateID is being saved with associate
+

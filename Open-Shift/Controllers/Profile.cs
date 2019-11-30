@@ -143,7 +143,7 @@ namespace Open_Shift.Controllers
 			catch (Exception ex)
 			{
 				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
-				return RedirectToAction("Index", "Error");
+				return RedirectToAction("Index", "Error"); //this is where it's breaking
 			}
 		}
 

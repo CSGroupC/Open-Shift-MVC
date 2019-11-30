@@ -81,9 +81,9 @@ namespace Open_Shift.Models
 			{
 				SqlConnection cn = new SqlConnection();
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-				SqlCommand cm = new SqlCommand("DELETE_USERS", cn);
+				SqlCommand cm = new SqlCommand("DELETE_USER", cn);
 
-				SetParameter(ref cm, "@AssociateID", AssociateID, SqlDbType.Int);
+				SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
 
 				try
 				{
@@ -177,8 +177,9 @@ namespace Open_Shift.Models
 				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
 				SqlCommand cm = new SqlCommand("INSERT_USER", cn);
 				int intReturnValue = -1;
+                int intAssociateID = -1;
 
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
+				SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
 				
 				
 				SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
@@ -193,25 +194,34 @@ namespace Open_Shift.Models
 				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
 				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
 				SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@blnIsblnIsManager", u.blnIsManager, SqlDbType.Bit);
-                SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);
-                //SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
-                //SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
-                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+               // SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Bit);    ***need to change when we add the blnIsManager field
+                SetParameter(ref cm, "@blnIsManager", 1, SqlDbType.Bit);
+               // SetParameter(ref cm, "@intStatusID", u.Status, SqlDbType.Int);        **** need to change when we add the status field
+                SetParameter(ref cm, "@intStatusID", 1, SqlDbType.Int);
+                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
+                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
+               // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
-				cm.ExecuteReader(); //fails here
+				cm.ExecuteReader(); 
 
-				intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+				intAssociateID = (int)cm.Parameters["@intAssociateID"].Value;
+     
 				CloseDBConnection(ref cn);
 
-				switch (intReturnValue)
-				{
-					case 1: //new user created
-						return (int)cm.Parameters["@AssociateID"].Value;
-					default:
-						return 0;
-				}
-			}
+                if (intAssociateID > 0)
+                { intReturnValue = 1; }
+                else intReturnValue = 0;
+
+
+
+                switch (intReturnValue)
+                {
+                    case 1: //new user created
+                        return (int)cm.Parameters["@intAssociateID"].Value;
+                    default:
+                        return 0;
+                }
+            }
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
@@ -238,7 +248,7 @@ namespace Open_Shift.Models
 					{
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
-						newUser.AssociateID = (int)dr["AssociateID"];
+						newUser.AssociateID = (int)dr["intAssociateID"];
 						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];
@@ -253,6 +263,8 @@ namespace Open_Shift.Models
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = (string)dr["strEmail"];
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
+                        newUser.blnIsManager = (int)dr["blnIsManager"];
+                        newUser.Status = (int)dr["intStatusID"];
 
 					}
 				}

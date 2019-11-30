@@ -57,7 +57,7 @@ namespace Open_Shift.Models
 		public string Password { get; set; }
 
         [DisplayName("blnIsManager")]
-        public string blnIsManager { get; set; }
+        public int? blnIsManager { get; set; }
 
         [DisplayName("Status")]
         public int? Status { get; set; }
@@ -283,9 +283,9 @@ namespace Open_Shift.Models
 
 		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
 			 int StoreLocation,int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
-			 string blnIsManager,int Status, string UserID, string Password )
+			 int blnIsManager,int Status, string UserID, string Password )
 		{
-			this.UserID = UserID;
+			this.UserID = "1";
 			this.Password = Password;
 			this.FirstName = FirstName;
 			this.LastName = LastName;
@@ -299,7 +299,7 @@ namespace Open_Shift.Models
 			this.AssociateTitle = AssociateTitle;
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
-			this.NewPassword = NewPassword;
+			this.NewPassword = "1";
 			this.blnIsManager = blnIsManager;
 			this.Status = Status;
 

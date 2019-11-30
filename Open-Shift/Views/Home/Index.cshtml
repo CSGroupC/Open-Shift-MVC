@@ -1,17 +1,49 @@
 ﻿@model Open_Shift.Models.Home
 @{
-	ViewBag.Title = "Home";
-	Layout = "~/Views/Home/Index.cshtml";
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
 <style>
-	.mycanvas-follow { color: darkgray; }
-	.mycanvas-following { color: green; }
-	.follow-link:hover { cursor: pointer; }
-	.follow-link { text-decoration: none; }
-	.your-item { color: darkgrey }
+    .mycanvas-follow {
+        color: darkgray;
+    }
+
+    .mycanvas-following {
+        color: green;
+    }
+
+    .follow-link:hover {
+        cursor: pointer;
+    }
+
+    .follow-link {
+        text-decoration: none;
+    }
+
+    .your-item {
+        color: darkgrey
+    }
 </style>
-<h2>@ViewBag.Title</h2>
 
 <h3>Open Shift</h3>
-<h3>Your scheduling APP</h3>
+<p>Your scheduling APP</p>
+<b>Contact</b>
+<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052-6399<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>
+
+<address>
+    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+</address>
+</br>
+</br>
+<b> About</b>
+<p>Kotetsu is a noodle restaraut located in ...</br>
+    You can get variety of your noodle dish here </br>
+    It is also a fun place to work
+    We give our employee opportunity to grow</p>

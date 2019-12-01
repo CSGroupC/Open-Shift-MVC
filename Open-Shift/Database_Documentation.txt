@@ -1,7 +1,14 @@
 ﻿Database notes
 	Tables are auto-incrementing
-ADD_AVAILABILITY
+	all fields are required - no nulls allowed
+CREATE_AVAILABILITY
 •	Adds an availability
+UPDATE_AVAILABILITY
+• requires parameter @intAvailabilityID
+• updates availability
+DELETE_AVAILABILITY
+• requires parameter @intAvailabilityID
+• deletes availability
 ADD_STORE
 •	Adds a store location
 ADD_STORE_HOURS
@@ -9,6 +16,9 @@ ADD_STORE_HOURS
 DELETE_USER
 • Requires parameter @intAssociateID
 • sets user's status to inactive. NOTE* Does not actually delete user
+DELETE_SHIFT
+• Requires parameter @intShiftID
+• Deletes shift
 GET_ACTIVE_ASSOCIATES
 •	Does not accept parameters
 •	Returns all fields from TAssociates where the associate is labeled ‘active’
@@ -23,8 +33,8 @@ GET_AVAILABLE_ASSOCIATES
 GET_STATUSES
 •	Gets statuses
 •	Intended for drop down box so user can select when adding or updating
-INSERT_SHIFT
-•	Inserts a shift
+CREATE_SHIFT
+•	Createns a shift
 INSERT_USER
 •	Inserts a user
 SELECT_AVAILABILITY  

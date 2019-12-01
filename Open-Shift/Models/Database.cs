@@ -385,7 +385,43 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-		private bool GetDBConnection(ref SqlConnection SQLConn)
+        public List<Availability> GetUserAvailabilitiesByMonth(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = new SqlDataAdapter("SELECT_USERS", cn);
+                List<User> users = new List<User>();
+
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        users.Add(AddUser(dr));
+                    }
+                }
+
+                return users;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        private bool GetDBConnection(ref SqlConnection SQLConn)
 		{
             try
             {

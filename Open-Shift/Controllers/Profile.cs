@@ -143,7 +143,7 @@ namespace Open_Shift.Controllers
 			catch (Exception ex)
 			{
 				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
-				return RedirectToAction("Index", "Error");
+				return RedirectToAction("Index", "Error"); //this is where it's breaking
 			}
 		}
 
@@ -256,14 +256,16 @@ namespace Open_Shift.Controllers
 		{
 			try
 			{
-				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]), col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], Convert.ToInt32( col["User.StoreLocation"]),
-										Convert.ToInt32(col["User.EmployeeNumber"]), Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
-										col["User.blnIsManager"],Convert.ToInt32(col["User.Status"]),col["User.UserID"], col["User.Password"]);
+				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
+                                                col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], 
+                                                Convert.ToInt32( col["User.StoreLocation"]), Convert.ToInt32(col["User.EmployeeNumber"]), 
+                                                Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
+                                       Convert.ToInt32(col["User.blnIsManager"]),Convert.ToInt32(col["User.Status"]), col["User.UserID"], col["User.Password"]);
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found
 					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Main");
+					return RedirectToAction("Index", "Home");
 				}
 				else
 				{ //user failed to log in
@@ -280,11 +282,10 @@ namespace Open_Shift.Controllers
 					h.User.Phonenumber = col["User.Phonenumber"];
 					h.User.Email = col["User.Email"];
 					h.User.ConfirmEmail = col["User.ConfirmEmail"];
-					h.User.blnIsManager = col["User.blnIsManager"];
+					h.User.blnIsManager = Convert.ToInt32(col["User.blnIsManager"]);
 					h.User.Status = Convert.ToInt32(col["User.Status"]);
 				
-	
-						h.User.UserID = col["User.UserID"];
+					h.User.UserID = col["User.UserID"];
 					h.User.Password = col["User.Password"];
 					return View(h);
 				}

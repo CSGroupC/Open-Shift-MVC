@@ -1,5 +1,4 @@
 .vs/
 Open-Shift/bin/
 Open-Shift/obj/
-Open-Shift/Open-Shift/App_Data/OpenShift.mdf
-Open-Shift/Open-Shift/App_Data/OpenShift_log.ldf
+Open-Shift/App_Log/sys_log.xls

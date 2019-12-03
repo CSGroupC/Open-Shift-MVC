@@ -15,7 +15,7 @@ namespace Open_Shift.Controllers
 			{
 				Models.Home h = new Models.Home();
 				Models.Database db = new Models.Database();
-				//h.User = h.User.GetUserSession(); //h.User is my CurrentUser
+				h.User = h.User.GetUserSession(); //h.User is my CurrentUser
 
 				return View(h);
 			}

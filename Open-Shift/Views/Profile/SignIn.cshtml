@@ -11,8 +11,8 @@
 {
     <div>
         <div class="section-bottom">
-            <div>@Html.LabelFor(model => model.User.UserID)</div>
-            <div>@Html.TextBoxFor(model => model.User.UserID)</div>
+            <div>@Html.LabelFor(model => model.User.Email)</div>
+            <div>@Html.TextBoxFor(model => model.User.Email)</div>
         </div>
         <div>
             <div>@Html.LabelFor(model => model.User.Password)</div>
@@ -25,14 +25,15 @@
     if (Model.User.LoginFailed)
     {
         <span class="login-failed">Failed to login. Please try again.</span>
-        <a ID="RegisterHyperLink" class="" id="btnSignUp" name="btnSubmit" value="signup"><i class="fa fa-file-image-o">First time User?</a> <br>
     }
-    <a ID="RegisterHyperLink" class="" id="btnResetPassword" name="btnSubmit" value="resetpassword"> forget your password </a>
-
+    <ul>
+        <li ID="RegisterHyperLink" class="" id="btnSignUp" name="btnSubmit" value="signup"><i class="fa fa-file-image-o"><a href="/Profile/SignUp">First time User?</a></li>
+        <li ID="RegisterHyperLink" class="" id="btnResetPassword" name="btnSubmit" value="resetpassword"> <a href="/Profile/ResetPassword">forget your password</a> </li>
+</ul>
 }
 
 
 
 <script type="text/javascript">
-    $("#User_UserID").focus();
+    $("#User_Email").focus();
 </script>

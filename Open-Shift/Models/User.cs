@@ -10,10 +10,7 @@ namespace Open_Shift.Models
 	public class User
 	{
 		public SystemLists Lists = new SystemLists();
-		public int AssociateID = 0;
-
-		[DisplayName("User ID")]
-		public string UserID { get; set; }
+		public int AssociateID = 1;
 
 		[DisplayName("First Name")]
 		public string FirstName { get; set; }
@@ -48,8 +45,12 @@ namespace Open_Shift.Models
 		[DisplayName("Confirm Email")]
 		public string ConfirmEmail { get; set; }
 
+		[DisplayName("Confirm Password")]
+		public string ConfirmPassword { get; set; }
+
 		[DisplayName("New Password")]
 		public string NewPassword { get; set; }
+
 
 		[DisplayName("Password")]
 		public string Password { get; set; }
@@ -141,10 +142,9 @@ namespace Open_Shift.Models
 				{
 					AssociateID = newUser.AssociateID;
 					Password = newUser.Password;
-					UserID = newUser.UserID;
+					Email = newUser.Email;
 					FirstName = newUser.FirstName;
 					LastName = newUser.LastName;
-					Email = newUser.Email;
 					Birthday = newUser.Birthday;
 					AddressLine1 = newUser.AddressLine1;
 					AddressLine2 = newUser.AddressLine2;
@@ -269,20 +269,18 @@ namespace Open_Shift.Models
 
 		public User()
 		{ //empty constructor
-			UserID = string.Empty;
 			Password = string.Empty;
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			Email = string.Empty;
 			Birthday = null;
 		}
-		public User(string UserID, string Password)
+		public User(string Email, string Password)
 		{
-			this.UserID = UserID;
+			this.Email = Email;
 			this.Password = Password;
 			FirstName = string.Empty;
 			LastName = string.Empty;
-			Email = string.Empty;
 		    Birthday = null;
 		    AddressLine1 =  string.Empty;
 			AddressLine2 = string.Empty;
@@ -297,9 +295,9 @@ namespace Open_Shift.Models
 
 		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
 			int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
-			 bool blnIsManager, string UserID, string Password )
+			 bool blnIsManager, string Password )
 		{
-			this.UserID = "1";
+
 			this.Password = Password;
 			this.FirstName = FirstName;
 			this.LastName = LastName;
@@ -313,7 +311,7 @@ namespace Open_Shift.Models
 			this.AssociateTitle = AssociateTitle;
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
-			this.NewPassword = "1";
+			this.ConfirmPassword = Password;
 			this.blnIsManager = blnIsManager;
 
 

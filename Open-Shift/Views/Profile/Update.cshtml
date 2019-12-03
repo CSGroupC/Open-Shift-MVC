@@ -11,7 +11,7 @@
     <h2>@Model.User.FirstName @Model.User.LastName</h2>
     <p>To make changes to your profile enter your information below and click the Update button.</p>
 
-    <div id="group-image">
+    <d@*iv id="group-image">
         @if (Model.User.UserImage.ImageID > 0)
         {
             <div class="image-container">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="container-main">
         <div class="container">
             <div>
@@ -110,10 +110,7 @@
                 <div>@Html.LabelFor(model => model.User.Password)</div>
                 <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
             </div>
-            <div>
-                <div>@Html.LabelFor(model => model.User.Password)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
-            </div>
+           
         </div>
 
         <div value="Notification">

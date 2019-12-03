@@ -28,8 +28,6 @@ namespace Open_Shift.Models
 				u.Phonenumber = dr["User.Phonenumber"].ToString();
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
-				u.UserID = dr["User.UserID"].ToString();
-				u.UserID = dr["User.UserID"].ToString();
 				u.Password = dr["User.Password"].ToString();
 				u.blnIsManager = (bool)dr["User.blnIsManager"];
 
@@ -240,8 +238,8 @@ namespace Open_Shift.Models
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-				SetParameter(ref da, "@user_id", u.UserID, SqlDbType.NVarChar);
-				SetParameter(ref da, "@password", u.Password, SqlDbType.NVarChar);
+				SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
+				SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
 				try
 				{
@@ -252,7 +250,6 @@ namespace Open_Shift.Models
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
 						newUser.AssociateID = (int)dr["intAssociateID"];
-						newUser.UserID = u.UserID;
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];
 						newUser.LastName = (string)dr["strLastName"];
@@ -264,7 +261,7 @@ namespace Open_Shift.Models
 						newUser.EmployeeNumber = (int)dr["intEmployeeNumber"];
 						newUser.AssociateTitle = (int)dr["intAssociateTitleID"];
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
-						newUser.Email = (string)dr["strEmail"];
+						newUser.Email = u.Email;
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
                         newUser.blnIsManager = (bool)dr["blnIsManager"];
 						u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
@@ -297,9 +294,9 @@ namespace Open_Shift.Models
 				User newUser = null;
 
 				da.SelectCommand.CommandType = CommandType.StoredProcedure;
+				SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
+				SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
-				SetParameter(ref da, "@user_id", u.UserID, SqlDbType.NVarChar);
-				SetParameter(ref da, "@password", u.Password, SqlDbType.NVarChar);
 
 				try
 				{
@@ -310,7 +307,7 @@ namespace Open_Shift.Models
 						newUser = new User();
 						DataRow dr = ds.Tables[0].Rows[0];
 						newUser.AssociateID = (int)dr["AssociateID"];
-						newUser.UserID = u.UserID;
+						newUser.Email = u.Email;
 						newUser.Password = u.Password;
 					}
 				}

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Web.Mvc;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Web;
-using System.IO;
-using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Open_Shift.Controllers
 {
@@ -87,7 +87,6 @@ namespace Open_Shift.Controllers
 					u.AddressLine1 = col["User.AddressLine1"];
 					u.AddressLine2 = col["User.AddressLine2"];
 					u.PostalCode = col["User.PostalCode"];
-					u.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
 					u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
 					u.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
 					u.Phonenumber = col["User.Phonenumber"];
@@ -95,6 +94,8 @@ namespace Open_Shift.Controllers
 					u.ConfirmEmail = col["User.ConfirmEmail"];
 					u.UserID = col["User.UserID"];
 					u.Password = col["User.Password"];
+					u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
+					u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
 					//NEW CODE
 					u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
@@ -128,7 +129,7 @@ namespace Open_Shift.Controllers
 						h.User.AddressLine1 = col["User.AddressLine1"];
 						h.User.AddressLine2 = col["User.AddressLine2"];
 						h.User.PostalCode = col["User.PostalCode"];
-						h.User.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
+					
 						h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
 						h.User.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
 						h.User.Phonenumber = col["User.Phonenumber"];
@@ -258,14 +259,16 @@ namespace Open_Shift.Controllers
 			{
 				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], 
-                                                Convert.ToInt32( col["User.StoreLocation"]), Convert.ToInt32(col["User.EmployeeNumber"]), 
-                                                Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
-                                       Convert.ToInt32(col["User.blnIsManager"]),Convert.ToInt32(col["User.Status"]), col["User.UserID"], col["User.Password"]);
+                                               Convert.ToInt32(col["User.EmployeeNumber"]), 
+                                          Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
+                                       Convert.ToBoolean(col["User.blnIsManager"]), col["User.UserID"], col["User.Password"]);
+				u.StoreID = Models.User.StoreLocationList.Location1;
+				u.StatusID = Models.User.StatusList.Active;
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found
 					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Home");
+					return RedirectToAction("Index", "Main");
 				}
 				else
 				{ //user failed to log in
@@ -276,14 +279,14 @@ namespace Open_Shift.Controllers
 					h.User.AddressLine1 = col["User.AddressLine1"];
 					h.User.AddressLine2 = col["User.AddressLine2"];
 					h.User.PostalCode = col["User.PostalCode"];
-					h.User.StoreLocation = Convert.ToInt32(col["User.StoreLocation"]);
+		
 					h.User.EmployeeNumber = Convert.ToInt32( col["User.EmployeeNumber"]);
 					h.User.AssociateTitle = Convert.ToInt32( col["User.AssociateTitle"]);
 					h.User.Phonenumber = col["User.Phonenumber"];
 					h.User.Email = col["User.Email"];
-					h.User.ConfirmEmail = col["User.ConfirmEmail"];
-					h.User.blnIsManager = Convert.ToInt32(col["User.blnIsManager"]);
-					h.User.Status = Convert.ToInt32(col["User.Status"]);
+					h.User.ConfirmEmail = col["User.Email"];
+	
+				
 				
 					h.User.UserID = col["User.UserID"];
 					h.User.Password = col["User.Password"];

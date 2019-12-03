@@ -41,11 +41,20 @@
         </div>
     </div>
 
-    <div class="container float"  value="Store Info">
+    <div class="container float" value="Store Info">
         <div class="section-bottom">
-            <div>@Html.LabelFor(model => model.User.StoreLocation)</div>
-            <div>@Html.TextBoxFor(model => model.User.StoreLocation)</div>
+            <div>
+                <div class="id-lists right-margin05">
+                    <div>@Html.LabelFor(model => model.User.StatusID, "Status")</div>
+                    <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID), new { @title = "Select your status." })</div>
+                </div>
+                <div class="id-lists right-margin05">
+                    <div>@Html.LabelFor(model => model.User.StoreID, "Privacy")</div>
+                    <div>@Html.DropDownListFor(model => model.User.StoreID, new SelectList(Model.Lists.StoreLocationList, "Value", "Text", Model.User.StoreID), new { @title = "Select your Location." })</div>
+                </div>
+            </div>
         </div>
+
 
         <div class="section-bottom">
             <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
@@ -86,6 +95,7 @@
     </div>
 
     <div value="Notification">
+        <input type="checkbox" name="Notifications" value="Manager"> Are you a manager?<br>
         <input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
         <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>
     </div>

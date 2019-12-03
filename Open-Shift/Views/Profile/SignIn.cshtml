@@ -1,32 +1,39 @@
 ﻿@model Open_Shift.Models.Home
 @{
-    
+
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
+
 <h3 position="fixed">Kotetsu Scheduling App</h3>
 <p>Welcome to Kotestu Employee scheduling App</p>
 <p>Please enter your sign-in information below.</p>
 @using (Html.BeginForm("SignIn", "Profile", FormMethod.Post))
 {
-    <div class="section-bottom">
-        <div>@Html.LabelFor(model => model.User.UserID)</div>
-        <div>@Html.TextBoxFor(model => model.User.UserID)</div>
-    </div>
     <div>
-        <div>@Html.LabelFor(model => model.User.Password)</div>
-        <div>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+        <div class="section-bottom">
+            <div>@Html.LabelFor(model => model.User.Email)</div>
+            <div>@Html.TextBoxFor(model => model.User.Email)</div>
+        </div>
+        <div>
+            <div>@Html.LabelFor(model => model.User.Password)</div>
+            <div>@Html.TextBoxFor(model => model.User.Password)</div>
+        </div>
     </div>
-}
-<div class="inline">
-    <button class="button-action" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button></br>
-    <link ID="RegisterHyperLink" class="" id="btnSignUp" name="btnSubmit" value="signup"><i class="fa fa-file-image-o">First time User?</link> </br>
-    <link ID="RegisterHyperLink" class="" id="btnResetPassword" name="btnSubmit" value="resetpassword"> forget your password </link>
-    @if (Model.User.LoginFailed)
+
+
+    <button class="button-action" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button><br>
+    if (Model.User.LoginFailed)
     {
         <span class="login-failed">Failed to login. Please try again.</span>
     }
-</div>
+    <ul>
+        <li ID="RegisterHyperLink" class="" id="btnSignUp" name="btnSubmit" value="signup"><i class="fa fa-file-image-o"><a href="/Profile/SignUp">First time User?</a></li>
+        <li ID="RegisterHyperLink" class="" id="btnResetPassword" name="btnSubmit" value="resetpassword"> <a href="/Profile/ResetPassword">forget your password</a> </li>
+</ul>
+}
+
+
 
 <script type="text/javascript">
-    $("#User_UserID").focus();
+    $("#User_Email").focus();
 </script>

@@ -9,10 +9,8 @@ namespace Open_Shift.Models
 {
 	public class User
 	{
-		public int AssociateID = 0;
-
-		[DisplayName("User ID")]
-		public string UserID { get; set; }
+		public SystemLists Lists = new SystemLists();
+		public int AssociateID = 1;
 
 		[DisplayName("First Name")]
 		public string FirstName { get; set; }
@@ -32,9 +30,6 @@ namespace Open_Shift.Models
 		[DisplayName("Postal Code")]
 		public string PostalCode { get; set; }
 
-		[DisplayName("Store Location")]
-		public int? StoreLocation { get; set; }
-
 		[DisplayName("Employee Number")]
 		public int? EmployeeNumber { get; set; }
 
@@ -50,19 +45,38 @@ namespace Open_Shift.Models
 		[DisplayName("Confirm Email")]
 		public string ConfirmEmail { get; set; }
 
+		[DisplayName("Confirm Password")]
+		public string ConfirmPassword { get; set; }
+
 		[DisplayName("New Password")]
 		public string NewPassword { get; set; }
+
 
 		[DisplayName("Password")]
 		public string Password { get; set; }
 
         [DisplayName("blnIsManager")]
-        public int? blnIsManager { get; set; }
+        public bool blnIsManager { get; set; }
 
-        [DisplayName("Status")]
-        public int? Status { get; set; }
+		public StatusList StatusID = StatusList.Active;
+		public StoreLocationList StoreID = StoreLocationList.Location1; //by default
+		public bool LoginAttempted = false;
 
-        public bool LoginAttempted = false;
+		public enum StatusList
+		{
+			NoType = 0,
+			Active = 1,
+			InActive = 2,
+			Probation = 3,
+		}
+
+		public enum StoreLocationList
+		{
+			NoType = 0,
+			Location1= 1,
+			Location2 = 2,
+			Location3 = 3
+		}
 
 		public bool LoginFailed
 		{
@@ -100,12 +114,12 @@ namespace Open_Shift.Models
 
 		public Image UserImage = new Image();
 
-		public static List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
+		public static List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte StoreID = 0)
 		{
 			try
 			{
 				Database db = new Database();
-				List<User> users = db.GetUsers(AssociateID, StatusID, PrivacyID);
+				List<User> users = db.GetUsers(AssociateID, StatusID, StoreID);
 				return users;
 			}
 			catch (Exception ex)
@@ -128,18 +142,19 @@ namespace Open_Shift.Models
 				{
 					AssociateID = newUser.AssociateID;
 					Password = newUser.Password;
-					UserID = newUser.UserID;
+					Email = newUser.Email;
 					FirstName = newUser.FirstName;
 					LastName = newUser.LastName;
-					Email = newUser.Email;
 					Birthday = newUser.Birthday;
 					AddressLine1 = newUser.AddressLine1;
 					AddressLine2 = newUser.AddressLine2;
 					PostalCode = newUser.PostalCode;
-					StoreLocation = newUser.StoreLocation;
+					StoreID = newUser.StoreID;
+					StatusID = newUser.StatusID;
 					EmployeeNumber = newUser.EmployeeNumber;
 					AssociateTitle = newUser.AssociateTitle;
 					Phonenumber = newUser.Phonenumber;
+					blnIsManager = newUser.blnIsManager;
 					return true;
 				}
 				else { return false; }
@@ -182,7 +197,7 @@ namespace Open_Shift.Models
 				}
 				u = (User)HttpContext.Current.Session["CurrentUser"];
 				Database db = new Database();
-				u.UserImage = db.GetUserImage(u.AssociateID);
+				//u.UserImage = db.GetUserImage(u.AssociateID);
 				return u;
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
@@ -254,38 +269,35 @@ namespace Open_Shift.Models
 
 		public User()
 		{ //empty constructor
-			UserID = string.Empty;
 			Password = string.Empty;
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			Email = string.Empty;
 			Birthday = null;
 		}
-		public User(string UserID, string Password)
+		public User(string Email, string Password)
 		{
-			this.UserID = UserID;
+			this.Email = Email;
 			this.Password = Password;
 			FirstName = string.Empty;
 			LastName = string.Empty;
-			Email = string.Empty;
 		    Birthday = null;
 		    AddressLine1 =  string.Empty;
 			AddressLine2 = string.Empty;
 			PostalCode = string.Empty;
-			StoreLocation = null;
 			EmployeeNumber = null;
 			AssociateTitle = null;
 			Phonenumber = string.Empty;
 			ConfirmEmail = string.Empty;
-			this.NewPassword = NewPassword;
+		
 
 		}
 
 		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
-			 int StoreLocation,int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
-			 int blnIsManager,int Status, string UserID, string Password )
+			int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
+			 bool blnIsManager, string Password )
 		{
-			this.UserID = "1";
+
 			this.Password = Password;
 			this.FirstName = FirstName;
 			this.LastName = LastName;
@@ -294,14 +306,14 @@ namespace Open_Shift.Models
 			this.AddressLine1 = AddressLine1;
 			this.AddressLine2 = AddressLine2;
 			this.PostalCode = PostalCode;
-			this.StoreLocation = StoreLocation;
+			
 			this.EmployeeNumber = EmployeeNumber;
 			this.AssociateTitle = AssociateTitle;
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
-			this.NewPassword = "1";
+			this.ConfirmPassword = Password;
 			this.blnIsManager = blnIsManager;
-			this.Status = Status;
+
 
 
 

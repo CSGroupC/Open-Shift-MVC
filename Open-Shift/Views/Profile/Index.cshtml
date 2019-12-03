@@ -2,7 +2,7 @@
 @{
     /**/
 
-    ViewBag.Title = "";
+    ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 <h3 position="fixed">Kotetsu Scheduling App</h3>
@@ -44,7 +44,11 @@
         </div>
         <div class="section-bottom">
             <div class="bold">Store Location</div>
-            <div>@Model.ViewUser.StoreLocation</div>
+            <div>@Model.ViewUser.StoreID</div>
+        </div>
+         <div class="section-bottom">
+            <div class="bold">Status</div>
+            <div>@Model.ViewUser.StatusID</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Employee Number</div>
@@ -62,10 +66,7 @@
             <div class="bold">Email</div>
             <div>@Model.ViewUser.Email</div>
         </div>
-        <div class="section-bottom">
-            <div class="bold">User ID</div>
-            <div>@Model.ViewUser.UserID</div>
-        </div>
+       
     </div>
 
         <div class="inline">

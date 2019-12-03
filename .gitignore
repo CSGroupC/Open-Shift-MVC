@@ -2,3 +2,6 @@
 Open-Shift/bin/
 Open-Shift/obj/
 Open-Shift/App_Log/sys_log.xls
+*.mdf
+*.mdf
+*.ldf

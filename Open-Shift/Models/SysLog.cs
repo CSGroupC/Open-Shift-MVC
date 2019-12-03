@@ -12,7 +12,7 @@ namespace Open_Shift.Models
 		{
 			try
 			{
-                string strPath = System.Web.HttpContext.Current.Server.MapPath("App_Log");
+                string strPath = System.Web.HttpContext.Current.Server.MapPath("../App_Log");
                 string strFileName = ConfigurationManager.AppSettings["SystemLogFileName"];
 				string strPathAndFile = string.Concat(strPath, "\\", strFileName);
 

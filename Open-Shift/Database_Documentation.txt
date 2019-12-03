@@ -51,3 +51,44 @@ UPDATE_USER
 •	Takes parameter @intAssociateID
 •	Assumes @intAssociateID is being saved with associate
 
+GET_AVAILABILITIES_MONTHLY
+• Gets all availabilities for a month
+• takes parameter @intMonth - a two digit numeric month
+• returns:
+				a.intAssociateID [AssociateID],
+				a.intEmployeeNumber [EmpoloyeeNumber],
+				a.strFirstName [LastName], 
+				a.strLastName [FirstName], 
+				CASE WHEN a.blnIsManager=0 THEN 'Not Manager' ELSE CASE WHEN a.blnIsManager=1 THEN 'Manager' END END [ManagerStatus],
+				ast.strAssociateTitle [Title],
+				av.dtmBeginAvailability AS [startTime],
+				av.dtmEndAvailability AS [endTime],
+				av.strNotes AS [Notes]
+
+GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE
+• Gets all availabilities for a month
+• takes parameters
+			@intAssociateID & @intMonth - a two digit numeric month
+• returns:
+				a.intAssociateID [AssociateID],
+				a.intEmployeeNumber [EmpoloyeeNumber],
+				a.strFirstName [LastName], 
+				a.strLastName [FirstName], 
+				CASE WHEN a.blnIsManager=0 THEN 'Not Manager' ELSE CASE WHEN a.blnIsManager=1 THEN 'Manager' END END [ManagerStatus],
+				ast.strAssociateTitle [Title],
+				av.dtmBeginAvailability AS [startTime],
+				av.dtmEndAvailability AS [endTime],
+				av.strNotes AS [Notes]
+
+UPDATE_SHIFT
+• updates a shift
+• takes parameter @intShiftID
+
+UPDATE_AVAILABILITY
+•updates availability
+• takes parameters
+		@intAvailabilityID [INT],
+		 @intAssociateID [int],
+		@dtmBeginAvailability [datetime],
+		@dtmEndAvailability [datetime],
+		@strNotes [nvarchar](max) = ''

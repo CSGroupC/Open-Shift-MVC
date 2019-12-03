@@ -40,6 +40,7 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
+
 		public List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
 		{
 			try
@@ -397,19 +398,20 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-        public List<Availability> GetUserAvailabilitiesByMonth(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
+        public List<Availability> GetAvailabilities(long AssociateID = 0, byte Month = null)
         {
             try
             {
                 DataSet ds = new DataSet();
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("SELECT_USERS", cn);
-                List<User> users = new List<User>();
+                SqlDataAdapter da = new SqlDataAdapter("SELECT_AVAILABILITIES", cn);
+                List<Availability> availabilities = new List<Availability>();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-
+                
                 if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
+                if (Month != null) SetParameter(ref da, "@Month", Month, SqlDbType.SmallInt);
                 try
                 {
                     da.Fill(ds);
@@ -420,11 +422,11 @@ namespace Open_Shift.Models
                 }
                 finally { CloseDBConnection(ref cn); }
 
-                if (ds.Tables[0].Rows.Count != 0)
+                if (ds.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        users.Add(AddUser(dr));
+                        associates.Add(new Availability(dr));
                     }
                 }
 

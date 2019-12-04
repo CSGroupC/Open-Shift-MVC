@@ -93,30 +93,30 @@ namespace Open_Shift.Controllers
 					u.Email = col["User.Email"];
 					u.ConfirmEmail = col["User.ConfirmEmail"];
 					u.Password = col["User.Password"];
-					u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
+                    u.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                    u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
 					u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
 					//NEW CODE
-					u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
 
 					u.Save();
 					if (u.IsAuthenticated)
 					{ //user found
-						if (UserImage != null)
-						{
-							u.UserImage = new Models.Image();
-							u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
-							u.UserImage.Primary = true;
-							u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
-							if (u.UserImage.IsImageFile())
-							{
-								u.UserImage.Size = UserImage.ContentLength;
-								Stream stream = UserImage.InputStream;
-								BinaryReader binaryReader = new BinaryReader(stream);
-								u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
-								u.UpdatePrimaryImage();
-							}
-						}
+						//if (UserImage != null)
+						//{
+						//	u.UserImage = new Models.Image();
+						//	u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
+						//	u.UserImage.Primary = true;
+						//	u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
+						//	if (u.UserImage.IsImageFile())
+						//	{
+						//		u.UserImage.Size = UserImage.ContentLength;
+						//		Stream stream = UserImage.InputStream;
+						//		BinaryReader binaryReader = new BinaryReader(stream);
+						//		u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
+						//		u.UpdatePrimaryImage();
+						//	}
+						//}
 						u.SaveUserSession(); //save the user session object
 						return RedirectToAction("Index", "Profile");
 					}
@@ -142,7 +142,7 @@ namespace Open_Shift.Controllers
 			catch (Exception ex)
 			{
 				Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
-				return RedirectToAction("Index", "Error"); //this is where it's breaking
+				return RedirectToAction("Index", "Error"); 
 			}
 		}
 
@@ -170,7 +170,7 @@ namespace Open_Shift.Controllers
 				if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
 				u = u.GetUserSession();
 				u.Delete();
-				return RedirectToAction("Index", "Home");
+				return RedirectToAction("SignUp", "Profile");
 			}
 			catch (Exception ex)
 			{
@@ -258,10 +258,11 @@ namespace Open_Shift.Controllers
 				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], 
                                                Convert.ToInt32(col["User.EmployeeNumber"]), 
-                                          Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],
-                                       Convert.ToBoolean(col["User.blnIsManager"]),  col["User.Password"]);
-				u.StoreID = Models.User.StoreLocationList.Location1;
-				u.StatusID = Models.User.StatusList.Active;
+                                          Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],  col["User.Password"]);
+                
+				u.StoreID = Models.User.StoreLocationList.Kotetsu;
+                u.blnIsManager = Models.User.IsManager.Associate;
+                u.StatusID = Models.User.StatusList.Active;
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found

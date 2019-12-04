@@ -29,9 +29,9 @@ namespace Open_Shift.Models
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
 				u.Password = dr["User.Password"].ToString();
-				u.blnIsManager = (bool)dr["User.blnIsManager"];
 
-				u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
+                u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
+                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
 				u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
 
 
@@ -141,34 +141,34 @@ namespace Open_Shift.Models
 
 		
 
-		public long InsertUserImage(User u)
-		{
-			try
-			{
-				SqlConnection cn = null;
-				if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-				SqlCommand cm = new SqlCommand("INSERT_USER_IMAGE", cn);
+		//public long InsertUserImage(User u)
+		//{
+			//try
+			//{
+			//	SqlConnection cn = null;
+			//	if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+			//	SqlCommand cm = new SqlCommand("INSERT_USER_IMAGE", cn);
 
-				SetParameter(ref cm, "@user_image_id", null, SqlDbType.BigInt, Direction: ParameterDirection.Output);
-				SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int);
-				if (u.UserImage.Primary)
-					SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
-				else
-					SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
+			//	SetParameter(ref cm, "@user_image_id", null, SqlDbType.BigInt, Direction: ParameterDirection.Output);
+			//	SetParameter(ref cm, "@AssociateID", u.AssociateID, SqlDbType.Int);
+			//	if (u.UserImage.Primary)
+			//		SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
+			//	else
+			//		SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
 
-				SetParameter(ref cm, "@image", u.UserImage.ImageData, SqlDbType.VarBinary);
-				SetParameter(ref cm, "@file_name", u.UserImage.FileName, SqlDbType.NVarChar);
-				SetParameter(ref cm, "@image_size", u.UserImage.Size, SqlDbType.BigInt);
+			//	SetParameter(ref cm, "@image", u.UserImage.ImageData, SqlDbType.VarBinary);
+			//	SetParameter(ref cm, "@file_name", u.UserImage.FileName, SqlDbType.NVarChar);
+			//	SetParameter(ref cm, "@image_size", u.UserImage.Size, SqlDbType.BigInt);
 
-				cm.ExecuteReader();
-				CloseDBConnection(ref cn);
-				return (long)cm.Parameters["@user_image_id"].Value;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(string.Concat(this.ToString(), ".", MethodBase.GetCurrentMethod().Name.ToString(), "(): ", ex.Message));
-			}
-		}
+			//	cm.ExecuteReader();
+			//	CloseDBConnection(ref cn);
+			//	return (long)cm.Parameters["@user_image_id"].Value;
+			//}
+			//catch (Exception ex)
+			//{
+			//	throw new Exception(string.Concat(this.ToString(), ".", MethodBase.GetCurrentMethod().Name.ToString(), "(): ", ex.Message));
+			//}
+		//}
 
 		public int InsertUser(User u)
 		{
@@ -194,16 +194,16 @@ namespace Open_Shift.Models
 				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
 				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
 				SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Bit);   //need to change when we add the blnIsManager field
-                //SetParameter(ref cm, "@blnIsManager", 1, SqlDbType.Bit);  
              
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
 																								// SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 				SetParameter(ref cm, "@intStatusID", User.StatusList.Active, SqlDbType.TinyInt);
-				SetParameter(ref cm, "@intStoreID", User.StoreLocationList.Location1, SqlDbType.TinyInt);
+				SetParameter(ref cm, "@intStoreID", User.StoreLocationList.Kotetsu, SqlDbType.TinyInt);
+                SetParameter(ref cm, "@blnIsManager", User.IsManager.Associate, SqlDbType.TinyInt);
 
-				cm.ExecuteReader(); 
+
+                cm.ExecuteReader(); 
 
 				intAssociateID = (int)cm.Parameters["@intAssociateID"].Value;
      
@@ -263,8 +263,8 @@ namespace Open_Shift.Models
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = u.Email;
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
-                        newUser.blnIsManager = (bool)dr["blnIsManager"];
-						u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
+                        u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
+                        u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
 						u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
 
 					}
@@ -375,7 +375,7 @@ namespace Open_Shift.Models
 				SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
 				SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);        /*TODO update with password hashing*/
-                SetParameter(ref cm, "@blnIsblnIsManager", u.blnIsManager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar);  /*TODO update with password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar);   /*TODO update with password hashing*/
 				SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);

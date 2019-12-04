@@ -12,9 +12,10 @@ namespace Open_Shift.Models
 
 		public List<SelectListItem> StatusList = new List<SelectListItem>();
 		public List<SelectListItem> StoreLocationList = new List<SelectListItem>();
+        public List<SelectListItem> IsManager = new List<SelectListItem>();
 
 
-		public SystemLists()
+        public SystemLists()
 		{
 			try
 			{
@@ -22,16 +23,20 @@ namespace Open_Shift.Models
 				StatusList.Add(new SelectListItem() { Value = "", Text = "" });
 				StatusList.Add(new SelectListItem() { Value = User.StatusList.Active.ToString(), Text = "Active" });
 				StatusList.Add(new SelectListItem() { Value = User.StatusList.InActive.ToString(), Text = "In-Active" });
-				StatusList.Add(new SelectListItem() { Value = User.StatusList.Active.ToString(), Text = "Probation" });
 
 
 				StoreLocationList = new List<SelectListItem>();
 				StoreLocationList.Add(new SelectListItem() { Value = "", Text = "" });
-				StoreLocationList.Add(new SelectListItem() { Value = "1", Text = "1" });
-				StoreLocationList.Add(new SelectListItem() { Value = "2", Text = "2" });
-				StoreLocationList.Add(new SelectListItem() { Value = "3", Text = "3" });
+				StoreLocationList.Add(new SelectListItem() { Value = "1", Text = "Kotetsu" });
+				StoreLocationList.Add(new SelectListItem() { Value = "2", Text = "Kotetsu-London" });
+				StoreLocationList.Add(new SelectListItem() { Value = "3", Text = "Kotetsu-Brazil" });
 
-			}
+                IsManager = new List<SelectListItem>();
+                IsManager.Add(new SelectListItem() { Value = "", Text = "" });
+                IsManager.Add(new SelectListItem() { Value = "0", Text = "Associate" });
+                IsManager.Add(new SelectListItem() { Value = "1", Text = "Manager" });
+
+            }
 			catch (Exception ex)
 			{
 				SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);

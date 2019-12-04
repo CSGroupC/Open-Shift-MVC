@@ -55,30 +55,36 @@ namespace Open_Shift.Models
 		[DisplayName("Password")]
 		public string Password { get; set; }
 
-        [DisplayName("blnIsManager")]
-        public bool blnIsManager { get; set; }
+        //[DisplayName("blnIsManager")]
+        //public bool blnIsManager { get; set; }
 
 		public StatusList StatusID = StatusList.Active;
-		public StoreLocationList StoreID = StoreLocationList.Location1; //by default
-		public bool LoginAttempted = false;
+		public StoreLocationList StoreID = StoreLocationList.NoType; //by default
+        public IsManager blnIsManager = IsManager.Associate; //by default
+        public bool LoginAttempted = false;
 
 		public enum StatusList
 		{
 			NoType = 0,
 			Active = 1,
 			InActive = 2,
-			Probation = 3,
 		}
 
 		public enum StoreLocationList
 		{
 			NoType = 0,
-			Location1= 1,
-			Location2 = 2,
-			Location3 = 3
+			Kotetsu= 1,
+			KotetsuLondon = 2,
+			KotetsuBrazil = 3
 		}
 
-		public bool LoginFailed
+        public enum IsManager
+        {
+            Associate = 0,
+            Manager = 1
+        }
+
+        public bool LoginFailed
 		{
 			get
 			{
@@ -167,10 +173,10 @@ namespace Open_Shift.Models
 		{
 		//try
 		//	{
-				User u = new User();
-		//		u = (User)HttpContext.Current.Session["CurrentUser"];
-		//		Database db = new Database();
-		//		u.Password = db.ResetPassword(u.Password);
+				//User u = new User();
+				//u = (User)HttpContext.Current.Session["CurrentUser"];
+				//Database db = new Database();
+				//u.Password = db.ResetPassword(u.Password);
 				return true;
 		//	}
 		//	catch (Exception ex) { throw new Exception(ex.Message); }
@@ -232,7 +238,7 @@ namespace Open_Shift.Models
 			{
 				Models.Database db = new Database();
 				int NewAssociateID;
-				if (AssociateID == 0)
+				if (AssociateID == 1)
 				{
 					NewAssociateID = db.InsertUser(this);
 					if (NewAssociateID > 0) AssociateID = NewAssociateID;
@@ -247,25 +253,25 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-		public sbyte UpdatePrimaryImage()
-		{
-			try
-			{
-				Models.Database db = new Database();
-				long NewAssociateID;
-				if (this.UserImage.ImageID == 0)
-				{
-					NewAssociateID = db.InsertUserImage(this);
-					if (NewAssociateID > 0) UserImage.ImageID = NewAssociateID;
-				}
-				else
-				{
-					db.UpdateUserImage(this);
-				}
-				return 0;
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+		//public sbyte UpdatePrimaryImage()
+		//{
+		//	try
+		//	{
+		//		Models.Database db = new Database();
+		//		long NewAssociateID;
+		//		if (this.UserImage.ImageID == 0)
+		//		{
+		//			NewAssociateID = db.InsertUserImage(this);
+		//			if (NewAssociateID > 0) UserImage.ImageID = NewAssociateID;
+		//		}
+		//		else
+		//		{
+		//			db.UpdateUserImage(this);
+		//		}
+		//		return 0;
+		//	}
+		//	catch (Exception ex) { throw new Exception(ex.Message); }
+		//}
 
 		public User()
 		{ //empty constructor
@@ -294,8 +300,7 @@ namespace Open_Shift.Models
 		}
 
 		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
-			int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail,
-			 bool blnIsManager, string Password )
+			int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail, string Password )
 		{
 
 			this.Password = Password;
@@ -312,7 +317,6 @@ namespace Open_Shift.Models
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
 			this.ConfirmPassword = Password;
-			this.blnIsManager = blnIsManager;
 
 
 

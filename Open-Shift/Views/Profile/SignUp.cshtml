@@ -52,6 +52,11 @@
                     <div>@Html.LabelFor(model => model.User.StoreID, "StoreNumber")</div>
                     <div>@Html.DropDownListFor(model => model.User.StoreID, new SelectList(Model.Lists.StoreLocationList, "Value", "Text", Model.User.StoreID), new { @title = "Select your Location." })</div>
                 </div>
+                <div class="id-lists right-margin05">
+                    <div>@Html.LabelFor(model => model.User.blnIsManager, "Are You a Manager?")</div>
+                    <div>@Html.DropDownListFor(model => model.User.blnIsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.blnIsManager), new { @title = "Select your title." })</div>
+                </div>
+
             </div>
         </div>
 
@@ -94,11 +99,11 @@
         </div>
     </div>
 
-    <div value="Notification">
-        <input type="checkbox" name="Notifications" value="Manager"> Are you a manager?<br>
-        <input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
-        <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>
-    </div>
+    @*<div value="Notification">
+        @*<input type="checkbox" name="Notifications" value="Manager"> Are you a manager?<br>*@
+        @*<input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
+        <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>*@
+    @*</div>*@
 
 </div>
 

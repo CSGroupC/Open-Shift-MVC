@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace Open_Shift.Models
 {
@@ -14,14 +15,15 @@ namespace Open_Shift.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-		private User Availability(DataRow dr)
+		public Availability(DataRow dr)
 		{
 			try
 			{
-                Id = (int)dr["ID"];
+                // TODO: Add this after the procedure includes the AvailabilityID
+                // Id = (int)dr["AvailabilityID"];
                 AssociateId = (int)dr["AssociateID"];
                 AssociateName = dr["AssociateName"].ToString( );
-                IsManager = (bool)dr["IsManager"];
+                IsManager = (bool)dr["ManagerStatus"];
                 StartTime = (DateTime)dr["StartTime"];
                 EndTime = (DateTime)dr["EndTime"];
 

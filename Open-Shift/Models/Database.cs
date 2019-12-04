@@ -400,20 +400,34 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-        public List<Availability> GetAvailabilities(long AssociateID = 0, byte Month = null)
+        // TODO: Maybe change storeID to an int
+        // Gets availabilities by store, by year, by month, and optionally by associate
+        public List<Availability> GetAvailabilities(User.StoreLocationList storeID, int year, byte month, long associateID = 0)
         {
             try
             {
                 DataSet ds = new DataSet();
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("SELECT_AVAILABILITIES", cn);
+                SqlDataAdapter da = null;
+
+                if (associateID == 0)
+                {
+                    da = new SqlDataAdapter("GET_AVAILABILITIES_MONTHLY", cn);
+                }
+                else
+                {
+                    da = new SqlDataAdapter("GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE", cn);
+                }
+
                 List<Availability> availabilities = new List<Availability>();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                
-                if (AssociateID > 0) SetParameter(ref da, "@AssociateID", AssociateID, SqlDbType.BigInt);
-                if (Month != null) SetParameter(ref da, "@Month", Month, SqlDbType.SmallInt);
+
+                SetParameter(ref da, "@intStoreID", storeID, SqlDbType.Int);
+                SetParameter(ref da, "@intMonth", month, SqlDbType.Int);
+                if (associateID > 0) SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
+
                 try
                 {
                     da.Fill(ds);
@@ -428,11 +442,11 @@ namespace Open_Shift.Models
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        associates.Add(new Availability(dr));
+                        availabilities.Add(new Availability(dr));
                     }
                 }
 
-                return users;
+                return availabilities;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

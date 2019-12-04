@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace Open_Shift.Models
 {
@@ -15,7 +16,7 @@ namespace Open_Shift.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-		private User Shift(DataRow dr)
+        public Shift(DataRow dr)
 		{
 			try
 			{

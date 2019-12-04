@@ -13,16 +13,8 @@ namespace Open_Shift.Controllers
         // GET: Schedule
         public ActionResult Index()
         {
-            var user = new User();
-            var calendar = new SchedulingCalendar() { Id = 1 };
 
-            var viewModel = new SchedulingViewModel
-            {
-                User = user,
-                Calendar = calendar
-            };
-
-            return View(viewModel);
+            return View();
         }
     }
 }

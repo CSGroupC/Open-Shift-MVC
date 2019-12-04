@@ -1,13 +1,7 @@
-﻿@using System.Text.Json;
-@model Open_Shift.ViewModels.SchedulingViewModel
+﻿@model Open_Shift.ViewModels.AvailabilityViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/UserLayout.cshtml";
-}
-
-@if (!Model.User.IsAuthenticated)
-{
-    //Response.Redirect("~/Home");
 }
 
 @section Styles {

@@ -1,5 +1,4 @@
-﻿@using System.Text.Json;
-@model Open_Shift.ViewModels.SchedulingViewModel
+﻿@model Open_Shift.ViewModels.SchedulingViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/UserLayout.cshtml";
@@ -14,16 +13,11 @@
     <link href="@Url.Content("~/Content/calendar.css")" rel="stylesheet" type="text/css" />
 }
 
-@*Model.User.Id*@
-@*Model.Calendar.Id*@
-
 <h1 class="display-4 text-center p-4">Schedule</h1>
 <div id="scheduling-calendar"></div>
 <script type="module">
-    import { SchedulingCalendar } from "../Scripts/calendar.js";
-
+    import { SchedulingCalendar } from "./Scripts/calendar.js";
     const PLACEHOLDER = 0;
-
     // DATA (BACK->FRONT):
     // 1. The current user's store's associates' availabilities for this month (from the query string)
     let availabilities = [
@@ -95,7 +89,6 @@
 
     // 2. The weekdays that the current user's store is CLOSED
     let closedWeekdays = ["Saturday", "Sunday"];
-
     // 3. The current user's store's schedule for this month (from the query string)
     let shifts = [
         {
@@ -126,13 +119,10 @@
             endTime: "2019-11-26 23:59:59"
         }
     ];
-
     // 4. The minimum number of associates required to be scheduled every day
     let associateMinimum = 2;
-
     // 5. The minimum number of managers required to be scheduled every day
     let managerMinimum = 1;
-
     let container = document.getElementById("scheduling-calendar");
     let calendar = new SchedulingCalendar(associateMinimum, managerMinimum, shifts, availabilities, closedWeekdays, "17:00", "24:00", 15);
     calendar.appendTo(container);

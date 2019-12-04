@@ -28,14 +28,5 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
-
-        /*
-        id: 1,
-        associateId: 1,
-        associateName: "Rikako Kakinuma",
-        isManager: true,
-        startTime: "2019-11-26 17:00:00",
-        endTime: "2019-11-26 23:59:59"=-
-        */
     }
 }

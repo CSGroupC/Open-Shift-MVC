@@ -4,59 +4,71 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.ComponentModel.DataAnnotations;
 
 namespace Open_Shift.Models
 {
-	public class User
+    //[MetadataType(typeof(UserMetaData))]
+    public partial class User
 	{
 		public SystemLists Lists = new SystemLists();
 		public int AssociateID = 1;
 
 		[DisplayName("First Name")]
-		public string FirstName { get; set; }
+        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s]*$", ErrorMessage ="First Name Cannot Contain Numbers")]
+        [Required(AllowEmptyStrings =false)]
+        public string FirstName { get; set; }
 
 		[DisplayName("Last Name")]
-		public string LastName { get; set; }
+        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s]*$", ErrorMessage = "Last Name Cannot Contain Numbers")]
+        [Required(AllowEmptyStrings = false)]
+        public string LastName { get; set; }
 
 		[DisplayName("Birthday")]
-		public DateTime? Birthday { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@"^((0|1)\d{1})/((0|1|2)\d{1})/((19|20)\d{2})", ErrorMessage = "Error: Please format your birthday as 'MM/DD/YYYY'")]
+        public DateTime? Birthday { get; set; }
 
 		[DisplayName("Address Line One")]
-		public string AddressLine1 { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string AddressLine1 { get; set; }
 
 		[DisplayName("Address Line Two")]
-		public string AddressLine2 { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string AddressLine2 { get; set; }
 
 		[DisplayName("Postal Code")]
-		public string PostalCode { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string PostalCode { get; set; }
 
 		[DisplayName("Employee Number")]
-		public int? EmployeeNumber { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public int? EmployeeNumber { get; set; }
 
 		[DisplayName("Associate Title")]
-		public int? AssociateTitle { get; set; }
+        [Required]
+        public int? AssociateTitle { get; set; }
 
 		[DisplayName("Phone Number")]
-		public string Phonenumber { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string Phonenumber { get; set; }
 
 		[DisplayName("E-Mail")]
-		public string Email { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        [RegularExpression(@".+\@.+\..+", ErrorMessage = "Error: Your email isn't in the right format")]
+        public string Email { get; set; }
 
 		[DisplayName("Confirm Email")]
-		public string ConfirmEmail { get; set; }
+        [Compare("Email", ErrorMessage = "Error: Email does not match")]
+        public string ConfirmEmail { get; set; }
 
-		[DisplayName("Confirm Password")]
-		public string ConfirmPassword { get; set; }
+        [DisplayName("Password")]
+        [Required(AllowEmptyStrings = false)]
+        public string Password { get; set; }
 
-		[DisplayName("New Password")]
-		public string NewPassword { get; set; }
-
-
-		[DisplayName("Password")]
-		public string Password { get; set; }
-
-        //[DisplayName("blnIsManager")]
-        //public bool blnIsManager { get; set; }
+        [DisplayName("Confirm Password")]
+        [Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
+        public string ConfirmPassword { get; set; }
 
 		public StatusList StatusID = StatusList.Active;
 		public StoreLocationList StoreID = StoreLocationList.NoType; //by default
@@ -344,4 +356,11 @@ namespace Open_Shift.Models
 		//	this.NewPassword = NewPassword;
 		//}
 	}
+
+    public class UserMetaData
+    {
+        [StringLength(10, MinimumLength =5)]
+        public string FirstName { get; set; }
+    }
+
 }

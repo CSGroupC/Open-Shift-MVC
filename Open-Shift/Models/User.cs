@@ -26,7 +26,7 @@ namespace Open_Shift.Models
 
 		[DisplayName("Birthday")]
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"^((0|1)\d{1})/((0|1|2)\d{1})/((19|20)\d{2})", ErrorMessage = "Error: Please format your birthday as 'MM/DD/YYYY'")]
+        [RegularExpression(@"^((19|20)\d{2})/((0|1)\d{1})/((0|1|2)\d{1})", ErrorMessage = "Error: Please format your birthday as 'YYYY/MM/DD'")]
         public DateTime? Birthday { get; set; }
 
 		[DisplayName("Address Line One")]

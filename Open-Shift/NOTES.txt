@@ -4,6 +4,11 @@ https://www.youtube.com/watch?v=E7Voso411Vs
 
 NOTES:
 
+Joe:
+
+TODO:
+1. Account for User statuses
+
 Annie:
 
 TODO:

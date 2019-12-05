@@ -1,4 +1,5 @@
 ﻿@model Open_Shift.ViewModels.AvailabilityViewModel
+@using Newtonsoft.Json;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/UserLayout.cshtml";
@@ -20,6 +21,7 @@
     let accessToken = PLACEHOLDER;
     // 3. An array/object/map of the current user's availabilities for this month (from the query string)
     //    This should include each availability's start datetime, and end datetime
+    /*
     let availabilities = [
         {
             id: 1,
@@ -46,6 +48,8 @@
             endTime: "2019-11-25 23:59:59"
         }
     ];
+    */
+    let availability = @{JsonConvert.SerializeObject(Model.availabilities); };
     // 4. The start of the current user's business' working hours
     let workingHoursStart = "17:00";
     // 5. The end of the current user's business' working hours

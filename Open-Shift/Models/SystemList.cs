@@ -13,6 +13,7 @@ namespace Open_Shift.Models
 		public List<SelectListItem> StatusList = new List<SelectListItem>();
 		public List<SelectListItem> StoreLocationList = new List<SelectListItem>();
         public List<SelectListItem> IsManager = new List<SelectListItem>();
+        public List<SelectListItem> AssociateTitle = new List<SelectListItem>();
 
 
         public SystemLists()
@@ -35,6 +36,12 @@ namespace Open_Shift.Models
                 IsManager.Add(new SelectListItem() { Value = "", Text = "" });
                 IsManager.Add(new SelectListItem() { Value = "0", Text = "Associate" });
                 IsManager.Add(new SelectListItem() { Value = "1", Text = "Manager" });
+
+                AssociateTitle = new List<SelectListItem>();
+                AssociateTitle.Add(new SelectListItem() { Value = "", Text = "" });
+                AssociateTitle.Add(new SelectListItem() { Value = "1", Text = "Cook" });
+                AssociateTitle.Add(new SelectListItem() { Value = "2", Text = "Server" });
+                AssociateTitle.Add(new SelectListItem() { Value = "3", Text = "Owner" });
 
             }
 			catch (Exception ex)

@@ -45,10 +45,6 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public int? EmployeeNumber { get; set; }
 
-		[DisplayName("Associate Title")]
-        [Required]
-        public int? AssociateTitle { get; set; }
-
 		[DisplayName("Phone Number")]
         [Required(AllowEmptyStrings = false)]
         public string Phonenumber { get; set; }
@@ -70,19 +66,29 @@ namespace Open_Shift.Models
         [Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
         public string ConfirmPassword { get; set; }
 
-		public StatusList StatusID = StatusList.Active;
+        public AssociateTitles AssociateTitle = AssociateTitles.NoType;
+
+        public StatusList StatusID = StatusList.Active;
 		public StoreLocationList StoreID = StoreLocationList.NoType; //by default
         public IsManager blnIsManager = IsManager.Associate; //by default
         public bool LoginAttempted = false;
 
-		public enum StatusList
-		{
-			NoType = 0,
-			Active = 1,
-			InActive = 2,
-		}
+        public enum AssociateTitles
+        {
+            NoType = 0,
+            Cook = 1,
+            Server = 2,
+            Owner = 3
+        }
 
-		public enum StoreLocationList
+        public enum StatusList
+        {
+            NoType = 0,
+            Active = 1,
+            InActive = 2,
+        }
+
+        public enum StoreLocationList
 		{
 			NoType = 0,
 			Kotetsu= 1,
@@ -304,7 +310,6 @@ namespace Open_Shift.Models
 			AddressLine2 = string.Empty;
 			PostalCode = string.Empty;
 			EmployeeNumber = null;
-			AssociateTitle = null;
 			Phonenumber = string.Empty;
 			ConfirmEmail = string.Empty;
 		
@@ -312,7 +317,7 @@ namespace Open_Shift.Models
 		}
 
 		public User( string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2,  string PostalCode,
-			int EmployeeNumber,int AssociateTitle,string Phonenumber, string Email, string ConfirmEmail, string Password )
+			int EmployeeNumber,string Phonenumber, string Email, string ConfirmEmail, string Password )
 		{
 
 			this.Password = Password;
@@ -325,7 +330,6 @@ namespace Open_Shift.Models
 			this.PostalCode = PostalCode;
 			
 			this.EmployeeNumber = EmployeeNumber;
-			this.AssociateTitle = AssociateTitle;
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
 			this.ConfirmPassword = Password;

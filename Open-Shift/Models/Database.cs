@@ -24,7 +24,7 @@ namespace Open_Shift.Models
 				u.AddressLine2 = dr["User.AddressLine2"].ToString();
 				u.PostalCode = dr["User.PostalCode"].ToString();
 				u.EmployeeNumber = (int)dr["User.EmployeeNumber"];
-				u.AssociateTitle = (int)dr["User.AssociateTitle"];
+				u.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["User.AssociateTitle"].ToString( ));
 				u.Phonenumber = dr["User.Phonenumber"].ToString();
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
@@ -260,7 +260,7 @@ namespace Open_Shift.Models
 						newUser.PostalCode = (string)dr["strPostalCode"];
 					
 						newUser.EmployeeNumber = (int)dr["intEmployeeNumber"];
-						newUser.AssociateTitle = (int)dr["intAssociateTitleID"];
+						newUser.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = u.Email;
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];

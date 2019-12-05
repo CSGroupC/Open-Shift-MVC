@@ -88,7 +88,7 @@ namespace Open_Shift.Controllers
 					u.AddressLine2 = col["User.AddressLine2"];
 					u.PostalCode = col["User.PostalCode"];
 					u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-					u.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
+					u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
 					u.Phonenumber = col["User.Phonenumber"];
 					u.Email = col["User.Email"];
 					u.ConfirmEmail = col["User.ConfirmEmail"];
@@ -130,7 +130,7 @@ namespace Open_Shift.Controllers
 						h.User.PostalCode = col["User.PostalCode"];
 					
 						h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-						h.User.AssociateTitle = Convert.ToInt32(col["User.AssociateTitle"]);
+						h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
 						h.User.Phonenumber = col["User.Phonenumber"];
 						h.User.Email = col["User.Email"];
 						h.User.ConfirmEmail = col["User.ConfirmEmail"];
@@ -258,11 +258,12 @@ namespace Open_Shift.Controllers
 				Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"],  col["User.PostalCode"], 
                                                Convert.ToInt32(col["User.EmployeeNumber"]), 
-                                          Convert.ToInt32( col["User.AssociateTitle"]), col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],  col["User.Password"]);
-                
-				u.StoreID = Models.User.StoreLocationList.Kotetsu;
-                u.blnIsManager = Models.User.IsManager.Associate;
-                u.StatusID = Models.User.StatusList.Active;
+                                          col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"],  col["User.Password"]);
+
+                u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
+                u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
+                u.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
 				u.Save();
 				if (u.IsAuthenticated)
 				{ //user found
@@ -280,8 +281,11 @@ namespace Open_Shift.Controllers
 					h.User.PostalCode = col["User.PostalCode"];
 		
 					h.User.EmployeeNumber = Convert.ToInt32( col["User.EmployeeNumber"]);
-					h.User.AssociateTitle = Convert.ToInt32( col["User.AssociateTitle"]);
-					h.User.Phonenumber = col["User.Phonenumber"];
+                    h.User.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                    h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
+                    h.User.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
+                    h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
+                    h.User.Phonenumber = col["User.Phonenumber"];
 					h.User.Email = col["User.Email"];
 					h.User.ConfirmEmail = col["User.Email"];
 					h.User.Password = col["User.Password"];

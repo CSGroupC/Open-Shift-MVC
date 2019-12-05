@@ -68,12 +68,12 @@ h2 {
     display: inline-block;
 }
 .container-main {
-    width: 740px;
-    height: 400px;
+    display: flex;
     border: 1px solid black;
     outline-style: solid;
     outline-color: gray;
     padding: 0.4em;
+    max-width: 730px;
 }
 
 .container {
@@ -82,8 +82,7 @@ h2 {
    
     border-radius: 0.3em;
     padding: 0.6em;
-    margin-right: 1em;
-    margin-bottom: 1em;
+    margin-bottom: auto;
     display: block;
 }
 .float {
@@ -351,6 +350,15 @@ button, input[type=submit], input[type=button] {
 }
 
 @media only screen and (max-width : 35em) {
+
+    .container-main {
+        flex-direction: column;
+    }
+
+    .container-main > * {
+        margin-bottom: 10px;
+        width: 100%;
+    }
 
     #workspace {
         margin-right: 0.5em;

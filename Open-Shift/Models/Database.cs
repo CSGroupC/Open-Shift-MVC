@@ -24,7 +24,7 @@ namespace Open_Shift.Models
 				u.AddressLine2 = dr["User.AddressLine2"].ToString();
 				u.PostalCode = dr["User.PostalCode"].ToString();
 				u.EmployeeNumber = (int)dr["User.EmployeeNumber"];
-				u.AssociateTitle = (int)dr["User.AssociateTitle"];
+				u.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["User.AssociateTitle"].ToString( ));
 				u.Phonenumber = dr["User.Phonenumber"].ToString();
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
@@ -41,6 +41,7 @@ namespace Open_Shift.Models
 			}
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
+
 		public List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
 		{
 			try
@@ -259,7 +260,7 @@ namespace Open_Shift.Models
 						newUser.PostalCode = (string)dr["strPostalCode"];
 					
 						newUser.EmployeeNumber = (int)dr["intEmployeeNumber"];
-						newUser.AssociateTitle = (int)dr["intAssociateTitleID"];
+						newUser.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = u.Email;
 						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
@@ -399,7 +400,58 @@ namespace Open_Shift.Models
 			catch (Exception ex) { throw new Exception(ex.Message); }
 		}
 
-		private bool GetDBConnection(ref SqlConnection SQLConn)
+        // TODO: Maybe change storeID to an int
+        // Gets availabilities by store, by year, by month, and optionally by associate
+        public List<Availability> GetAvailabilities(User.StoreLocationList storeID, int year, byte month, long associateID = 0)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = null;
+
+                if (associateID == 0)
+                {
+                    da = new SqlDataAdapter("GET_AVAILABILITIES_MONTHLY", cn);
+                }
+                else
+                {
+                    da = new SqlDataAdapter("GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE", cn);
+                }
+
+                List<Availability> availabilities = new List<Availability>();
+
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                SetParameter(ref da, "@intStoreID", storeID, SqlDbType.Int);
+                SetParameter(ref da, "@intMonth", month, SqlDbType.Int);
+                if (associateID > 0) SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        availabilities.Add(new Availability(dr));
+                    }
+                }
+
+                return availabilities;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        private bool GetDBConnection(ref SqlConnection SQLConn)
 		{
             try
             {

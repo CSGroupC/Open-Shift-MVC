@@ -1,0 +1,15 @@
+﻿@model Open_Shift.ViewModels.AvailabilityViewModel
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/Content/calendar.css")" rel="stylesheet" type="text/css" />
+}
+
+<h1 class="display-4 text-center p-4">Availability</h1>
+<div id="availability-calendar"></div>
+<div id="availability-data" data-availabilities="@JsonConvert.SerializeObject(Model.availabilities)"></div> 
+<script type="module" src="./Scripts/availability-script.js"></script>

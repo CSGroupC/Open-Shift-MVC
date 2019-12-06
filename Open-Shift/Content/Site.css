@@ -41,7 +41,7 @@ h2 {
 
 #frankie-bar {
     overflow: hidden;
-    background-color: #333;
+    background-color:#333;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
@@ -67,56 +67,67 @@ h2 {
 
     display: inline-block;
 }
+.PersonalInfo {
+    position: absolute;
+    left: -230px;
+    top: -20px;
+   
+}
 .container-main {
     display: flex;
     border: 1px solid black;
     outline-style: solid;
     outline-color: gray;
     padding: 0.4em;
-    max-width: 730px;
+    max-width: 690px;
 }
 
 .container {
-    width: 230px;
+    position: relative;
+    top: 2px;
+    width: 210px;
     border: 1px solid black;
-   
     border-radius: 0.3em;
     padding: 0.6em;
     margin-bottom: auto;
     display: block;
 }
+ .profile {
+    position: relative;
+ left:-390px;
+}
 .float {
     position:absolute;
-    top: 215px;
-   left:270px;
+    top: 201px;
+   left:255px;
 
 }
 #main{
     text-align:center;
-    display:block;
+    display:inline-block;
+
 
     
 }
 a:hover{
-    background-color:blue;
+    background-color:darksalmon;
 }
 .right {
     position: absolute;
-    top: 215px;
-    right: 260px;
+    top: 201px;
+    left: 470px;
 }
 .container1 {
     position: absolute;
-    top: 395px;
-    left: 270px;
+    top: 400px;
+    left: 470px;
 }
 #workspace {
     margin: 0 1em 0 2em;
     padding-bottom: 1em;
 }
-.inline{
-    display:inline;
-
+.inline {
+    display: inline;
 }
 
 .login-failed {

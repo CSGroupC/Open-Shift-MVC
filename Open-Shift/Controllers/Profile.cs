@@ -74,6 +74,8 @@ namespace Open_Shift.Controllers
 		[HttpPost]
 		public ActionResult Update(HttpPostedFileBase UserImage,Models.User m, FormCollection col)
 		{
+			
+
 			try
 			{
 				Models.User u = new Models.User();

@@ -62,9 +62,9 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-        [DisplayName("Confirm Password")]
-        [Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
-        public string ConfirmPassword { get; set; }
+        //[DisplayName("Confirm Password")]
+        //[Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
+        //public string ConfirmPassword { get; set; }
 
         public AssociateTitles AssociateTitle = AssociateTitles.NoType;
 
@@ -332,7 +332,7 @@ namespace Open_Shift.Models
 			this.EmployeeNumber = EmployeeNumber;
 			this.Phonenumber = Phonenumber;
 			this.ConfirmEmail = ConfirmEmail;
-			this.ConfirmPassword = Password;
+		
 
 
 

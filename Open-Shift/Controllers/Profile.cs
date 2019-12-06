@@ -267,41 +267,25 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                Models.Home h = new Models.Home();
 
-                Models.User u = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
+                h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
                                           col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"]);
 
-                u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
-                u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
-                u.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
-                u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
-                u.Save();
-                if (u.IsAuthenticated)
+                h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
+                h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
+                h.User.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                h.User.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
+                h.User.Save();
+                if (h.User.IsAuthenticated)
                 { //user found
-                    u.SaveUserSession(); //save the user session object
+                    h.User.SaveUserSession(); //save the user session object
                     return RedirectToAction("Index", "Main");
                 }
                 else
                 { //user failed to log in
-                    Models.Home h = new Models.Home();
-                    h.User.FirstName = col["User.FirstName"];
-                    h.User.LastName = col["User.LastName"];
-                    h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
-                    h.User.AddressLine1 = col["User.AddressLine1"];
-                    h.User.AddressLine2 = col["User.AddressLine2"];
-                    h.User.PostalCode = col["User.PostalCode"];
-
-                    h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-                    h.User.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
-                    h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
-                    h.User.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
-                    h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
-                    h.User.Phonenumber = col["User.Phonenumber"];
-                    h.User.Email = col["User.Email"];
-                    h.User.ConfirmEmail = col["User.Email"];
-                    h.User.Password = col["User.Password"];
 
                     return View(h);
                 }

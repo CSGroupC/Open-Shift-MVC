@@ -260,7 +260,7 @@ namespace Open_Shift.Models
             {
                 Models.Database db = new Database();
                 int NewAssociateID;
-                if (AssociateID == 1)
+                if (AssociateID == 0)
                 {
                     NewAssociateID = db.InsertUser(this);
                     if (NewAssociateID > 0) AssociateID = NewAssociateID;

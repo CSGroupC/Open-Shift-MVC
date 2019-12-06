@@ -29,10 +29,10 @@ namespace Open_Shift.Models
 				u.Email = dr["User.Email"].ToString();
 				u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
 				u.Password = dr["User.Password"].ToString();
-
+                // why is blnIsManager showing false instead of 0?
                 u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
-                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
-				u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
+                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["intStatusID"].ToString());
+				u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["intStoreID"].ToString());
 
 
 				//u.UserImage = GetUserImage(u.AssociateID);
@@ -254,7 +254,7 @@ namespace Open_Shift.Models
 						newUser.Password = u.Password;
 						newUser.FirstName = (string)dr["strFirstName"];
 						newUser.LastName = (string)dr["strLastName"];
-						newUser.Birthday = (DateTime)dr["dtmBirthday"];
+						newUser.Birthday = (DateTime)dr["dtmBirthdate"];
 						newUser.AddressLine1 = (string)dr["strAddressLine1"];
 						newUser.AddressLine2 = (string)dr["strAddressLine2"];
 						newUser.PostalCode = (string)dr["strPostalCode"];
@@ -263,10 +263,11 @@ namespace Open_Shift.Models
 						newUser.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
 						newUser.Phonenumber = (string)dr["strPhonenumber"];
 						newUser.Email = u.Email;
-						newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
-                        u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
-                        u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
-						u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
+                        //	newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
+
+                        newUser.blnIsManager = 1; //(User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
+                        newUser.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
+                        newUser.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
 
 					}
 				}

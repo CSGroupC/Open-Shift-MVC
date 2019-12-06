@@ -13,10 +13,10 @@ namespace Open_Shift.Controllers
         // GET: Availbility
         public ActionResult Index()
         {
-            var u = new User().GetUserSession( );
+            var u = Models.User.GetUserSession();
 
-            if(!u.IsAuthenticated)
-{
+            if (!u.IsAuthenticated)
+            {
                 return Redirect("~/Login");
             }
 
@@ -44,7 +44,7 @@ namespace Open_Shift.Controllers
                 */
                 // TODO: Stop hard-coding this and use the real data from the database
                 viewModel.availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["m"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID);
-                
+
             }
 
             return View(viewModel);

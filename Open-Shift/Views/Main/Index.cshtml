@@ -5,25 +5,25 @@
 }
 @using (Html.BeginForm("Index", "Main", FormMethod.Post))
 {
-<h2>@Model.ViewUser.FirstName </h2> <p> welcome to to main page of Kotetsu Scheduling App</p>
-        <div ID="main" >
-            <ul >
-                <h2>
+    <h2>@Model.ViewUser.FirstName </h2> <p> welcome to to main page of Kotetsu Scheduling App</p>
+    <div ID="main">
+        <ul>
+            <h2>
                 <li class="main" name="btnSubmit" value="Profile"><a href="/Profile/Index">Profile    |</a></li>
                 <li class="main" name="btnSubmit" value="Availbility"><a href="/Availability/Index">Availability   |</a></li>
                 <li class="main" name="btnSubmit" value="Schedule"><a href="/Schedule/Index">Schedule   </a></li>
             </h2>
-              </ul>
+        </ul>
 
-        </div>
+    </div>
 
     <div class="section-bottom">
         <label for="Next shift">Next Shift:</label>
         <input type="text" id="Sqrt" />
-        <br> 
+        <br>
         <label for="Location ">Location:</label>
         <input type="text" id="Sqrt" />
-        <br> 
+        <br>
         <label for="Duties ">Duties:</label>
         <input type="text" id="Sqrt" />
     </div>

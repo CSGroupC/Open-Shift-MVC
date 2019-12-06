@@ -23,6 +23,7 @@
             <a href="~/Home/Index" class="w3-bar-item w3-button w3-green" title="Home"><i class="fa fa-home"></i></a>
             @if (user.IsAuthenticated)
             {
+                <a href="~/Main/Index" class="w3-bar-item w3-button" title="Main"><i class="fas fa-bars"></i></a>
                 <a href="~/Profile/Index" class="w3-bar-item w3-button" title="Profile"><i class="fa fa-address-card"></i></a>
                 <a href="~/Profile/SignOut" class="w3-bar-item w3-button" title="Sign-out"><i class="fas fa-sign-out-alt"></i></a>
             }

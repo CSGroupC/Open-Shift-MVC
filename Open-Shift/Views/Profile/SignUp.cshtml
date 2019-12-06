@@ -105,11 +105,7 @@
                 <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
                 <div>@Html.ValidationMessageFor(model => model.User.Password)</div>
             </div>
-            <div>
-                <div>@Html.LabelFor(model => model.User.ConfirmPassword)</div>
-                <div required>@Html.TextBoxFor(model => model.User.ConfirmPassword, new { type = "password" })</div>
-                <div>@Html.ValidationMessageFor(model => model.User.ConfirmPassword)</div>
-            </div>
+            
         </div>
 
 

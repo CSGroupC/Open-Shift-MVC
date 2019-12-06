@@ -13,6 +13,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return Redirect("../Home");
+                }
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
 
@@ -40,6 +44,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return Redirect("Home");
+                }
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
@@ -294,6 +302,7 @@ namespace Open_Shift.Controllers
                     h.User.Email = col["User.Email"];
                     h.User.ConfirmEmail = col["User.Email"];
                     h.User.Password = col["User.Password"];
+
                     return View(h);
                 }
             }

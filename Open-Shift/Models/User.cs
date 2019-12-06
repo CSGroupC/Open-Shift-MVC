@@ -12,7 +12,8 @@ namespace Open_Shift.Models
     public partial class User
     {
         public SystemLists Lists = new SystemLists();
-        public int AssociateID = 1;
+        // This MUST default to an invalid ID (0) in order for authentication to work
+        public int AssociateID = 0;
 
         [DisplayName("First Name")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z'\s]*$", ErrorMessage = "First Name Cannot Contain Numbers")]
@@ -27,6 +28,7 @@ namespace Open_Shift.Models
         [DisplayName("Birthday")]
         [Required(AllowEmptyStrings = false)]
         [RegularExpression(@"^((19|20)\d{2})/((0|1)\d{1})/((0|1|2)\d{1})", ErrorMessage = "Error: Please format your birthday as 'YYYY/MM/DD'")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
         [DisplayName("Address Line One")]
@@ -66,12 +68,14 @@ namespace Open_Shift.Models
         //[Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
         //public string ConfirmPassword { get; set; }
 
-        public AssociateTitles AssociateTitle = AssociateTitles.NoType;
+        [DisplayName("Associate Title")]
+        [Required(AllowEmptyStrings = false)]
+        public AssociateTitles AssociateTitle { get; set; } = AssociateTitles.NoType;
 
-        public StatusList StatusID = StatusList.Active;
-        public StoreLocationList StoreID = StoreLocationList.NoType; //by default
-        public IsManager blnIsManager = IsManager.Associate; //by default
-        public bool LoginAttempted = false;
+        public StatusList StatusID { get; set; } = StatusList.Active;
+        public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
+        public IsManager blnIsManager { get; set; } = IsManager.Associate; //by default
+        public bool LoginAttempted { get; set; } = false;
 
         public enum AssociateTitles
         {
@@ -320,19 +324,19 @@ namespace Open_Shift.Models
             int EmployeeNumber, string Phonenumber, string Email, string ConfirmEmail, string Password)
         {
 
-			this.Password = Password;
-			this.FirstName = FirstName;
-			this.LastName = LastName;
-			this.Email = Email;
-			this.Birthday = Birthday;
-			this.AddressLine1 = AddressLine1;
-			this.AddressLine2 = AddressLine2;
-			this.PostalCode = PostalCode;
-			
-			this.EmployeeNumber = EmployeeNumber;
-			this.Phonenumber = Phonenumber;
-			this.ConfirmEmail = ConfirmEmail;
-			
+            this.Password = Password;
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+            this.Email = Email;
+            this.Birthday = Birthday;
+            this.AddressLine1 = AddressLine1;
+            this.AddressLine2 = AddressLine2;
+            this.PostalCode = PostalCode;
+
+            this.EmployeeNumber = EmployeeNumber;
+            this.Phonenumber = Phonenumber;
+            this.ConfirmEmail = ConfirmEmail;
+
 
 
 

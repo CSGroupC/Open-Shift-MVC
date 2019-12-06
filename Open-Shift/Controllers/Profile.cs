@@ -15,7 +15,7 @@ namespace Open_Shift.Controllers
             {
                 if (!Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return Redirect("../Home");
+                    return RedirectToAction("SignIn");
                 }
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
@@ -46,7 +46,7 @@ namespace Open_Shift.Controllers
             {
                 if (!Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return Redirect("Home");
+                    return RedirectToAction("SignIn");
                 }
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
@@ -68,6 +68,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn");
+                }
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
                 return View(h);
@@ -84,6 +88,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn");
+                }
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
                 {
@@ -158,6 +166,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn");
+                }
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
                 return View(h);
@@ -174,6 +186,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn");
+                }
                 Models.User u = new Models.User();
                 if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
                 u = Models.User.GetUserSession();
@@ -231,11 +247,15 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
                 h.User.RemoveUserSession();
                 h.User = new Models.User(); //ensure the user object is cleared
-                return RedirectToAction("SignIn", "Profile");
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
@@ -250,7 +270,7 @@ namespace Open_Shift.Controllers
             {
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return Redirect("Index");
+                    return RedirectToAction("Index", "Main");
                 }
                 Models.Home h = new Models.Home();
                 return View(h);
@@ -267,6 +287,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Main");
+                }
                 Models.Home h = new Models.Home();
 
                 h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),

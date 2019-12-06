@@ -16,7 +16,7 @@
         </div>
         <div>
             <div>@Html.LabelFor(model => model.User.Password)</div>
-            <div>@Html.TextBoxFor(model => model.User.Password)</div>
+            <div>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
         </div>
     </div>
 

@@ -109,7 +109,7 @@ namespace Open_Shift.Controllers
                     u.Email = col["User.Email"];
                     u.ConfirmEmail = col["User.ConfirmEmail"];
                     u.Password = col["User.Password"];
-                    u.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                    u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                     u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
                     u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
@@ -300,7 +300,7 @@ namespace Open_Shift.Controllers
 
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
-                h.User.blnIsManager = (Models.User.IsManager)Enum.Parse(typeof(Models.User.IsManager), col["User.blnIsManager"]);
+                h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 h.User.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
                 h.User.Save();
                 if (h.User.IsAuthenticated)

@@ -12,27 +12,27 @@
     <p>To make changes to your profile enter your information below and click the Update button.</p>
 
     @*<d@*iv id="group-image">
-        @if (Model.User.UserImage.ImageID > 0)
-        {
-            <div class="image-container">
-                <img class="thumbnail2" src="@string.Concat("data:Image/",
-                        Model.User.UserImage.FileExtension, ";base64,",
-                        Model.User.UserImage.BytesBase64)" />
-            </div>
-        }
-    </div>
-    <div id="group-data">
-        @Html.TextBoxFor(model => model.User.UserImage.ImageID, new { style = "display: none;" })
-        <div class="section-bottom">
-            <div class="">
-                <div>User Profile Image</div>
-                <div>
-                    <input class="profile-item" type="file" name="UserImage" id="UserImage" />
+            @if (Model.User.UserImage.ImageID > 0)
+            {
+                <div class="image-container">
+                    <img class="thumbnail2" src="@string.Concat("data:Image/",
+                            Model.User.UserImage.FileExtension, ";base64,",
+                            Model.User.UserImage.BytesBase64)" />
+                </div>
+            }
+        </div>
+        <div id="group-data">
+            @Html.TextBoxFor(model => model.User.UserImage.ImageID, new { style = "display: none;" })
+            <div class="section-bottom">
+                <div class="">
+                    <div>User Profile Image</div>
+                    <div>
+                        <input class="profile-item" type="file" name="UserImage" id="UserImage" />
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>*@
-    
+        </div>*@
+
     <div class="container-main ">
         <div class="container PersonalInfo ">
             <div>
@@ -72,14 +72,14 @@
                         <div>@Html.LabelFor(model => model.User.StatusID, "Status")</div>
                         <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID), new { @title = "Select your status." })</div>
                     </div>
-                    
+
                     <div class="id-lists right-margin05">
                         <div>@Html.LabelFor(model => model.User.AssociateTitle, "Associate Title")</div>
                         <div>@Html.DropDownListFor(model => model.User.AssociateTitle, new SelectList(Model.Lists.AssociateTitle, "Value", "Text", Model.User.AssociateTitle), new { @title = "Associate Title." })</div>
                     </div>
                     <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.blnIsManager, "Is Manager?")</div>
-                        <div>@Html.DropDownListFor(model => model.User.blnIsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.blnIsManager), new { @title = "Are you a manager?." })</div>
+                        <div>@Html.LabelFor(model => model.User.IsManager, "Is Manager?")</div>
+                        <div>@Html.DropDownListFor(model => model.User.IsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.IsManager), new { @title = "Are you a manager?." })</div>
                     </div>
                     <div class="id-lists right-margin05">
                         <div>@Html.LabelFor(model => model.User.StoreID, "Store Location")</div>

@@ -74,7 +74,7 @@ namespace Open_Shift.Models
 
         public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
-        public IsManager blnIsManager { get; set; } = IsManager.NoType; //by default
+        public IsManagerEnum IsManager { get; set; } = IsManagerEnum.NoType; //by default
         public bool LoginAttempted { get; set; } = false;
 
 
@@ -103,7 +103,7 @@ namespace Open_Shift.Models
             KotetsuBrazil = 3
         }
 
-        public enum IsManager
+        public enum IsManagerEnum
         {
             NoType = 0,
             Associate = 1,
@@ -186,7 +186,7 @@ namespace Open_Shift.Models
                     EmployeeNumber = newUser.EmployeeNumber;
                     AssociateTitle = newUser.AssociateTitle;
                     Phonenumber = newUser.Phonenumber;
-                    blnIsManager = newUser.blnIsManager;
+                    IsManager = newUser.IsManager;
                     return true;
                 }
                 else { return false; }

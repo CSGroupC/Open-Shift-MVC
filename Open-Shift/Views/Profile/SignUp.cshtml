@@ -1,8 +1,8 @@
 ﻿@model Open_Shift.Models.Home
 
-@{           
-                ViewBag.Title = "";
-                Layout = "~/Views/Shared/UserLayout.cshtml";
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -65,9 +65,9 @@
                         <div>@Html.ValidationMessageFor(model => model.User.StoreID)</div>
                     </div>
                     <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.blnIsManager, "Are You a Manager?")</div>
-                        <div>@Html.DropDownListFor(model => model.User.blnIsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", (int)Model.User.blnIsManager), new { @title = "Select your managerial status." })</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.blnIsManager)</div>
+                        <div>@Html.LabelFor(model => model.User.IsManager, "Are You a Manager?")</div>
+                        <div>@Html.DropDownListFor(model => model.User.IsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", (int)Model.User.IsManager), new { @title = "Select your managerial status." })</div>
+                        <div>@Html.ValidationMessageFor(model => model.User.IsManager)</div>
                     </div>
 
                 </div>
@@ -128,7 +128,7 @@
         {
             <span class="login-failed">Failed to login. Please try again.</span>
         }
-        <button class="button-action" id="btnClear" name="btnSubmit" value="clear" type="reset">Clear</button>        
+        <button class="button-action" id="btnClear" name="btnSubmit" value="clear" type="reset">Clear</button>
         <button class="button-action" id="btnClose" name="btnSubmit" value="close">Cancel</button>
     </div>
 }

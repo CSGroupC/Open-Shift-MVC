@@ -30,7 +30,7 @@ namespace Open_Shift.Models
                 u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
                 u.Password = dr["User.Password"].ToString();
                 // why is blnIsManager showing false instead of 0?
-                u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["User.blnIsManager"].ToString());
+                u.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), dr["User.blnIsManager"].ToString());
                 u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["User.intStatusID"].ToString());
                 u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["User.intStoreID"].ToString());
 
@@ -201,7 +201,7 @@ namespace Open_Shift.Models
                                                                                                 // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Int);
+                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Int);
 
 
                 cm.ExecuteReader();
@@ -267,7 +267,7 @@ namespace Open_Shift.Models
                         if (dr["blnIsManager"].ToString() == "True") managerStatus = "Manager";
 
                         //newUser.blnIsManager = 1;
-                        newUser.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), managerStatus);
+                        newUser.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), managerStatus);
                         newUser.StatusID = (User.StatusList)Convert.ToInt32(dr["intStatusID"].ToString());
                         newUser.StoreID = (User.StoreLocationList)Convert.ToInt32(dr["intStoreID"].ToString());
 
@@ -383,7 +383,7 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);        /*TODO update with password hashing*/
-                SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar);  /*TODO update with password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar);   /*TODO update with password hashing*/
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
@@ -432,6 +432,7 @@ namespace Open_Shift.Models
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 SetParameter(ref da, "@intStoreID", storeID, SqlDbType.Int);
+                SetParameter(ref da, "@intYear", year, SqlDbType.Int);
                 SetParameter(ref da, "@intMonth", month, SqlDbType.Int);
                 if (associateID > 0) SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
 

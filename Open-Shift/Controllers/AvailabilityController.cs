@@ -17,7 +17,7 @@ namespace Open_Shift.Controllers
 
             if (!u.IsAuthenticated)
             {
-                //return RedirectToAction("SignIn", "Profile");
+                return RedirectToAction("SignIn", "Profile");
             }
 
             AvailabilityViewModel viewModel = new AvailabilityViewModel

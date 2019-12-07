@@ -126,24 +126,27 @@ export class Calendar {
 
 
         this.associates = {};
+        this.timePeriods = [];
 
-        // Convert the array into an object with the IDs as keys
-        this.timePeriods = timePeriods.reduce((object, timePeriod) => {
+        if (timePeriods == [] || timePeriods == null) {
+            // Convert the array into an object with the IDs as keys
+            this.timePeriods = timePeriods.reduce((object, timePeriod) => {
 
-            if ("associateId" in timePeriod) {
-                this.associates[timePeriod.associateId] = {
-                    id: timePeriod.associateId,
-                    name: timePeriod.associateName,
-                    isManager: timePeriod.isManager,
-                    color: stringToColor(timePeriod.associateId + timePeriod.associateName)
-                };
-            }
+                if ("associateId" in timePeriod) {
+                    this.associates[timePeriod.associateId] = {
+                        id: timePeriod.associateId,
+                        name: timePeriod.associateName,
+                        isManager: timePeriod.isManager,
+                        color: stringToColor(timePeriod.associateId + timePeriod.associateName)
+                    };
+                }
 
-            object[timePeriod.id] = timePeriod;
-            return object;
+                object[timePeriod.id] = timePeriod;
+                return object;
 
-            // Start as empty object
-        }, {});
+                // Start as empty object
+            }, {});
+        }
 
 
         // Load existing time periods onto the calendar
@@ -264,7 +267,7 @@ export class Calendar {
 }
 
 export class AvailabilityCalendar extends Calendar {
-    constructor(availabilities = [], closedWeekdays = [], associate = { AssociateID: 0 }, dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
+    constructor(availabilities = [], associate = { AssociateID: 0 }, closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
         super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
 
         this.element.classList.add("availability-calendar");
@@ -275,7 +278,7 @@ export class AvailabilityCalendar extends Calendar {
         let card = new CustomElement(`<div class="card time-period-template-card"><div class="card-body"></div></div>`);
         let cardBody = card.getElementsByClassName("card-body")[0];
 
-        this.timePeriodTemplate = new TimePeriod(this);
+        this.timePeriodTemplate = new TimePeriod(this, { start: null, end: null }, associate);
         this.timePeriodTemplate.classList.add("time-period-template");
 
         cardBody.appendChild(this.timePeriodTemplate);

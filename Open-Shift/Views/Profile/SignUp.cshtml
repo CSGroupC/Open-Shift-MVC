@@ -1,8 +1,8 @@
 ﻿@model Open_Shift.Models.Home
 
-@{
-    ViewBag.Title = "";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+@{           
+                ViewBag.Title = "";
+                Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -128,10 +128,11 @@
         {
             <span class="login-failed">Failed to login. Please try again.</span>
         }
-        <button class="button-action" id="btnClear" name="btnSubmit" value="clear">Clear</button>
+        <button class="button-action" id="btnClear" name="btnSubmit" value="clear" type="reset">Clear</button>        
         <button class="button-action" id="btnClose" name="btnSubmit" value="close">Cancel</button>
     </div>
 }
 <script type="text/javascript">
     $("#User_FirstName").focus();
 </script>
+

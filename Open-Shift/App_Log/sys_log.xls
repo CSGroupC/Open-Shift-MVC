@@ -1,3 +1,10 @@
 Date-Time	Application	Message
 12/3/2019 5:34:58 PM	Open_Shift.Controllers.ProfileController	String was not recognized as a valid DateTime.
 12/3/2019 7:44:37 PM	Open_Shift.Controllers.ProfileController	String was not recognized as a valid DateTime.
+12/5/2019 8:15:38 PM	Open_Shift.Models.Database	Column 'dtmBirthday' does not belong to table Table.
+12/6/2019 6:23:11 PM	Open_Shift.Models.Database	Requested value 'False' was not found.
+12/6/2019 6:42:42 PM	Open_Shift.Models.Database	Requested value 'False' was not found.
+12/6/2019 6:43:40 PM	Open_Shift.Models.Database	Requested value 'False' was not found.
+12/6/2019 6:45:58 PM	Open_Shift.Models.Database	Requested value 'False' was not found.
+12/6/2019 6:47:02 PM	Open_Shift.Models.Database	Requested value 'False' was not found.
+12/6/2019 6:55:34 PM	Open_Shift.Models.Database	Requested value 'False' was not found.

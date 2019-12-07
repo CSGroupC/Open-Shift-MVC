@@ -275,7 +275,7 @@ export class AvailabilityCalendar extends Calendar {
         let card = new CustomElement(`<div class="card time-period-template-card"><div class="card-body"></div></div>`);
         let cardBody = card.getElementsByClassName("card-body")[0];
 
-        this.timePeriodTemplate = new TimePeriod(this);
+        this.timePeriodTemplate = new TimePeriod(this, { start: null, end: null }, associate);
         this.timePeriodTemplate.classList.add("time-period-template");
 
         cardBody.appendChild(this.timePeriodTemplate);

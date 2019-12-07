@@ -1,7 +1,8 @@
 ﻿import { AvailabilityCalendar } from "./calendar.js";
 
 const data = {
-    availabilities: document.getElementById("availability-data").dataset.availabilities
+    associate: JSON.parse(document.getElementById("availability-data").dataset.associate),
+    availabilities: JSON.parse(document.getElementById("availability-data").dataset.availabilities),
 };
 
 
@@ -42,9 +43,6 @@ let availabilities = [
 ];
 */
 
-let availabilities = JSON.parse( data.availabilities );
-
-
 
 // 4. The start of the current user's business' working hours
 let workingHoursStart = "17:00";
@@ -60,5 +58,5 @@ let associate = {
 */
 
 let container = document.getElementById("availability-calendar");
-let calendar = new AvailabilityCalendar(availabilities, associate, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
+let calendar = new AvailabilityCalendar(data.availabilities, data.associate, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
 calendar.appendTo(container);

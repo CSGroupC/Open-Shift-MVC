@@ -17,33 +17,20 @@ namespace Open_Shift.Controllers
 
             if (!u.IsAuthenticated)
             {
-                return RedirectToAction("SignIn", "Profile");
+                //return RedirectToAction("SignIn", "Profile");
             }
 
             AvailabilityViewModel viewModel = new AvailabilityViewModel
             {
-                User = new User()
-                {
-                    blnIsManager = Models.User.IsManager.Manager,
-                    StoreID = Models.User.StoreLocationList.Kotetsu,
-                    AssociateID = 2
-                },
-                availabilities = null
+                User = u,
+                Availabilities = null
             };
 
             if (Request.QueryString["m"] != null && Request.QueryString["y"] != null)
             {
                 Models.Database db = new Database();
 
-                /*
-                viewModel = new AvailabilityViewModel
-                {
-                    User = u,
-                    availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["m"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID)
-                };
-                */
-                // TODO: Stop hard-coding this and use the real data from the database
-                viewModel.availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["m"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID);
+                viewModel.Availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["y"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID);
 
             }
 

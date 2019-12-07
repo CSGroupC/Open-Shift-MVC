@@ -77,6 +77,9 @@ namespace Open_Shift.Models
         public IsManager blnIsManager { get; set; } = IsManager.NoType; //by default
         public bool LoginAttempted { get; set; } = false;
 
+
+        //public Image UserImage = new Image();
+
         public enum AssociateTitles
         {
             NoType = 0,
@@ -142,7 +145,6 @@ namespace Open_Shift.Models
             }
         }
 
-        public Image UserImage = new Image();
 
         public static List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte StoreID = 0)
         {
@@ -237,7 +239,7 @@ namespace Open_Shift.Models
         {
             try
             {
-                this.UserImage = null; //don't save the user image
+                //this.UserImage = null; //don't save the user image
                 HttpContext.Current.Session["CurrentUser"] = this;
                 return true;
             }

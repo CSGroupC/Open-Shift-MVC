@@ -72,9 +72,9 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public AssociateTitles AssociateTitle { get; set; } = AssociateTitles.NoType;
 
-        public StatusList StatusID { get; set; } = StatusList.Active;
+        public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
-        public IsManager blnIsManager { get; set; } = IsManager.Associate; //by default
+        public IsManager blnIsManager { get; set; } = IsManager.NoType; //by default
         public bool LoginAttempted { get; set; } = false;
 
         public enum AssociateTitles
@@ -102,9 +102,11 @@ namespace Open_Shift.Models
 
         public enum IsManager
         {
-            Associate = 0,
-            Manager = 1
+            NoType = 0,
+            Associate = 1,
+            Manager = 2
         }
+
 
         public bool LoginFailed
         {
@@ -363,12 +365,8 @@ namespace Open_Shift.Models
         //	this.ConfirmEmail = ConfirmEmail;
         //	this.NewPassword = NewPassword;
         //}
-    }
 
-    public class UserMetaData
-    {
-        [StringLength(10, MinimumLength = 5)]
-        public string FirstName { get; set; }
+
     }
 
 }

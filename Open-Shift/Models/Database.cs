@@ -30,9 +30,9 @@ namespace Open_Shift.Models
                 u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
                 u.Password = dr["User.Password"].ToString();
                 // why is blnIsManager showing false instead of 0?
-                u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
-                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["intStatusID"].ToString());
-                u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["intStoreID"].ToString());
+                u.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["User.blnIsManager"].ToString());
+                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["User.intStatusID"].ToString());
+                u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["User.intStoreID"].ToString());
 
 
                 //u.UserImage = GetUserImage(u.AssociateID);
@@ -199,9 +199,9 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
                                                                                                 // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
-                SetParameter(ref cm, "@intStatusID", User.StatusList.Active, SqlDbType.TinyInt);
-                SetParameter(ref cm, "@intStoreID", User.StoreLocationList.Kotetsu, SqlDbType.TinyInt);
-                SetParameter(ref cm, "@blnIsManager", User.IsManager.Associate, SqlDbType.TinyInt);
+                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
+                SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
+                SetParameter(ref cm, "@blnIsManager", u.blnIsManager, SqlDbType.Int);
 
 
                 cm.ExecuteReader();

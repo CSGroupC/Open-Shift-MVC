@@ -92,3 +92,6 @@ UPDATE_AVAILABILITY
 		@dtmBeginAvailability [datetime],
 		@dtmEndAvailability [datetime],
 		@strNotes [nvarchar](max) = ''
+		
+[GET_SHIFT_STORE_MONTH_YEAR]
+	

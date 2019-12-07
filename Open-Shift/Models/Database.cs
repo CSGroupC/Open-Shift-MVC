@@ -250,7 +250,6 @@ namespace Open_Shift.Models
                     {
                         newUser = new User();
                         DataRow dr = ds.Tables[0].Rows[0];
-                        newUser.AssociateID = (int)dr["intAssociateID"];
                         newUser.Password = u.Password;
                         newUser.FirstName = (string)dr["strFirstName"];
                         newUser.LastName = (string)dr["strLastName"];
@@ -264,12 +263,16 @@ namespace Open_Shift.Models
                         newUser.Phonenumber = (string)dr["strPhonenumber"];
                         newUser.Email = u.Email;
                         //	newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
+                        var managerStatus = "Associate";
+                        if (dr["blnIsManager"].ToString() == "True") managerStatus = "Manager";
 
                         //newUser.blnIsManager = 1;
-                        newUser.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), dr["blnIsManager"].ToString());
-                        newUser.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["StatusID"].ToString());
-                        newUser.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["StoreID"].ToString());
+                        newUser.blnIsManager = (User.IsManager)Enum.Parse(typeof(User.IsManager), managerStatus);
+                        newUser.StatusID = (User.StatusList)Convert.ToInt32(dr["intStatusID"].ToString());
+                        newUser.StoreID = (User.StoreLocationList)Convert.ToInt32(dr["intStoreID"].ToString());
 
+                        // NOTE: Do this last, so authentication will fail if the above fails
+                        newUser.AssociateID = (int)dr["intAssociateID"];
                     }
                 }
                 catch (Exception ex2)

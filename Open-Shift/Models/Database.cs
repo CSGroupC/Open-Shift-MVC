@@ -330,6 +330,7 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+        /*
         public long UpdateUserImage(User u)
         {
             try
@@ -358,6 +359,7 @@ namespace Open_Shift.Models
                 throw new Exception(string.Concat(this.ToString(), ".", MethodBase.GetCurrentMethod().Name.ToString(), "(): ", ex.Message));
             }
         }
+        */
 
         public bool UpdateUser(User u)
         {

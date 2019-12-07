@@ -11,5 +11,8 @@
 
 <h1 class="display-4 text-center p-4">Availability</h1>
 <div id="availability-calendar"></div>
-<div id="availability-data" data-availabilities="@JsonConvert.SerializeObject(Model.availabilities)"></div> 
-<script type="module" src="./Scripts/availability-script.js"></script>
+<div id="availability-data"
+     data-associate="@JsonConvert.SerializeObject(Model.User)"
+     data-availabilities="@JsonConvert.SerializeObject(Model.Availabilities)"></div>
+<script type="module" src="../Scripts/availability-script.js">
+</script>

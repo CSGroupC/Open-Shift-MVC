@@ -264,7 +264,7 @@ export class Calendar {
 }
 
 export class AvailabilityCalendar extends Calendar {
-    constructor(availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
+    constructor(availabilities = [], closedWeekdays = [], associate = { AssociateID: 0 }, dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
         super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
 
         this.element.classList.add("availability-calendar");

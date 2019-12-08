@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, deleteAvailability } from "./database.js";
+import { createAvailability, updateAvailability, deleteAvailability } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -169,8 +169,6 @@ export class Calendar {
             let timePeriodElement = new TimePeriod(this, time, associate);
             timePeriodElement.dataset.id = id;
 
-            console.log(time.start.getDate());
-
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
 
@@ -314,7 +312,7 @@ export class AvailabilityCalendar extends Calendar {
         let handler = new Event.PointerHandler((event) => {
 
             if (this.timePeriodResizal != null) {
-                // TODO: fetch
+                updateAvailability(associate, this.timePeriodResizal.timePeriod, this);
 
                 this.timePeriodResizal.stop(event);
                 this.timePeriodResizal = null;

@@ -306,6 +306,8 @@ namespace Open_Shift.Controllers
                 if (h.User.IsAuthenticated)
                 { //user found
                     h.User.SaveUserSession(); //save the user session object
+                    Controllers.SmsController sms = new Controllers.SmsController();
+                    sms.SendSms(h.User.Phonenumber);
                     return RedirectToAction("Index", "Main");
                 }
                 else

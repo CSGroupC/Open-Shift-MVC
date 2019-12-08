@@ -298,15 +298,15 @@ export class AvailabilityCalendar extends Calendar {
                 // If the click originated directly on this element
                 if (this.timePeriodResizal == null && this.timePeriodMovement == null) {
 
-
                     let dayNumberElement = element.getElementsByClassName("day-number")[0];
 
-                    let timePeriod = new TimePeriod(this);
-                    let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML;
-                    startTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}:00Z`;
-                    let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML;
-                    if (endTime.split(":")[0] == 24) endTime = "23:59";
-                    endTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}:00Z`;
+                    let timePeriod = new TimePeriod(this, { start: null, end: null }, associate);
+
+                    let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML + ":00";
+                    startTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}Z`;
+                    let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML + ":00";
+                    if (endTime.split(":")[0] == 24) endTime = "23:59:59";
+                    endTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
                     fetch("Create", {
                         method: "POST",

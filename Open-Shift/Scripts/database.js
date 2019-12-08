@@ -39,15 +39,10 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
 
 export function deleteAvailability(availabilityId) {
 
-    fetch("Delete", {
+    return fetch("Delete", {
         method: "DELETE",
         body: JSON.stringify({
-            ID: availabilityId,
-            //AssociateID: associate.AssociateID,
-            // AssociateName: associate.name,
-            //IsManager: associate.IsManager,
-            //StartTime: startTime,
-            //EndTime: endTime,
+            ID: availabilityId
         }),
         headers: {
             'Accept': 'application/json',

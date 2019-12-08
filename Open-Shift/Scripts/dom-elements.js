@@ -266,7 +266,7 @@ export function TimePeriod(calendar, timeBuffer = { start: null, end: null }, as
     copyButton.onclick = handler;
 
     handler = new Event.PointerHandler((event) => {
-        deleteAvailability().then(() => {
+        deleteAvailability(timePeriod.dataset.id).then(() => {
             timePeriod.parentElement.removeChild(timePeriod);
         });
     });

@@ -110,7 +110,6 @@ class TimePeriodMovement {
             newStart -= boundaryOffset;
         }
 
-        console.log(this.element.parentElement);
         let timeElement = this.element.parentElement.getElementsByClassName("time-start")[0];
         timeElement.innerHTML = this.calendar.columnToTime(newStart - 1);
 

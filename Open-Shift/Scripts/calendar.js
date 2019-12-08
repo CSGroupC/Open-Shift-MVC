@@ -128,20 +128,21 @@ export class Calendar {
         this.associates = {};
         this.timePeriods = [];
 
-        if (timePeriods == [] || timePeriods == null) {
+        if (timePeriods != [] && timePeriods != null) {
             // Convert the array into an object with the IDs as keys
             this.timePeriods = timePeriods.reduce((object, timePeriod) => {
 
-                if ("associateId" in timePeriod) {
-                    this.associates[timePeriod.associateId] = {
-                        id: timePeriod.associateId,
-                        name: timePeriod.associateName,
-                        isManager: timePeriod.isManager,
-                        color: stringToColor(timePeriod.associateId + timePeriod.associateName)
+                if ("AssociateID" in timePeriod) {
+
+                    this.associates[timePeriod.AssociateID] = {
+                        id: timePeriod.AssociateID,
+                        name: timePeriod.AssociateName,
+                        isManager: timePeriod.IsManager,
+                        color: stringToColor(timePeriod.AssociateID + timePeriod.AssociateName)
                     };
                 }
 
-                object[timePeriod.id] = timePeriod;
+                object[timePeriod.ID] = timePeriod;
                 return object;
 
                 // Start as empty object
@@ -155,8 +156,8 @@ export class Calendar {
             let timePeriod = this.timePeriods[id];
 
             let time = {
-                start: stringToDate(timePeriod.startTime),
-                end: stringToDate(timePeriod.endTime)
+                start: stringToDate(timePeriod.StartTime),
+                end: stringToDate(timePeriod.EndTime)
             };
 
             let associate = null;
@@ -275,6 +276,11 @@ export class AvailabilityCalendar extends Calendar {
         // NOTE: This is required to allow making new time period templates
         this.timePeriodTemplate = null;
 
+        if (associate.AssociateID > 0) {
+            associate.name = associate.FirstName + " " + associate.LastName;
+            associate.color = stringToColor(associate.AssociateID + associate.name);
+        }
+
         let card = new CustomElement(`<div class="card time-period-template-card"><div class="card-body"></div></div>`);
         let cardBody = card.getElementsByClassName("card-body")[0];
 
@@ -292,11 +298,43 @@ export class AvailabilityCalendar extends Calendar {
                 // If the click originated directly on this element
                 if (this.timePeriodResizal == null && this.timePeriodMovement == null) {
 
-                    // TODO: fetch
 
                     let dayNumberElement = element.getElementsByClassName("day-number")[0];
 
                     let timePeriod = new TimePeriod(this);
+
+                    let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML;
+                    startTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${startTime}:00Z`;
+                    let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML;
+                    if (endTime.split(":")[0] == 24) endTime = "23:59";
+                    endTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${endTime}:00Z`;
+                    console.log("startTime", startTime)
+                    console.log("endTime", endTime)
+                    fetch("Create", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            AssociateID: associate.AssociateID,
+                            AssociateName: associate.name,
+                            IsManager: associate.IsManager,
+                            StartTime: startTime,
+                            EndTime: endTime,
+                        }),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-type': 'application/json'
+                        },
+                    })
+                        .then(function (response) {
+                            if (!response.ok) {
+                                throw new Error('Availability/Create responded with ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(function (response) {
+                            if (response.status == "AUTHENTICATION_FAILED") {
+                                location.href = "/Profile/SignIn";
+                            }
+                        });
 
                     element.querySelector(".time-period-section").prepend(timePeriod);
                 }
@@ -365,7 +403,7 @@ export class SchedulingCalendar extends Calendar {
         for (let id in this.associates) {
             let associate = this.associates[id];
             let associateElement = new CustomElement(`
-                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.name}</span></span>
+                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.FirstName} ${associate.LastName}</span></span>
             `);
             cardBody.appendChild(associateElement);
         }
@@ -397,7 +435,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) + 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.isManager == true) {
+        if (associate.IsManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) + 1;
             monthDay.dataset.managerCount = managerCount;
         }
@@ -408,7 +446,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) - 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.isManager == true) {
+        if (associate.IsManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) - 1;
             monthDay.dataset.managerCount = managerCount;
         }

@@ -8,27 +8,54 @@ namespace Open_Shift.Models
 {
     public class Availability
     {
-        public int Id { get; set; }
-        public int AssociateId { get; set; }
+        // NOTE: The client-side code relies on this being "ID"
+        public int ID { get; set; }
+        public int AssociateID { get; set; }
         public string AssociateName { get; set; }
         public bool IsManager { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public string Notes { get; set; } = "";
 
-		public Availability(DataRow dr)
-		{
-			try
-			{
-                // TODO: Add this after the procedure includes the AvailabilityID
-                // Id = (int)dr["AvailabilityID"];
-                AssociateId = (int)dr["AssociateID"];
-                AssociateName = dr["AssociateName"].ToString( );
+        public Availability()
+        {
+
+        }
+
+        public Availability(DataRow dr)
+        {
+            try
+            {
+                ID = (int)dr["AvailabilityID"];
+                AssociateID = (int)dr["AssociateID"];
+                AssociateName = dr["LastName"].ToString() + " " + dr["FirstName"].ToString();
                 IsManager = (bool)dr["ManagerStatus"];
-                StartTime = (DateTime)dr["StartTime"];
-                EndTime = (DateTime)dr["EndTime"];
+                StartTime = (DateTime)dr["startTime"];
+                EndTime = (DateTime)dr["endTime"];
 
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public bool Save()
+        {
+            try
+            {
+                Models.Database db = new Database();
+                int NewAvailabilityID;
+                if (ID == 0)
+                {
+                    NewAvailabilityID = db.InsertAvailability(this);
+                    if (NewAvailabilityID > 0) ID = NewAvailabilityID;
+                }
+                else
+                {
+                    //db.UpdateAvailability(this);
+                }
+
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
     }
 }

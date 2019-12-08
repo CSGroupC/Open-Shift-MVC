@@ -197,7 +197,7 @@ namespace Open_Shift.Models
 
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
-               // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+                                                                                                // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
                 SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Int);
@@ -243,7 +243,8 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
-                {                    ds = new DataSet();
+                {
+                    ds = new DataSet();
                     da.Fill(ds);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -406,6 +407,37 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+
+        public int InsertAvailability(Availability a)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("CREATE_AVAILABILITY", cn);
+                int intAvailabilityID = -1;
+
+                SetParameter(ref cm, "@intAvailabilityID", a.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
+                SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
+                SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
+                SetParameter(ref cm, "@strNotes", a.Notes, SqlDbType.NVarChar);
+
+                cm.ExecuteReader();
+
+                intAvailabilityID = (int)cm.Parameters["@intAvailabilityID"].Value;
+
+                CloseDBConnection(ref cn);
+
+                if (intAvailabilityID > 0)
+                    return (int)cm.Parameters["@intAvailabilityID"].Value;
+                else
+                    return 0;
+
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
         // TODO: Maybe change storeID to an int
         // Gets availabilities by store, by year, by month, and optionally by associate
         public List<Availability> GetAvailabilities(User.StoreLocationList storeID, int year, byte month, long associateID = 0)
@@ -454,6 +486,53 @@ namespace Open_Shift.Models
                 }
 
                 return availabilities;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
+        public bool UpdateAvailability(User u)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("UPDATE_USER", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int);
+
+                SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPostalCode", u.PostalCode, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strAddressLine1", u.AddressLine1, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strAddressLine2", u.AddressLine2, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPhoneNumber", u.Phonenumber, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.DateTime);
+                SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
+                SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
+                SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);        /*TODO update with password hashing*/
+                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
+                SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar);  /*TODO update with password hashing*/
+                SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar);   /*TODO update with password hashing*/
+                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
+                SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.TinyInt);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: //new user created
+                        return true;
+                    default:
+                        return false;
+                }
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

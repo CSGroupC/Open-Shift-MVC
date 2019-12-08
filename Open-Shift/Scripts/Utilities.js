@@ -31,9 +31,9 @@ export function formatTime(datetime) {
     return hours + ":" + timeBuffer.getMinutes().toString().padStart(2, "0");
 }
 
-// Expected format: "YYYY-MM-DD HH:MM:SS"
+// Expected format: "YYYY-MM-DDTHH:MM:SS"
 export function stringToDate(string) {
-    let buffer = string.split(" ");
+    let buffer = string.split("T");
     let dateParts = buffer[0].split("-");
     let timeParts = buffer[1].split(":");
 

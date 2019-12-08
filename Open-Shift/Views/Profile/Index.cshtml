@@ -10,65 +10,65 @@
 @using (Html.BeginForm("Index", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @*<div id="group-image">
-            @if (Model.User.UserImage.ImageID > 0)
+            @if (Model.ViewUser.UserImage.ImageID > 0)
             {
                 <div class="image-container">
-                    <img class="thumbnail2" src="@string.Concat("data:Image/", Model.User.UserImage.FileExtension, ";base64,", Model.User.UserImage.BytesBase64)" />
+                    <img class="thumbnail2" src="@string.Concat("data:Image/", Model.ViewUser.UserImage.FileExtension, ";base64,", Model.ViewUser.UserImage.BytesBase64)" />
                 </div>
             }
         </div>*@
     <div class="container profile">
         <div class="section-bottom">
             <div class="bold">First Name</div>
-            <div>@Model.User.FirstName</div>
+            <div>@Model.ViewUser.FirstName</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Last Name</div>
-            <div>@Model.User.LastName</div>
+            <div>@Model.ViewUser.LastName</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Birthday</div>
-            <div>@Model.User.Birthday</div>
+            <div>@Model.ViewUser.Birthday</div>
         </div>
         <div class="section-bottom">
             <div class="bold">AddressLine1</div>
-            <div>@Model.User.AddressLine1</div>
+            <div>@Model.ViewUser.AddressLine1</div>
         </div>
         <div class="section-bottom">
             <div class="bold">AddressLine2</div>
-            <div>@Model.User.AddressLine2</div>
+            <div>@Model.ViewUser.AddressLine2</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Postal Code</div>
-            <div>@Model.User.PostalCode</div>
+            <div>@Model.ViewUser.PostalCode</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Store Location</div>
-            <div>@Model.User.StoreID</div>
+            <div>@Model.ViewUser.StoreID</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Status</div>
-            <div>@Model.User.StatusID</div>
+            <div>@Model.ViewUser.StatusID</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Is Manager?</div>
-            <div>@Model.User.IsManager</div>
+            <div>@Model.ViewUser.IsManager</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Employee Number</div>
-            <div>@Model.User.EmployeeNumber</div>
+            <div>@Model.ViewUser.EmployeeNumber</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Associate Title</div>
-            <div>@Model.User.AssociateTitle</div>
+            <div>@Model.ViewUser.AssociateTitle</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Phone Number</div>
-            <div>@Model.User.Phonenumber</div>
+            <div>@Model.ViewUser.Phonenumber</div>
         </div>
         <div class="section-bottom">
             <div class="bold">Email</div>
-            <div>@Model.User.Email</div>
+            <div>@Model.ViewUser.Email</div>
         </div>
 
     </div>

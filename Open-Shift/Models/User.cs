@@ -48,6 +48,7 @@ namespace Open_Shift.Models
         public int? EmployeeNumber { get; set; }
 
         [DisplayName("Phone Number")]
+        [RegularExpression(@"^[+]{1}[0-9]{11}$", ErrorMessage = "Error: Please format your phonenumber as: '+1234567890'")]
         [Required(AllowEmptyStrings = false)]
         public string Phonenumber { get; set; }
 

@@ -29,7 +29,6 @@ namespace Open_Shift.Models
                 u.Email = dr["User.Email"].ToString();
                 u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
                 u.Password = dr["User.Password"].ToString();
-                // why is blnIsManager showing false instead of 0?
                 u.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), dr["User.blnIsManager"].ToString());
                 u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["User.intStatusID"].ToString());
                 u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["User.intStoreID"].ToString());
@@ -198,7 +197,7 @@ namespace Open_Shift.Models
 
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
-                                                                                                // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+               // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
                 SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Int);
@@ -244,8 +243,7 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
-                {
-                    ds = new DataSet();
+                {                    ds = new DataSet();
                     da.Fill(ds);
                     if (ds.Tables[0].Rows.Count > 0)
                     {

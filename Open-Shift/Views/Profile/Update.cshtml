@@ -38,6 +38,7 @@
             <div>
                 <div>@Html.LabelFor(model => model.User.FirstName)</div>
                 <div required>@Html.TextBoxFor(model => model.User.FirstName)</div>
+                <div>@Html.ValidationMessageFor(model => model.User.FirstName)</div>
             </div>
             <div>
                 <div>@Html.LabelFor(model => model.User.LastName)</div>

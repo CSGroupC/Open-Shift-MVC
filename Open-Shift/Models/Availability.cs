@@ -50,7 +50,7 @@ namespace Open_Shift.Models
                 }
                 else
                 {
-                    //db.UpdateAvailability(this);
+                    db.UpdateAvailability(this);
                 }
 
                 return true;

@@ -66,8 +66,25 @@ namespace Open_Shift.Controllers
         [HttpPut]
         public ActionResult Update()
         {
+            var u = Models.User.GetUserSession();
+            if (!u.IsAuthenticated)
+            {
+                return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
+            }
 
-            return View();
+            Models.Database db = new Database();
+
+            Stream req = Request.InputStream;
+            req.Seek(0, System.IO.SeekOrigin.Begin);
+            string availabilityJson = new StreamReader(req).ReadToEnd().ToString();
+            string buffer = availabilityJson.ToString();
+            var dateTimeConverter = new IsoDateTimeConverter();
+
+            var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
+
+            availability.Save();
+
+            return Content("{\"status\": \"SUCCESS\"}", "application/json");
         }
 
         [HttpDelete]

@@ -197,7 +197,7 @@ namespace Open_Shift.Models
 
                 SetParameter(ref cm, "@strPasswordResetToken", u.Password, SqlDbType.NVarChar); /*  TODO placeholder, need to review password hashing*/
                 SetParameter(ref cm, "@strAuthorizationToken", u.Password, SqlDbType.NVarChar); /* TODO placeholder, need to review password hashing*/
-               // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+                                                                                                // SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
                 SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Int);
@@ -243,7 +243,8 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
-                {                    ds = new DataSet();
+                {
+                    ds = new DataSet();
                     da.Fill(ds);
                     if (ds.Tables[0].Rows.Count > 0)
                     {

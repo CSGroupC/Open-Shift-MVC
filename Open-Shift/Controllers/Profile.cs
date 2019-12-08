@@ -94,6 +94,9 @@ namespace Open_Shift.Controllers
                 }
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
+
+                if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Home");
+
                 {
                     u = Models.User.GetUserSession();
 

@@ -17,3 +17,4 @@ Date-Time	Application	Message
 12/7/2019 11:40:36 AM	Open_Shift.Models.Database	Requested value 'False' was not found.
 12/7/2019 1:06:27 PM	Open_Shift.Models.Database	Procedure or function 'GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE' expects parameter '@intYear', which was not supplied.
 12/7/2019 1:06:59 PM	Open_Shift.Models.Database	Procedure or function 'GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE' expects parameter '@intYear', which was not supplied.
+12/8/2019 1:31:40 PM	Open_Shift.Models.Database	Procedure or function CREATE_AVAILABILITY has too many arguments specified.

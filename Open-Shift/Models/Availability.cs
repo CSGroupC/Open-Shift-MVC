@@ -28,10 +28,10 @@ namespace Open_Shift.Models
             {
                 ID = (int)dr["AvailabilityID"];
                 AssociateID = (int)dr["AssociateID"];
-                AssociateName = dr["LastName"].ToString() + " " + dr["FirstName"].ToString();
+                AssociateName = dr["FirstName"].ToString() + " " + dr["LastName"].ToString();
                 IsManager = (bool)dr["ManagerStatus"];
-                StartTime = (DateTime)dr["startTime"];
-                EndTime = (DateTime)dr["endTime"];
+                StartTime = (DateTime)dr["StartTime"];
+                EndTime = (DateTime)dr["EndTime"];
 
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

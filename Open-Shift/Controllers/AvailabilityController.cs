@@ -34,7 +34,6 @@ namespace Open_Shift.Controllers
                 Models.Database db = new Database();
 
                 viewModel.Availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["y"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID);
-
             }
 
             return View(viewModel);

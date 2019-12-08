@@ -417,7 +417,7 @@ namespace Open_Shift.Models
                 SqlCommand cm = new SqlCommand("CREATE_AVAILABILITY", cn);
                 int intAvailabilityID = -1;
 
-                SetParameter(ref cm, "@intAvailabilityID", a.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
+                SetParameter(ref cm, "@intAvailabilityID", a.AssociateID, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
                 SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
                 SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
                 SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);

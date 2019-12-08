@@ -152,7 +152,6 @@ export class Calendar {
 
         // Load existing time periods onto the calendar
         for (let id in this.timePeriods) {
-
             let timePeriod = this.timePeriods[id];
 
             let time = {
@@ -162,12 +161,14 @@ export class Calendar {
 
             let associate = null;
 
-            if ("associateId" in timePeriod) {
+            if ("AssociateID" in timePeriod) {
                 associate = this.associates[timePeriod.associateId];
             }
 
             let timePeriodElement = new TimePeriod(this, time, associate);
             timePeriodElement.dataset.id = id;
+
+            console.log(time.start.getDate());
 
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
@@ -272,7 +273,6 @@ export class AvailabilityCalendar extends Calendar {
         super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
 
         this.element.classList.add("availability-calendar");
-
         // NOTE: This is required to allow making new time period templates
         this.timePeriodTemplate = null;
 
@@ -302,14 +302,12 @@ export class AvailabilityCalendar extends Calendar {
                     let dayNumberElement = element.getElementsByClassName("day-number")[0];
 
                     let timePeriod = new TimePeriod(this);
-
                     let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML;
-                    startTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${startTime}:00Z`;
+                    startTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}:00Z`;
                     let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML;
                     if (endTime.split(":")[0] == 24) endTime = "23:59";
-                    endTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${endTime}:00Z`;
-                    console.log("startTime", startTime)
-                    console.log("endTime", endTime)
+                    endTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}:00Z`;
+
                     fetch("Create", {
                         method: "POST",
                         body: JSON.stringify({

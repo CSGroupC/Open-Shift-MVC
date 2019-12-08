@@ -210,6 +210,10 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("Index", "Main");
+                }
                 Models.Home h = new Models.Home();
                 return View(h);
             }

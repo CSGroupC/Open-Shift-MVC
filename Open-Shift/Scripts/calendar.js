@@ -142,7 +142,7 @@ export class Calendar {
                     };
                 }
 
-                object[timePeriod.id] = timePeriod;
+                object[timePeriod.ID] = timePeriod;
                 return object;
 
                 // Start as empty object
@@ -298,11 +298,43 @@ export class AvailabilityCalendar extends Calendar {
                 // If the click originated directly on this element
                 if (this.timePeriodResizal == null && this.timePeriodMovement == null) {
 
-                    // TODO: fetch
 
                     let dayNumberElement = element.getElementsByClassName("day-number")[0];
 
                     let timePeriod = new TimePeriod(this);
+
+                    let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML;
+                    startTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${startTime}:00Z`;
+                    let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML;
+                    if (endTime.split(":")[0] == 24) endTime = "23:59";
+                    endTime = `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}T${endTime}:00Z`;
+                    console.log("startTime", startTime)
+                    console.log("endTime", endTime)
+                    fetch("Create", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            AssociateID: associate.AssociateID,
+                            AssociateName: associate.name,
+                            IsManager: associate.IsManager,
+                            StartTime: startTime,
+                            EndTime: endTime,
+                        }),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-type': 'application/json'
+                        },
+                    })
+                        .then(function (response) {
+                            if (!response.ok) {
+                                throw new Error('Availability/Create responded with ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(function (response) {
+                            if (response.status == "AUTHENTICATION_FAILED") {
+                                location.href = "/Profile/SignIn";
+                            }
+                        });
 
                     element.querySelector(".time-period-section").prepend(timePeriod);
                 }

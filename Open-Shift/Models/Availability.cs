@@ -57,5 +57,16 @@ namespace Open_Shift.Models
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
+        public bool Delete()
+        {
+            try
+            {
+                Database db = new Database();
+                db.DeleteAvailability(this.ID);
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
     }
 }

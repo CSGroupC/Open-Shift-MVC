@@ -275,6 +275,11 @@ export class AvailabilityCalendar extends Calendar {
         // NOTE: This is required to allow making new time period templates
         this.timePeriodTemplate = null;
 
+        if (associate.AssociateID > 0) {
+            associate.name = associate.FirstName + " " + associate.LastName;
+            associate.color = stringToColor(associate.AssociateID + associate.name);
+        }
+
         let card = new CustomElement(`<div class="card time-period-template-card"><div class="card-body"></div></div>`);
         let cardBody = card.getElementsByClassName("card-body")[0];
 
@@ -365,7 +370,7 @@ export class SchedulingCalendar extends Calendar {
         for (let id in this.associates) {
             let associate = this.associates[id];
             let associateElement = new CustomElement(`
-                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.name}</span></span>
+                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.FirstName} ${associate.LastName}</span></span>
             `);
             cardBody.appendChild(associateElement);
         }
@@ -397,7 +402,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) + 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.isManager == true) {
+        if (associate.IsManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) + 1;
             monthDay.dataset.managerCount = managerCount;
         }
@@ -408,7 +413,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) - 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.isManager == true) {
+        if (associate.IsManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) - 1;
             monthDay.dataset.managerCount = managerCount;
         }

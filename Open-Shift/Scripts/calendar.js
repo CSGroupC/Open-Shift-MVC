@@ -318,7 +318,7 @@ export class AvailabilityCalendar extends Calendar {
                 this.timePeriodResizal = null;
             }
             if (this.timePeriodMovement != null) {
-                // TODO: fetch
+                updateAvailability(associate, this.timePeriodResizal.timePeriod, this);
 
                 this.timePeriodMovement.stop(event);
                 this.timePeriodMovement = null;

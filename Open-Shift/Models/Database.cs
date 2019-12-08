@@ -537,6 +537,28 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+
+        public bool DeleteAvailability(int AvailabilityID)
+        {
+            try
+            {
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("DELETE_AVAILABILITY", cn);
+
+                SetParameter(ref cm, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
+
+                try
+                {
+                    cm.ExecuteNonQuery();
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
         private bool GetDBConnection(ref SqlConnection SQLConn)
         {
             try

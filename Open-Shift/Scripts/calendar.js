@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { CreateAvailability } from "./database.js";
+import { createAvailability, deleteAvailability } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -301,9 +301,9 @@ export class AvailabilityCalendar extends Calendar {
 
                     let timePeriod = new TimePeriod(this, { start: null, end: null }, associate);
 
-                    CreateAvailability(associate, timePeriod, element, this);
-
-                    element.querySelector(".time-period-section").prepend(timePeriod);
+                    createAvailability(associate, timePeriod, element, this).then(() => {
+                        element.querySelector(".time-period-section").prepend(timePeriod);
+                    });
                 }
             });
 

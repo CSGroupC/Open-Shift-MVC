@@ -1,5 +1,5 @@
 ﻿
-export function CreateAvailability(associate, timePeriod, monthDay, calendar) {
+export function createAvailability(associate, timePeriod, monthDay, calendar) {
 
     let dayNumberElement = monthDay.getElementsByClassName("day-number")[0];
 
@@ -10,7 +10,7 @@ export function CreateAvailability(associate, timePeriod, monthDay, calendar) {
     if (endTime.split(":")[0] == 24) endTime = "23:59:59";
     endTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
-    fetch("Create", {
+    return fetch("Create", {
         method: "POST",
         body: JSON.stringify({
             AssociateID: associate.AssociateID,
@@ -35,5 +35,29 @@ export function CreateAvailability(associate, timePeriod, monthDay, calendar) {
                 location.href = "/Profile/SignIn";
             }
         });
+}
 
+export function deleteAvailability(availabilityId) {
+
+    return fetch("Delete", {
+        method: "DELETE",
+        body: JSON.stringify({
+            ID: availabilityId
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Availability/Delete responded with ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (response) {
+            if (response.status == "AUTHENTICATION_FAILED") {
+                location.href = "/Profile/SignIn";
+            }
+        });
 }

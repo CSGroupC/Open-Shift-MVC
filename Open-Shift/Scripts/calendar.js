@@ -1,5 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
+import { CreateAvailability } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -298,41 +299,9 @@ export class AvailabilityCalendar extends Calendar {
                 // If the click originated directly on this element
                 if (this.timePeriodResizal == null && this.timePeriodMovement == null) {
 
-                    let dayNumberElement = element.getElementsByClassName("day-number")[0];
-
                     let timePeriod = new TimePeriod(this, { start: null, end: null }, associate);
 
-                    let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML + ":00";
-                    startTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}Z`;
-                    let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML + ":00";
-                    if (endTime.split(":")[0] == 24) endTime = "23:59:59";
-                    endTime = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
-
-                    fetch("Create", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            AssociateID: associate.AssociateID,
-                            AssociateName: associate.name,
-                            IsManager: associate.IsManager,
-                            StartTime: startTime,
-                            EndTime: endTime,
-                        }),
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-type': 'application/json'
-                        },
-                    })
-                        .then(function (response) {
-                            if (!response.ok) {
-                                throw new Error('Availability/Create responded with ' + response.status);
-                            }
-                            return response.json();
-                        })
-                        .then(function (response) {
-                            if (response.status == "AUTHENTICATION_FAILED") {
-                                location.href = "/Profile/SignIn";
-                            }
-                        });
+                    CreateAvailability(associate, timePeriod, element, this);
 
                     element.querySelector(".time-period-section").prepend(timePeriod);
                 }

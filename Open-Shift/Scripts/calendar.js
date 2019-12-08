@@ -128,16 +128,17 @@ export class Calendar {
         this.associates = {};
         this.timePeriods = [];
 
-        if (timePeriods == [] || timePeriods == null) {
+        if (timePeriods != [] && timePeriods != null) {
             // Convert the array into an object with the IDs as keys
             this.timePeriods = timePeriods.reduce((object, timePeriod) => {
 
-                if ("associateId" in timePeriod) {
-                    this.associates[timePeriod.associateId] = {
-                        id: timePeriod.associateId,
-                        name: timePeriod.associateName,
-                        isManager: timePeriod.isManager,
-                        color: stringToColor(timePeriod.associateId + timePeriod.associateName)
+                if ("AssociateID" in timePeriod) {
+
+                    this.associates[timePeriod.AssociateID] = {
+                        id: timePeriod.AssociateID,
+                        name: timePeriod.AssociateName,
+                        isManager: timePeriod.IsManager,
+                        color: stringToColor(timePeriod.AssociateID + timePeriod.AssociateName)
                     };
                 }
 
@@ -155,8 +156,8 @@ export class Calendar {
             let timePeriod = this.timePeriods[id];
 
             let time = {
-                start: stringToDate(timePeriod.startTime),
-                end: stringToDate(timePeriod.endTime)
+                start: stringToDate(timePeriod.StartTime),
+                end: stringToDate(timePeriod.EndTime)
             };
 
             let associate = null;

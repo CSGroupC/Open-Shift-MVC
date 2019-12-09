@@ -65,11 +65,11 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-        //[DisplayName("Confirm Password")]
-        //[Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
-        //public string ConfirmPassword { get; set; }
+		[DisplayName("New Password")]
+		[Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
+		public string NewPassword { get; set; }
 
-        [DisplayName("Associate Title")]
+		[DisplayName("Associate Title")]
         [Required(AllowEmptyStrings = false)]
         public AssociateTitles AssociateTitle { get; set; } = AssociateTitles.NoType;
 
@@ -198,18 +198,19 @@ namespace Open_Shift.Models
         //Not sure if this works
         public bool ResetPassword()
         {
-            //try
-            //	{
-            //User u = new User();
-            //u = (User)HttpContext.Current.Session["CurrentUser"];
-            //Database db = new Database();
-            //u.Password = db.ResetPassword(u.Password);
-            return true;
-            //	}
-            //	catch (Exception ex) { throw new Exception(ex.Message); }
-        }
+			try
+			{
+				User u = new User();
+				u = (User)HttpContext.Current.Session["CurrentUser"];
+				Database db = new Database();
+				Password = u.NewPassword;
+			       db.UpdateUser(this);
+				return true;
+			}
+			catch (Exception ex) { throw new Exception(ex.Message); }
+		}
 
-        public bool RemoveUserSession()
+		public bool RemoveUserSession()
         {
             try
             {

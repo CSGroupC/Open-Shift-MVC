@@ -350,8 +350,21 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
-                h.User.Password = col["User.NewPassword"];
-                return View(h);
+				Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+				u.ResetPassword();
+
+				if (u.IsAuthenticated)
+				{ //user found
+					u.SaveUserSession(); //save the user session object
+					return RedirectToAction("Index", "Main");
+				}
+				else
+				{ //user failed to log in
+					h.User = u;
+					return View(h);
+				}
+				u.Save();
+				return View(h);
 
             }
             catch (Exception ex)

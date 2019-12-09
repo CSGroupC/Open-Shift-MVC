@@ -211,9 +211,7 @@ namespace Open_Shift.Models
 
                 if (intAssociateID > 0)
                 { intReturnValue = 1; }
-                else intReturnValue = 0;
-
-
+                else intReturnValue = 0;     
 
                 switch (intReturnValue)
                 {
@@ -289,13 +287,13 @@ namespace Open_Shift.Models
         }
 
         //Not sure if this will work, so
-        public Models.User ResetPassword(Models.User u)
+        public Models.User ResetPassword(User u)
         {
             try
             {
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("Password", cn);
+                SqlDataAdapter da = new SqlDataAdapter("ResetPassword", cn);
                 DataSet ds;
                 User newUser = null;
 

@@ -51,8 +51,9 @@ export function updateAvailability(associate, timePeriodBar, calendar) {
     endTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
     return fetch("Update", {
-        method: "UPDATE",
+        method: "PUT",
         body: JSON.stringify({
+            ID: timePeriod.dataset.id,
             AssociateID: associate.AssociateID,
             AssociateName: associate.name,
             IsManager: associate.IsManager,

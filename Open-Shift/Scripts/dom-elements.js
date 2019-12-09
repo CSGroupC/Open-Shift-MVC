@@ -1,5 +1,5 @@
 ﻿import { MONTH_NAMES, formatTime, getDateFromQueryString, preventDefault, Event } from "./utilities.js";
-import { deleteAvailability } from "./database.js";
+import { deleteTimePeriod } from "./database.js";
 
 class TimePeriodResizal {
     // NOTE: This class assumes event is a mouse event targeting the handle elment inside a time period

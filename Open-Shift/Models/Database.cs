@@ -503,7 +503,7 @@ namespace Open_Shift.Models
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
                 SqlCommand cm = new SqlCommand("UPDATE_AVAILABILITY", cn);
 
-                SetParameter(ref cm, "@intAvailabilityID", a.AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@intAvailabilityID", a.ID, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
                 SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
                 SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);

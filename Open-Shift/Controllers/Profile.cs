@@ -275,6 +275,7 @@ namespace Open_Shift.Controllers
         {
             try
             {
+
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Main");
@@ -294,13 +295,16 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (Models.User.GetUserSession().IsAuthenticated)
+				if (col["btnCancel"] == "cancel") return RedirectToAction("SignIn", "Profile");
+				if (col["btnClear"] == "clear") return RedirectToAction("SignUp", "Profile");
+
+				if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Main");
                 }
                 Models.Home h = new Models.Home();
-
-                h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
+				
+				h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
                                           col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"]);
@@ -360,8 +364,21 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
-                h.User.Password = col["User.NewPassword"];
-                return View(h);
+				Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+				u.ResetPassword();
+
+				if (u.IsAuthenticated)
+				{ //user found
+					u.SaveUserSession(); //save the user session object
+					return RedirectToAction("Index", "Main");
+				}
+				else
+				{ //user failed to log in
+					h.User = u;
+					return View(h);
+				}
+				u.Save();
+				return View(h);
 
             }
             catch (Exception ex)

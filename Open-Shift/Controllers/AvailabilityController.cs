@@ -58,9 +58,13 @@ namespace Open_Shift.Controllers
 
             var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
 
-            var result = db.InsertAvailability(availability);
+            var id = db.InsertAvailability(availability);
 
-            return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            if (id > 0)
+                return Content("{\"status\": \"SUCCESS\", \"id\": " + id + "}", "application/json");
+            else
+                return Content("{\"status\": \"INSERT_FAILED\"}", "application/json");
+
         }
 
         [HttpPut]

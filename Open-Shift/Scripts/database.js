@@ -86,7 +86,7 @@ export function updateAvailability(associate, timePeriodBar, calendar) {
         });
 }
 
-export function deleteAvailability(availabilityId) {
+export function deleteTimePeriod(availabilityId) {
 
     return fetch("Delete", {
         method: "DELETE",

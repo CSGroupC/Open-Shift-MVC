@@ -184,7 +184,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AvailabilityViewModel.cs" />
-    <Compile Include="ViewModels\SchedulingViewModel.cs" />
+    <Compile Include="ViewModels\ScheduleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\OpenShift.mdf" />

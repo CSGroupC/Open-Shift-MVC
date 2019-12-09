@@ -6,7 +6,7 @@ using Open_Shift.Models;
 
 namespace Open_Shift.ViewModels
 {
-    public class SchedulingViewModel
+    public class ScheduleViewModel
     {
         public User User { get; set; }
         public List<Availability> availabilities { get; set; }

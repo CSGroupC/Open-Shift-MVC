@@ -1,4 +1,5 @@
 ﻿import { MONTH_NAMES, formatTime, getDateFromQueryString, preventDefault, Event } from "./utilities.js";
+import { deleteAvailability } from "./database.js";
 
 class TimePeriodResizal {
     // NOTE: This class assumes event is a mouse event targeting the handle elment inside a time period
@@ -265,8 +266,9 @@ export function TimePeriod(calendar, timeBuffer = { start: null, end: null }, as
     copyButton.onclick = handler;
 
     handler = new Event.PointerHandler((event) => {
-        // TODO: fetch
-        timePeriod.parentElement.removeChild(timePeriod);
+        deleteAvailability(timePeriod.dataset.id).then(() => {
+            timePeriod.parentElement.removeChild(timePeriod);
+        });
     });
 
     // NOTE: onclick will be simulated on mobile browsers

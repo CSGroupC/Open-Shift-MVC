@@ -94,4 +94,19 @@ UPDATE_AVAILABILITY
 		@strNotes [nvarchar](max) = ''
 		
 [GET_SHIFT_STORE_MONTH_YEAR]
+
+[UPDATE_AVAILABILITY]
+
+UPDATE_PASSWORD
+takes @intAssociateID and @strPassword
+
+
+INSERT_RESET_TOKEN
+takes parameters @intAssociateID & @strPasswordResetToken
+inserts reset token into associate title
+
+GET_ASSOC_FROM_RESET_TOKEN
+takes @intAssociateID and @strPasswordResetToken
+selects all from TAssociates where id and reset token match
+
 	

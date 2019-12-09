@@ -28,20 +28,20 @@ namespace Open_Shift.Models
 
 				StoreLocationList = new List<SelectListItem>();
 				StoreLocationList.Add(new SelectListItem() { Value = "", Text = "" });
-				StoreLocationList.Add(new SelectListItem() { Value = "1", Text = "Kotetsu" });
-				StoreLocationList.Add(new SelectListItem() { Value = "2", Text = "Kotetsu-London" });
-				StoreLocationList.Add(new SelectListItem() { Value = "3", Text = "Kotetsu-Brazil" });
+				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.Kotetsu.ToString(), Text = "Kotetsu" });
+				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuLondon.ToString(), Text = "Kotetsu-London" });
+				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuBrazil.ToString(), Text = "Kotetsu-Brazil" });
 
                 IsManager = new List<SelectListItem>();
                 IsManager.Add(new SelectListItem() { Value = "", Text = "" });
-                IsManager.Add(new SelectListItem() { Value = "0", Text = "Associate" });
-                IsManager.Add(new SelectListItem() { Value = "1", Text = "Manager" });
+                IsManager.Add(new SelectListItem() { Value = User.IsManagerEnum.Associate.ToString(), Text = "Associate" });
+                IsManager.Add(new SelectListItem() { Value = User.IsManagerEnum.Manager.ToString(), Text = "Manager" });
 
                 AssociateTitle = new List<SelectListItem>();
                 AssociateTitle.Add(new SelectListItem() { Value = "", Text = "" });
-                AssociateTitle.Add(new SelectListItem() { Value = "1", Text = "Cook" });
-                AssociateTitle.Add(new SelectListItem() { Value = "2", Text = "Server" });
-                AssociateTitle.Add(new SelectListItem() { Value = "3", Text = "Owner" });
+                AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Cook.ToString(), Text = "Cook" });
+                AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Server.ToString(), Text = "Server" });
+                AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Owner.ToString(), Text = "Owner" });
 
             }
 			catch (Exception ex)

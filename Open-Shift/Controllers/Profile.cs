@@ -95,7 +95,7 @@ namespace Open_Shift.Controllers
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
-                if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
+                if (col["btnCancel"] == "cancel") return RedirectToAction("Index", "Profile");
 
                 {
                     u = Models.User.GetUserSession();
@@ -313,8 +313,18 @@ namespace Open_Shift.Controllers
                 if (h.User.IsAuthenticated)
                 { //user found
                     h.User.SaveUserSession(); //save the user session object
+
+                    //Send text message to new user
                     Controllers.SmsController sms = new Controllers.SmsController();
-                    sms.SendSms(h.User.Phonenumber);
+                    // sms.SendSms(h.User.Phonenumber);
+
+                    //Send email to new user
+                    string fullName = h.User.FirstName + ' ' + h.User.LastName;
+                    Controllers.EmailController email = new Controllers.EmailController();
+                    email.SendEmail(h.User.Email, fullName);
+
+
+
                     return RedirectToAction("Index", "Main");
                 }
                 else

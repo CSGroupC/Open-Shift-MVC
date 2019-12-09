@@ -16,12 +16,12 @@ namespace Open_Shift.Models
         public int AssociateID = 0;
 
         [DisplayName("First Name")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s]*$", ErrorMessage = "First Name Cannot Contain Numbers")]
+        [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "First Name Cannot Contain Numbers")]
         [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
         [DisplayName("Last Name")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s]*$", ErrorMessage = "Last Name Cannot Contain Numbers")]
+        [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "Last Name Cannot Contain Numbers")]
         [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
@@ -48,7 +48,7 @@ namespace Open_Shift.Models
         public int? EmployeeNumber { get; set; }
 
         [DisplayName("Phone Number")]
-        [RegularExpression(@"^[+]{1}[0-9]{11}$", ErrorMessage = "Error: Please format your phonenumber as: '+1234567890'")]
+        [RegularExpression(@"^[+]{1}[0-9]{11,13}$", ErrorMessage = "Error: Please format your phonenumber as '+' with country code and area code")]
         [Required(AllowEmptyStrings = false)]
         public string Phonenumber { get; set; }
 

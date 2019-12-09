@@ -24,7 +24,7 @@ namespace Open_Shift.Controllers
             var receiverEmail = new MailAddress(UserEmail, Name);
             var password = ConfigurationManager.AppSettings["EmailPassword"];
             var sub = "Welcome to OpenShift";
-            var body = "Thanks for signing up!";
+            var body = "Thanks, " + Name + ", for signing up to <b>OpenShift</b>!";
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -40,6 +40,7 @@ namespace Open_Shift.Controllers
                 Body = body
             })
             {
+                mess.IsBodyHtml = true;
                 smtp.Send(mess);
             }
             return View();

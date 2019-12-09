@@ -10,15 +10,17 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
     if (endTime.split(":")[0] == 24) endTime = "23:59:59";
     endTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
+    let availability = {
+        AssociateID: associate.AssociateID,
+        AssociateName: associate.name,
+        IsManager: associate.IsManager,
+        StartTime: startTime,
+        EndTime: endTime,
+    };
+
     return fetch("Create", {
         method: "POST",
-        body: JSON.stringify({
-            AssociateID: associate.AssociateID,
-            AssociateName: associate.name,
-            IsManager: associate.IsManager,
-            StartTime: startTime,
-            EndTime: endTime,
-        }),
+        body: JSON.stringify(availability),
         headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'
@@ -33,6 +35,12 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
         .then(function (response) {
             if (response.status == "AUTHENTICATION_FAILED") {
                 location.href = "/Profile/SignIn";
+            } else if (response.status == "INSERT_FAILED") {
+                // TODO: Tell the user something went wrong
+                console.error("/Profile/SignIn returned INSERT_FAILED");
+            } else {
+                availability.ID = response.id;
+                timePeriod.dataset.id = response.id;
             }
         });
 }

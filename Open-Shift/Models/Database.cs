@@ -402,25 +402,39 @@ namespace Open_Shift.Models
         {
             try
             {
-                SqlConnection cn = null;
-                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("CREATE_AVAILABILITY", cn);
                 int intAvailabilityID = -1;
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                var da = new SqlDataAdapter("CREATE_AVAILABILITY", cn);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-                SetParameter(ref cm, "@intAvailabilityID", a.AssociateID, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
-                SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
-                SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
-                SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
-                SetParameter(ref cm, "@strNotes", a.Notes, SqlDbType.NVarChar);
+                SetParameter(ref da, "@intAssociateID", a.AssociateID, SqlDbType.Int);
+                SetParameter(ref da, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
+                SetParameter(ref da, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
+                SetParameter(ref da, "@strNotes", a.Notes, SqlDbType.NVarChar);
 
-                cm.ExecuteReader();
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
 
-                intAvailabilityID = (int)cm.Parameters["@intAvailabilityID"].Value;
-
-                CloseDBConnection(ref cn);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        // NOTE: Just casting to int with (int) is not enough apparently
+                        intAvailabilityID = Convert.ToInt32(dr["intAvailabilityID"].ToString());
+                    }
+                }
 
                 if (intAvailabilityID > 0)
-                    return (int)cm.Parameters["@intAvailabilityID"].Value;
+                    return intAvailabilityID;
                 else
                     return 0;
 

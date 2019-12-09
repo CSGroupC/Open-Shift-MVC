@@ -211,7 +211,7 @@ namespace Open_Shift.Models
 
                 if (intAssociateID > 0)
                 { intReturnValue = 1; }
-                else intReturnValue = 0;     
+                else intReturnValue = 0;
 
                 switch (intReturnValue)
                 {
@@ -503,13 +503,20 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
                 SetParameter(ref cm, "@strNotes", a.Notes, SqlDbType.NVarChar);
 
-                try
-                {
-                    cm.ExecuteNonQuery();
-                }
-                finally { CloseDBConnection(ref cn); }
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 
-                return true;
+                cm.ExecuteReader();
+
+                int intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: //new availability created
+                        return true;
+                    default:
+                        return false;
+                }
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

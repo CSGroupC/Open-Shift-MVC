@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, updateAvailability, deleteAvailability } from "./database.js";
+import { createAvailability, updateAvailability } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -385,14 +385,18 @@ export class SchedulingCalendar extends Calendar {
         let monthDay = timePeriodBar.closest(".month-day");
 
         if (timePeriodBar.classList.contains("scheduled") == false) {
-            // TODO: fetch
             timePeriodBar.classList.add("scheduled");
             this.addAssociateToDay(monthDay, associate);
         } else {
-            // TODO: fetch
             timePeriodBar.classList.remove("scheduled");
             this.removeAssociateFromDay(monthDay, associate);
         }
+
+        /*
+        createAvailability(associate, timePeriod, element, this).then(() => {
+            element.querySelector(".time-period-section").prepend(timePeriod);
+        });
+        */
     }
 
 

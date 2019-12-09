@@ -119,13 +119,13 @@
                 <div>@Html.ValidationMessageFor(model => model.User.Email)</div>
             </div>
             @*<div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>
-                <div required>@Html.TextBoxFor(model => model.User.ConfirmEmail)</div>
-            </div>*@
+                    <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>
+                    <div required>@Html.TextBoxFor(model => model.User.ConfirmEmail)</div>
+                </div>*@
             @*<div>
-                <div>@Html.LabelFor(model => model.User.Password)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
-            </div>*@
+                    <div>@Html.LabelFor(model => model.User.Password)</div>
+                    <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
+                </div>*@
         </div>
 
 
@@ -133,10 +133,10 @@
     <br />
     <div class="inline">
         @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
         <br />
         <br />
         <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
-        <button class="button-action" id="btnClose" name="btnCancel" value="cancel">Cancel</button>
+        <button class="button-action" id="btnClose" name="btnCancel" value="cancel" type="button" onclick="location.href='/Profile'">Cancel</button>
     </div>
 }

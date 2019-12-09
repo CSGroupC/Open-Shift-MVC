@@ -212,7 +212,7 @@ namespace Open_Shift.Models
                 switch (intReturnValue)
                 {
                     case 1: //new user created
-                        return (int)cm.Parameters["@intAssociateID"].Value;
+                        return intAssociateID;
                     default:
                         return 0;
                 }

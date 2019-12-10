@@ -17,14 +17,28 @@ namespace Open_Shift.Controllers
     public class EmailController : Controller
     {
         // GET: Sms
-        public ActionResult SendEmail(string UserEmail, string Name)
+        //this area NewAssociateEmal()
+
+        //    Returns useremail, name, subject, body
+
+        //this area NewAssociateManagerEmail()
+
+        //    returns useremail, name, subject, body
+
+        public static void NewAssociateEmail(string UserEmail, String Name)
+        {
+            string sub = "Welcome to OpenShift!";
+            string body = "Thank you so much for signing up to <b>Open Shift</b>!";
+            SendEmail(UserEmail, Name, sub, body);
+        }
+
+
+        public static void SendEmail(string UserEmail, string Name, string sub, string body)
         {
 
             var senderEmail = new MailAddress(ConfigurationManager.AppSettings["OpenShiftEmail"], "OpenShift Support");
             var receiverEmail = new MailAddress(UserEmail, Name);
             var password = ConfigurationManager.AppSettings["EmailPassword"];
-            var sub = "Welcome to OpenShift";
-            var body = "Thanks, " + Name + ", for signing up to <b>OpenShift</b>!";
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -43,7 +57,7 @@ namespace Open_Shift.Controllers
                 mess.IsBodyHtml = true;
                 smtp.Send(mess);
             }
-            return View();
+            //return View();
         }
 
     }

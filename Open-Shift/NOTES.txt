@@ -12,5 +12,3 @@ TODO:
 Annie:
 
 TODO:
-1. Add an availability ID field to the shifts table, to show which availability the shift was created from
-2. Add the availability ID field to the shift Create, Read, and Update procedures

@@ -570,11 +570,11 @@ namespace Open_Shift.Models
 
                 if (associateID == 0)
                 {
-                    da = new SqlDataAdapter("GET_SHIFTS_MONTHLY", cn);
+                    da = new SqlDataAdapter("GET_SHIFT_STORE_MONTH_YEAR", cn);
                 }
                 else
                 {
-                    da = new SqlDataAdapter("GET_SHIFTS_MONTHLY_BY_ASSOCIATE", cn);
+                    da = new SqlDataAdapter("GET_SHIFT_STORE_MONTH_YEAR", cn);
                 }
 
                 List<Shift> shifts = new List<Shift>();
@@ -583,7 +583,7 @@ namespace Open_Shift.Models
 
                 SetParameter(ref da, "@intStoreID", storeID, SqlDbType.Int);
                 SetParameter(ref da, "@intYear", year, SqlDbType.Int);
-                SetParameter(ref da, "@intMonth", month, SqlDbType.Int);
+                SetParameter(ref da, "@intMonthID", month, SqlDbType.Int);
                 if (associateID > 0) SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
 
                 try

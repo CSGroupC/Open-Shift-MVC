@@ -1,9 +1,9 @@
 ﻿import { SchedulingCalendar } from "../Scripts/calendar.js";
 
 const data = {
-    associate: JSON.parse(document.getElementById("availability-data").dataset.associate),
-    availabilities: JSON.parse(document.getElementById("availability-data").dataset.availabilities),
-    shifts: JSON.parse(document.getElementById("availability-data").dataset.shifts),
+    associate: JSON.parse(document.getElementById("schedule-data").dataset.associate),
+    availabilities: JSON.parse(document.getElementById("schedule-data").dataset.availabilities),
+    shifts: JSON.parse(document.getElementById("schedule-data").dataset.shifts),
 };
 
 let workingHoursStart = "17:00";
@@ -14,5 +14,5 @@ let associateMinimum = 2;
 let managerMinimum = 1;
 
 let container = document.getElementById("scheduling-calendar");
-let calendar = new SchedulingCalendar(associateMinimum, managerMinimum, shifts, availabilities, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
+let calendar = new SchedulingCalendar(associateMinimum, managerMinimum, data.shifts, data.availabilities, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
 calendar.appendTo(container);

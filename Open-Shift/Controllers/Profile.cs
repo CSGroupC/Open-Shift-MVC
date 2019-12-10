@@ -322,9 +322,7 @@ namespace Open_Shift.Controllers
 
                     //Send email to new user
                     string fullName = h.User.FirstName + ' ' + h.User.LastName;
-                    Controllers.EmailController email = new Controllers.EmailController();
-                    email.SendEmail(h.User.Email, fullName);
-
+                    EmailController.NewAssociateEmail(h.User.Email, fullName);
 
 
                     return RedirectToAction("Index", "Main");

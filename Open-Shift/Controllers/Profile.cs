@@ -295,8 +295,6 @@ namespace Open_Shift.Controllers
         {
             try
             {
-				if (col["btnCancel"] == "cancel") return RedirectToAction("SignIn", "Profile");
-				if (col["btnClear"] == "clear") return RedirectToAction("SignUp", "Profile");
 
 				if (Models.User.GetUserSession().IsAuthenticated)
                 {

@@ -9,7 +9,7 @@ namespace Open_Shift.ViewModels
     public class ScheduleViewModel
     {
         public User User { get; set; }
-        public List<Availability> availabilities { get; set; }
-        public List<Shift> shifts { get; set; }
+        public List<Availability> Availabilities { get; set; }
+        public List<Shift> Shifts { get; set; }
     }
 }

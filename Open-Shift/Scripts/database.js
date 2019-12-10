@@ -45,12 +45,10 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
         });
 }
 
-export function updateAvailability(associate, timePeriodBar, calendar) {
+export function updateAvailability(associate, timePeriod, calendar) {
 
-    let timePeriod = timePeriodBar.closest(".time-period");
     let monthDay = timePeriod.closest(".month-day");
     let dayNumberElement = monthDay.getElementsByClassName("day-number")[0];
-
     let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML + ":00";
     startTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}Z`;
     let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML + ":00";

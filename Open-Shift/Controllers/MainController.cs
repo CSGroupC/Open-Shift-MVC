@@ -14,6 +14,11 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn", "Profile");
+                }
+
                 Models.Home h = new Models.Home();
                 h.User = Models.User.GetUserSession();
 
@@ -31,6 +36,11 @@ namespace Open_Shift.Controllers
         {
             try
             {
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn", "Profile");
+                }
+
                 Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 

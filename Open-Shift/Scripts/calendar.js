@@ -312,14 +312,16 @@ export class AvailabilityCalendar extends Calendar {
         let handler = new Event.PointerHandler((event) => {
 
             if (this.timePeriodResizal != null) {
-                updateAvailability(associate, this.timePeriodResizal.timePeriod, this);
-
+                if (this.timePeriodResizal.timePeriod != this.timePeriodTemplate) {
+                    updateAvailability(associate, this.timePeriodResizal.timePeriod, this);
+                }
                 this.timePeriodResizal.stop(event);
                 this.timePeriodResizal = null;
             }
             if (this.timePeriodMovement != null) {
-                updateAvailability(associate, this.timePeriodResizal.timePeriod, this);
-
+                if (this.timePeriodMovement.timePeriod != this.timePeriodTemplate) {
+                    updateAvailability(associate, this.timePeriodMovement.timePeriod, this);
+                }
                 this.timePeriodMovement.stop(event);
                 this.timePeriodMovement = null;
             }

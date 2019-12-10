@@ -28,7 +28,7 @@
         </div>
         <div class="section-bottom">
             <div class="bold">Birthday</div>
-            <div>@Model.User.Birthday</div>
+            <div>@Html.DisplayFor(model => model.User.Birthday, "{0:yyyy/MM/dd}")</div>
         </div>
         <div class="section-bottom">
             <div class="bold">AddressLine1</div>

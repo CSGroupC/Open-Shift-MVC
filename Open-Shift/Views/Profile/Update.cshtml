@@ -52,7 +52,7 @@
 
             <div>
                 <div>@Html.LabelFor(model => model.User.Birthday)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Birthday)</div>
+                <div required>@Html.TextBoxFor(model => model.User.Birthday, "{0:yyyy/MM/dd}")</div>
                 <div>@Html.ValidationMessageFor(model => model.User.Birthday)</div>
             </div>
 
@@ -80,7 +80,7 @@
                 <div>
                     <div class="id-lists right-margin05">
                         <div>@Html.LabelFor(model => model.User.StatusID, "Status")</div>
-                        <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID), new { @title = "Select your status." })</div>
+                        <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID, new List<SelectListItem>{ Model.Lists.StatusList[0] }), new { @title = "Select your status." })</div>
                         <div>@Html.ValidationMessageFor(model => model.User.StatusID)</div>
                     </div>
                     <div class="id-lists right-margin05">

@@ -8,28 +8,28 @@ namespace Open_Shift.Models
 {
     public class Shift
     {
-        public int Id { get; set; }
-        public int AvailabilityId { get; set; }
-        public int AssociateId { get; set; }
+        public int ID { get; set; }
+        public int AvailabilityID { get; set; }
+        public int AssociateID { get; set; }
         public string AssociateName { get; set; }
         public bool IsManager { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
         public Shift(DataRow dr)
-		{
-			try
-			{
-                Id = (int)dr["ID"];
-                AvailabilityId = (int)dr["AvailabilityId"];
-                AssociateId = (int)dr["AssociateID"];
-                AssociateName = dr["AssociateName"].ToString( );
+        {
+            try
+            {
+                ID = (int)dr["ID"];
+                AvailabilityID = (int)dr["AvailabilityID"];
+                AssociateID = (int)dr["AssociateID"];
+                AssociateName = dr["AssociateName"].ToString();
                 IsManager = (bool)dr["IsManager"];
                 StartTime = (DateTime)dr["StartTime"];
                 EndTime = (DateTime)dr["EndTime"];
 
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
     }
 }

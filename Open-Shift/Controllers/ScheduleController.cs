@@ -23,17 +23,19 @@ namespace Open_Shift.Controllers
                 return RedirectToAction("SignIn", "Profile");
             }
 
-            AvailabilityViewModel viewModel = new AvailabilityViewModel
+            var viewModel = new ScheduleViewModel
             {
                 User = u,
-                Availabilities = null
+                Availabilities = null,
+                Shifts = null
             };
 
             if (Request.QueryString["m"] != null && Request.QueryString["y"] != null)
             {
                 Models.Database db = new Database();
 
-                viewModel.Availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["y"]), Convert.ToByte(Request.QueryString["m"]), u.AssociateID);
+                viewModel.Availabilities = db.GetAvailabilities(u.StoreID, Convert.ToInt32(Request.QueryString["y"]), Convert.ToByte(Request.QueryString["m"]));
+                viewModel.Shifts = db.GetShifts(u.StoreID, Convert.ToInt32(Request.QueryString["y"]), Convert.ToByte(Request.QueryString["m"]));
             }
 
             return View(viewModel);

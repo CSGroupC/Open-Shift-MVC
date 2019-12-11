@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,8 @@ using Open_Shift.Models;
 using Open_Shift.ViewModels;
 using System.IO;
 using Newtonsoft.Json.Converters;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Open_Shift.Controllers
 {
@@ -16,8 +19,10 @@ namespace Open_Shift.Controllers
         [HttpGet]
         public ActionResult EmailVerification(string token)
         {
-            //check verification token in db
-            // if the token exists, change the user to active 
+
+            Models.Database db = new Database();
+            db.ApproveNewAssociate(token);
+
 
             return RedirectToAction("Index", "Main");
 

@@ -333,10 +333,9 @@ namespace Open_Shift.Controllers
                     Controllers.SmsController sms = new Controllers.SmsController();
                     // sms.SendSms(h.User.Phonenumber);
 
-                    //Send email to new user
-                    string fullName = h.User.FirstName + ' ' + h.User.LastName;
-                    EmailController.NewAssociateEmail(h.User.Email, fullName);
-                    EmailController.NewAssociateEmailManager("jdboris@yahoo.com", "Joe 'Big Boss' Boris");
+                    // //Send email to new user
+                    //EmailController.NewAssociateEmail(h.User.Email, fullName);
+                    EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
 
                     return RedirectToAction("Index", "Main");

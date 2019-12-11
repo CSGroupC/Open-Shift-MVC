@@ -16,28 +16,33 @@ namespace Open_Shift.Controllers
 {
     public class EmailController : Controller
     {
-        public static void NewAssociateEmail(string UserEmail, String Name)
+        public static void NewAssociateEmail(string UserEmail, string FirstName, string LastName)
         {
             string sub = "Welcome to OpenShift!";
             string body = "Thank you so much for signing up to <b>Open Shift</b>!";
-            SendEmail(UserEmail, Name, sub, body);
+            SendEmail(UserEmail, FirstName, LastName, sub, body);
         }
 
-        public static void NewAssociateEmailManager(string UserEmail, String Name)
+        public static void NewAssociateVerification(string UserEmail, string FirstName, string LastName, string EmailVerificationToken)
         {
-            string sub = "OpenShift: A New User Signed Up!";
-            string body = "click <a href='http://localhost:4040/Profile/' target='_blank'>here</a> to give your new user access!";
-            SendEmail(UserEmail, Name, sub, body);
+            string sub = "Welcome To OpenShift! Please Verify Your Email";
+            string body = "Hi " + FirstName + "! <br><br> Thanks so much for signing up for OpenShift!" +
+                " Please click <a href='http://localhost:4040/Verification/EmailVerification/?token=" + EmailVerificationToken + "' target='_blank'><b>here</b></a> to verify your email. " +
+                "After you verify your email, your manager will approve your access into OpenShift. We look forward to helping you take the work out of scheduling!" +
+                "<br><br>" +
+                "Your OpenShift Support Team";
+            SendEmail(UserEmail, FirstName, LastName, sub, body);
         }
 
 
 
         //this void sends all emails. ***Must specify UserEmail, Name, subject ( called "sub" ) and body in all voids above
-        public static void SendEmail(string UserEmail, string Name, string sub, string body)
+        public static void SendEmail(string UserEmail, string FirstName, string LastName, string sub, string body)
         {
 
+            var FullName = FirstName + ' ' + LastName;
             var senderEmail = new MailAddress(ConfigurationManager.AppSettings["OpenShiftEmail"], "OpenShift Support");
-            var receiverEmail = new MailAddress(UserEmail, Name);
+            var receiverEmail = new MailAddress(UserEmail, FullName );
             var password = ConfigurationManager.AppSettings["EmailPassword"];
             var smtp = new SmtpClient
             {

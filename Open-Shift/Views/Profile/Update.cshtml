@@ -9,11 +9,9 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<h3 position="fixed">Kotetsu Scheduling App</h3>
+<h1 class="mb-4">Account</h1>
 @using (Html.BeginForm("Update", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <h2>@Model.User.FirstName @Model.User.LastName</h2>
-    <p>To make changes to your profile enter your information below and click the Update button.</p>
 
     @*<d@*iv id="group-image">
             @if (Model.User.UserImage.ImageID > 0)
@@ -80,7 +78,7 @@
                 <div>
                     <div class="id-lists right-margin05">
                         <div>@Html.LabelFor(model => model.User.StatusID, "Status")</div>
-                        <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID, new List<SelectListItem>{ Model.Lists.StatusList[0] }), new { @title = "Select your status." })</div>
+                        <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID, new List<SelectListItem> { Model.Lists.StatusList[0] }), new { @title = "Select your status." })</div>
                         <div>@Html.ValidationMessageFor(model => model.User.StatusID)</div>
                     </div>
                     <div class="id-lists right-margin05">

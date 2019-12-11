@@ -2,13 +2,14 @@
     padding-top: 50px;
     padding-bottom: 20px;
     margin: 0;
-    background-color:beige;
+    background-color: #fafafa;
 }
-.center{
-position:relative;
-top:-10px;
-left:200px;
-font: bold;
+
+.center {
+    position: relative;
+    top: -10px;
+    left: 200px;
+    font: bold;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -24,12 +25,6 @@ font: bold;
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
 
 .w3-container {
     margin: 0;
@@ -41,11 +36,18 @@ h2 {
 
 #frankie-bar {
     overflow: hidden;
-    background-color:#333;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
+    border-bottom: 1px solid #CCC;
+    background-color: #FFF;
+    font-size: 18px;
+    z-index: 1;
 }
+
+    #frankie-bar a {
+        text-decoration: none;
+    }
 
 #public-groups a, #private-groups a {
     text-decoration: none;
@@ -64,68 +66,76 @@ h2 {
     padding: 0.4em;
     margin-right: 1em;
     margin-bottom: 1em;
-
     display: inline-block;
 }
+
 .PersonalInfo {
     position: absolute;
     left: -230px;
     top: -20px;
-   
 }
+
 .container-main {
     display: flex;
-    border: 1px solid black;
-    outline-style: solid;
-    outline-color: gray;
-    padding: 0.4em;
+    background-color: #FFF;
     max-width: 690px;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+    padding: 20px;
 }
+
+    .container-main > * {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 
 .container {
     position: relative;
     top: 2px;
     width: 210px;
-    border: 1px solid black;
     border-radius: 0.3em;
     padding: 0.6em;
     margin-bottom: auto;
     display: block;
 }
- .profile {
-    position: relative;
- left:-390px;
-}
+
 .float {
-    position:absolute;
+    position: absolute;
     top: 201px;
-   left:255px;
-
+    left: 255px;
 }
-#main{
-    text-align:center;
-    display:inline-block;
 
+#main {
+    text-align: center;
+    display: inline-block;
+}
 
-    
+a:hover {
+    background-color: darksalmon;
 }
-a:hover{
-    background-color:darksalmon;
-}
+
 .right {
     position: absolute;
     top: 201px;
     left: 470px;
 }
+
 .container1 {
     position: absolute;
     top: 400px;
     left: 470px;
 }
+
 #workspace {
     margin: 0 1em 0 2em;
     padding-bottom: 1em;
+    padding-top: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .inline {
     display: inline;
 }
@@ -152,7 +162,6 @@ a:hover{
 }
 
 .section-bottom {
- 
     display: block;
 }
 
@@ -306,7 +315,6 @@ button, input[type=submit], input[type=button] {
     -webkit-border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     border-radius: 0.2em;
-    margin-right: 0.5em;
 }
 
     button:hover, input[type=submit]:hover, input[type=button]:hover {
@@ -353,10 +361,50 @@ button, input[type=submit], input[type=button] {
     display: none;
 }
 
+
+/*
+Signin
+*/
+
+.signin-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 280px;
+}
+
+    .signin-form a {
+        text-align: center;
+    }
+
+
+/*
+Availability
+*/
+#availability-calendar {
+    width: 100%;
+}
+
+/*
+Scheduling
+*/
+#schedule-calendar {
+    width: 100%;
+}
+
+
+
 @media only screen and (max-width : 42em) {
     #workspace {
         margin-left: 1.0em;
         padding-bottom: 0.25em;
+    }
+
+    #frankie-bar .link-text {
+        display: none;
+    }
+
+    .signup-form {
+        width: 100%;
     }
 }
 
@@ -366,10 +414,10 @@ button, input[type=submit], input[type=button] {
         flex-direction: column;
     }
 
-    .container-main > * {
-        margin-bottom: 10px;
-        width: 100%;
-    }
+        .container-main > * {
+            margin-bottom: 10px;
+            width: 100%;
+        }
 
     #workspace {
         margin-right: 0.5em;
@@ -441,4 +489,3 @@ button, input[type=submit], input[type=button] {
         width: 18.25em;
     }
 }
-

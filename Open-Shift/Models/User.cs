@@ -77,7 +77,7 @@ namespace Open_Shift.Models
 
         public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
-        public IsManagerEnum IsManager { get; set; } = IsManagerEnum.NoType; //by default
+        public IsManagerEnum IsManager { get; set; } = IsManagerEnum.Associate; //by default
         public bool LoginAttempted { get; set; } = false;
 
         public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
@@ -108,11 +108,11 @@ namespace Open_Shift.Models
             KotetsuBrazil = 3
         }
 
+        // NOTE: Since this enum will be converted to a boolean, it is MUCH easier to use 1 and 0 as true and false
         public enum IsManagerEnum
         {
-            NoType = 0,
-            Associate = 1,
-            Manager = 2
+            Associate = 0,
+            Manager = 1
         }
 
 

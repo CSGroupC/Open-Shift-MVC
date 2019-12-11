@@ -38,7 +38,7 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
             } else if (response.status == "INSERT_FAILED") {
                 // TODO: Tell the user something went wrong
                 console.error("/Profile/SignIn returned INSERT_FAILED");
-            } else {
+            } else if (response.status == "SUCCESS") {
                 availability.ID = response.id;
                 timePeriod.dataset.availabilityId = response.id;
             }
@@ -154,7 +154,7 @@ export function createShift(associate, timePeriod, monthDay, calendar) {
             } else if (response.status == "INSERT_FAILED") {
                 // TODO: Tell the user something went wrong
                 console.error("/Profile/SignIn returned INSERT_FAILED");
-            } else {
+            } else if (response.status == "SUCCESS") {
                 shift.ID = response.id;
                 timePeriod.dataset.shiftId = response.id;
             }

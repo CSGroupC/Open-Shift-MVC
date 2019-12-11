@@ -241,8 +241,7 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
-                // NOTE: Subtract 1 to shift the values to 0/1 rather than 1/2
-                SetParameter(ref cm, "@blnIsManager", (u.IsManager-1), SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strEmailVerificationToken", u.EmailVerificationToken, SqlDbType.NVarChar);
 
                 cm.ExecuteReader();

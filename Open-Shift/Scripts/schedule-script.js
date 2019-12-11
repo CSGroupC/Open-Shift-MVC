@@ -16,5 +16,5 @@ let associateMinimum = 2;
 let managerMinimum = 1;
 
 let container = document.getElementById("schedule-calendar");
-let calendar = new SchedulingCalendar(data.storeId, associateMinimum, managerMinimum, data.shifts, data.availabilities, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
+let calendar = new SchedulingCalendar(data.associate, data.storeId, associateMinimum, managerMinimum, data.shifts, data.availabilities, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
 calendar.appendTo(container);

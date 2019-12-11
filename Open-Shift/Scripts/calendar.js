@@ -7,12 +7,13 @@ let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday
 export class Calendar {
 
     // Strings in format "HH:MM"
-    constructor(timePeriods, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn) {
+    constructor(associate, timePeriods, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn) {
 
         // Require mouseup and mousedown to target the same element in order for click events to fire
         Event.preventFalseClicks();
         //Event.registerTouchEvent();
 
+        this.associate = associate;
         this.twentyFourHourMode = true;
         this.minutesPerColumn = minutesPerColumn;
 
@@ -36,6 +37,8 @@ export class Calendar {
         this.focusedTimePeriod = null;
 
         this.currentDate = new Date();
+
+        this.element.dataset.isManager = this.associate.IsManager;
 
         // Objects that represent an instance of resizing or movement
         this.timePeriodResizal = null;
@@ -347,8 +350,8 @@ export class AvailabilityCalendar extends Calendar {
 }
 
 export class SchedulingCalendar extends Calendar {
-    constructor(storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
-        super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
+    constructor(associate = null, storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
+        super(associate, availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
         this.storeId = storeId;
 
         this.element.classList.add("scheduling-calendar");

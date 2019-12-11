@@ -64,7 +64,7 @@ namespace Open_Shift.Models
                 }
                 else
                 {
-                    db.UpdateShift(this);
+                    // db.UpdateShift(this);
                 }
 
                 return true;

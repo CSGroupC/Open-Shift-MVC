@@ -41,8 +41,8 @@ namespace Open_Shift.Controllers
         {
 
             var FullName = FirstName + ' ' + LastName;
-            var senderEmail = new MailAddress(ConfigurationManager.AppSettings["OpenShiftEmail"], "OpenShift Support");
-            var receiverEmail = new MailAddress(UserEmail, FullName );
+            var senderEmail = new MailAddress(ConfigurationManager.AppSettings["OpenShiftEmail"], "OpenShift Support", System.Text.Encoding.UTF8);
+            var receiverEmail = new MailAddress(UserEmail, FullName);
             var password = ConfigurationManager.AppSettings["EmailPassword"];
             var smtp = new SmtpClient
             {
@@ -50,6 +50,7 @@ namespace Open_Shift.Controllers
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
+                DeliveryFormat = SmtpDeliveryFormat.International,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(senderEmail.Address, password)
             };

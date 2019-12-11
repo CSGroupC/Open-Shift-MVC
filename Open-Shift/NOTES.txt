@@ -8,6 +8,7 @@ Joe:
 
 TODO:
 1. Account for User statuses
+2. Indicate which store a User is a manager at, and account for that
 
 Annie:
 

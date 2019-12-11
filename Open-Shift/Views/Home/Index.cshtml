@@ -34,54 +34,61 @@
     Stores
 </h1>
 
-<div class="h2 text-left w-100">
-    Kotetsu
-</div>
-<div class="d-flex store-info-1 w-100">
-    <address class="card mb-3">
-        <div class="card-body">
-            <iframe frameborder="0" style="border:0"
-                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Model.Stores[0].StoreName @Model.Stores[0].AddressLine1 @Model.Stores[0].AddressLine2" allowfullscreen></iframe>
-            <div class="text-muted">
-                @Model.Stores[0].AddressLine1 <br />
-                @Model.Stores[0].AddressLine2
-            </div>
-        </div>
-    </address>
-
-    <address class="card ml-3">
-
-        <div class="card-body">
-            <b>Hours</b>  <br />
-            Sunday:	    <strong>closed</strong> <br />
-            Monday:	    17:00–24:00 <br />
-            Tuesday:	    17:00–24:00<br />
-            Wednesday:	17:00–24:00<br />
-            Thursday:	17:00–24:00 <br />
-            Friday:	    17:00–24:00 <br />
-            Saturday:	<strong>closed</strong> <br />
-        </div>
-    </address>
-</div>
-<div class="card mb-3 w-100">
-    <div class="card-body">
-        <b>About</b>
-        <p>
-            @Model.Stores[0].Description
-        </p>
-    </div>
-</div>
-
-@if ((int)Model.User.IsManager == 1)
+@foreach (var Store in Model.Stores)
 {
-    <h1 class="mb-4">Associates</h1>
+    <div class="h2 text-left w-100">
+        Kotetsu
+    </div>
+    <div class="d-flex store-info-1 w-100">
+        <address class="card mb-3">
+            <div class="card-body">
+                <iframe frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Store.StoreName @Store.AddressLine1 @Store.AddressLine2" allowfullscreen></iframe>
+                <div class="text-muted">
+                    @Store.AddressLine1 <br />
+                    @Store.AddressLine2
+                </div>
+            </div>
+        </address>
 
+        <address class="card ml-3">
 
+            <div class="card-body">
+                <b>Hours</b>  <br />
+                Sunday:	    <strong>closed</strong> <br />
+                Monday:	    17:00–24:00 <br />
+                Tuesday:	    17:00–24:00<br />
+                Wednesday:	17:00–24:00<br />
+                Thursday:	17:00–24:00 <br />
+                Friday:	    17:00–24:00 <br />
+                Saturday:	<strong>closed</strong> <br />
+            </div>
+        </address>
+    </div>
     <div class="card mb-3 w-100">
         <div class="card-body">
-            Model.
+            <b>About</b>
+            <p>
+                @Store.Description
+            </p>
         </div>
     </div>
+
+    if ((int)Model.User.IsManager == 1)
+    {
+        <h1 class="mb-4">Associates</h1>
+
+        <div class="card mb-3 w-100">
+            <div class="card-body">
+                @foreach (var Associate in Store.Associates)
+                {
+                    <div>
+                        @(Associate.FirstName + " " + Associate.LastName)
+                    </div>
+                }
+            </div>
+        </div>
+    }
 }
 
 <strong>Open Shift Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />

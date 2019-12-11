@@ -169,6 +169,9 @@ export class Calendar {
             let timePeriodElement = new TimePeriod(this, time, associate);
             timePeriodElement.dataset.id = id;
 
+            console.log(timePeriod);
+            console.log(timePeriodElement);
+
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
 

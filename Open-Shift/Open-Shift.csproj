@@ -168,6 +168,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\Profile.cs" />
+    <Compile Include="Controllers\VerificationController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="Global.asax.cs">

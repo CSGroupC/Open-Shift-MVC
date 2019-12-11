@@ -16,15 +16,6 @@ namespace Open_Shift.Controllers
 {
     public class EmailController : Controller
     {
-        // GET: Sms
-        //this area NewAssociateEmal()
-
-        //    Returns useremail, name, subject, body
-
-        //this area NewAssociateManagerEmail()
-
-        //    returns useremail, name, subject, body
-
         public static void NewAssociateEmail(string UserEmail, String Name)
         {
             string sub = "Welcome to OpenShift!";
@@ -32,7 +23,16 @@ namespace Open_Shift.Controllers
             SendEmail(UserEmail, Name, sub, body);
         }
 
+        public static void NewAssociateEmailManager(string UserEmail, String Name)
+        {
+            string sub = "OpenShift: A New User Signed Up!";
+            string body = "click <a href='http://localhost:4040/Profile/' target='_blank'>here</a> to give your new user access!";
+            SendEmail(UserEmail, Name, sub, body);
+        }
 
+
+
+        //this void sends all emails. ***Must specify UserEmail, Name, subject ( called "sub" ) and body in all voids above
         public static void SendEmail(string UserEmail, string Name, string sub, string body)
         {
 

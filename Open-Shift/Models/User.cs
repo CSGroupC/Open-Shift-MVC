@@ -78,6 +78,8 @@ namespace Open_Shift.Models
         public IsManagerEnum IsManager { get; set; } = IsManagerEnum.NoType; //by default
         public bool LoginAttempted { get; set; } = false;
 
+        public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
+
 
         //public Image UserImage = new Image();
 
@@ -327,7 +329,7 @@ namespace Open_Shift.Models
         }
 
         public User(string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2, string PostalCode,
-            int EmployeeNumber, string Phonenumber, string Email, string ConfirmEmail, string Password)
+            int EmployeeNumber, string Phonenumber, string Email, string ConfirmEmail, string Password, string EmailVerificationToken)
         {
 
             this.Password = Password;
@@ -343,7 +345,7 @@ namespace Open_Shift.Models
             this.Phonenumber = Phonenumber;
             this.ConfirmEmail = ConfirmEmail;
 
-
+            this.EmailVerificationToken = EmailVerificationToken;
 
 
 

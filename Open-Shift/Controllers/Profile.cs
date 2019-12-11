@@ -301,11 +301,13 @@ namespace Open_Shift.Controllers
                     return RedirectToAction("Index", "Main");
                 }
                 Models.Home h = new Models.Home();
+
+                string EmailVerificationToken = Guid.NewGuid().ToString();
 				
 				h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
-                                          col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"]);
+                                          col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"], EmailVerificationToken);
 
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
@@ -323,6 +325,7 @@ namespace Open_Shift.Controllers
                     //Send email to new user
                     string fullName = h.User.FirstName + ' ' + h.User.LastName;
                     EmailController.NewAssociateEmail(h.User.Email, fullName);
+                    EmailController.NewAssociateEmailManager("jdboris@yahoo.com", "Joe 'Big Boss' Boris");
 
 
                     return RedirectToAction("Index", "Main");

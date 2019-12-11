@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Open_Shift.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -300,6 +301,16 @@ namespace Open_Shift.Controllers
                 {
                     return RedirectToAction("Index", "Main");
                 }
+
+                Database db = new Database();
+
+                string strEmail = col["User.Email"];
+
+                if (db.CheckIfUserExists(strEmail) == 0)
+                {
+                    return RedirectToAction("Index", "Main");
+                }
+
                 Models.Home h = new Models.Home();
 
                 string EmailVerificationToken = Guid.NewGuid().ToString();

@@ -17,7 +17,7 @@
                 </div>
             }
         </div>*@
-    <div class="container profile">
+    <div class="container">
         <div class="section-bottom">
             <div class="bold">First Name</div>
             <div>@Model.User.FirstName</div>
@@ -75,8 +75,10 @@
     <br />
     <div class="inline">
         <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
-        <button class="button-cancel" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
         <button class="button-action" id="btnResetPassword" name="btnSubmit" value="resetpassword">Reset password </button>
+        <br />
+
+        <button class="btn-outline-danger" id="btnDelete" name="btnSubmit" value="delete"><i class='far fa-trash-alt'></i> Delete Profile</button>
     </div>
 
 }

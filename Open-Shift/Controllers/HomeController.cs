@@ -23,6 +23,7 @@ namespace Open_Shift.Controllers
                 var viewModel = new ViewModels.HomeViewModel();
                 viewModel.User = Models.User.GetUserSession();
                 viewModel.NextShift = db.GetNextShift(viewModel.User.AssociateID);
+                viewModel.Stores = db.GetStores(viewModel.User.AssociateID);
 
                 return View(viewModel);
             }

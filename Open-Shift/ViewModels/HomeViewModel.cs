@@ -12,5 +12,6 @@ namespace Open_Shift.ViewModels
         public User User { get; set; }
         public Shift NextShift { get; set; } = null;
         public Shift CurrentShift { get; set; } = null;
+        public List<Store> Stores { get; set; } = null;
     }
 }

@@ -31,9 +31,9 @@
     Stores
 </h1>
 
-<h1 class="text-left w-100">
+<div class="h2 text-left w-100">
     Kotetsu
-</h1>
+</div>
 <div class="d-flex store-info-1 w-100">
     <address class="card mb-3">
         <div class="card-body">
@@ -79,21 +79,11 @@
 {
     <h1 class="mb-4">Associates</h1>
 
-    <div class="container-main pt-2">
-        <div>
-            <div class="display-4 text-center">
-                @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
-            </div>
-            <div class="text-muted">
-                @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
-                -
-                @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
-            </div>
+
+    <div class="card mb-3 w-100">
+        <div class="card-body">
+            Model.
         </div>
-    </div>
-    <br />
-    <div class="mb-5">
-        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
     </div>
 }
 

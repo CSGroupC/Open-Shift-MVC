@@ -20,13 +20,13 @@ namespace Open_Shift.Models
         {
             try
             {
-                ID = (int)dr["ID"];
-                AvailabilityID = (int)dr["AvailabilityID"];
-                AssociateID = (int)dr["AssociateID"];
-                AssociateName = dr["AssociateName"].ToString();
-                IsManager = (bool)dr["IsManager"];
-                StartTime = (DateTime)dr["StartTime"];
-                EndTime = (DateTime)dr["EndTime"];
+                ID = (int)dr["intShiftID"];
+                AvailabilityID = (int)dr["intAvailabilityID"];
+                AssociateID = (int)dr["intAssociateID"];
+                AssociateName = dr["strFirstName"].ToString() + " " + dr["strFirstName"].ToString();
+                IsManager = (bool)dr["blnIsManager"];
+                StartTime = (DateTime)dr["dtmStartTime"];
+                EndTime = (DateTime)dr["dtmEndTime"];
 
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

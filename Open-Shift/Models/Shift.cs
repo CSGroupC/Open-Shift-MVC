@@ -25,8 +25,8 @@ namespace Open_Shift.Models
                 AssociateID = (int)dr["intAssociateID"];
                 AssociateName = dr["strFirstName"].ToString() + " " + dr["strFirstName"].ToString();
                 IsManager = (bool)dr["blnIsManager"];
-                StartTime = (DateTime)dr["dtmStartTime"];
-                EndTime = (DateTime)dr["dtmEndTime"];
+                StartTime = (DateTime)dr["dtmShiftBegin"];
+                EndTime = (DateTime)dr["dtmShiftEnd"];
 
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

@@ -357,8 +357,8 @@ export class SchedulingCalendar extends Calendar {
 
         // Load existing shifts on the calendar
         for (let shift of shifts) {
-            let availabilityBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.availabilityId}'] .scheduling-bar`);
-            let associate = this.associates[shift.associateId];
+            let availabilityBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.AvailabilityID}'] .scheduling-bar`);
+            let associate = this.associates[shift.AssociateID];
 
             this.toggleScheduled(availabilityBar, associate);
         }

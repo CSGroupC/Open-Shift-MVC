@@ -13,6 +13,6 @@ let closedWeekdays = ["Saturday", "Sunday"];
 let associateMinimum = 2;
 let managerMinimum = 1;
 
-let container = document.getElementById("scheduling-calendar");
+let container = document.getElementById("schedule-calendar");
 let calendar = new SchedulingCalendar(associateMinimum, managerMinimum, data.shifts, data.availabilities, closedWeekdays, workingHoursStart, workingHoursEnd, 15);
 calendar.appendTo(container);

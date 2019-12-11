@@ -31,5 +31,37 @@ namespace Open_Shift.Models
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
+        public bool Save()
+        {
+            try
+            {
+                Models.Database db = new Database();
+                int NewShiftID;
+                if (ID == 0)
+                {
+                    NewShiftID = db.InsertShift(this);
+                    if (NewShiftID > 0) ID = NewShiftID;
+                }
+                else
+                {
+                    db.UpdateShift(this);
+                }
+
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public bool Delete()
+        {
+            try
+            {
+                Database db = new Database();
+                db.DeleteShift(this.ID);
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
     }
 }

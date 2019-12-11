@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, updateAvailability } from "./database.js";
+import { createAvailability, updateAvailability, deleteTimePeriod } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -163,15 +163,11 @@ export class Calendar {
             let associate = null;
 
             if ("AssociateID" in timePeriod) {
-                associate = this.associates[timePeriod.associateId];
+                associate = this.associates[timePeriod.AssociateID];
             }
 
             let timePeriodElement = new TimePeriod(this, time, associate);
             timePeriodElement.dataset.id = id;
-
-            console.log(timePeriod);
-            console.log(timePeriodElement);
-
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
 
@@ -372,7 +368,7 @@ export class SchedulingCalendar extends Calendar {
 
         for (let id in this.associates) {
             let associate = this.associates[id];
-            console.log(associate);
+
             let associateElement = new CustomElement(`
                 <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.name}</span></span>
             `);
@@ -396,6 +392,7 @@ export class SchedulingCalendar extends Calendar {
         } else {
             timePeriodBar.classList.remove("scheduled");
             this.removeAssociateFromDay(monthDay, associate);
+            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.id);
         }
 
         /*

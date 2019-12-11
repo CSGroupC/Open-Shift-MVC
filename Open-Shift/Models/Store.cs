@@ -30,21 +30,21 @@ namespace Open_Shift.Models
             try
             {
                 //public int StoreID { get; set; }
-                StoreID = (int)dr["StoreID"];
+                StoreID = (int)dr["intStoreID"];
                 //public string StoreName { get; set; }
-                StoreName = dr["StoreName"].ToString();
+                StoreName = dr["strStoreName"].ToString();
                 //public int StoreNumber { get; set; }
-                StoreNumber = (int)dr["StoreNumber"];
+                StoreNumber = (int)dr["intStoreNumber"];
                 //public string PostalCode { get; set; }
-                PostalCode = dr["PostalCode"].ToString();
+                PostalCode = dr["strPostalCode"].ToString();
                 //public string AddressLine1 { get; set; }
-                AddressLine1 = dr["AddressLine1"].ToString();
+                AddressLine1 = dr["strAddressLine1"].ToString();
                 //public string AddressLine2 { get; set; }
-                AddressLine2 = dr["AddressLine2"].ToString();
+                AddressLine2 = dr["strAddressLine2"].ToString();
                 //public int DailyAssociateMinimum { get; set; }
-                DailyAssociateMinimum = (int)dr["DailyAssociateMinimum"];
+                DailyAssociateMinimum = (int)dr["intDailyAssociateMinimum"];
                 //public int DailyManagerMinimum { get; set; }
-                DailyManagerMinimum = (int)dr["DailyManagerMinimum"];
+                DailyManagerMinimum = (int)dr["intDailyManagerMinimum"];
 
                 // NOTE: Initialize Associates separately
             }

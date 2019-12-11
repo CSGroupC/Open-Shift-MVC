@@ -19,6 +19,7 @@ namespace Open_Shift.Models
         public int DailyAssociateMinimum { get; set; }
         public int DailyManagerMinimum { get; set; }
         public List<User> Associates { get; set; } = null;
+        public string Description { get; set; }
 
         public Store()
         {
@@ -45,6 +46,7 @@ namespace Open_Shift.Models
                 DailyAssociateMinimum = (int)dr["intDailyAssociateMinimum"];
                 //public int DailyManagerMinimum { get; set; }
                 DailyManagerMinimum = (int)dr["intDailyManagerMinimum"];
+                Description = dr["strDescription"].ToString();
 
                 // NOTE: Initialize Associates separately
             }

@@ -90,15 +90,7 @@ h2 {
         padding-right: 5px;
     }
 
-.container {
-    position: relative;
-    top: 2px;
-    width: 210px;
-    border-radius: 0.3em;
-    padding: 0.6em;
-    margin-bottom: auto;
-    display: block;
-}
+
 
 .float {
     position: absolute;
@@ -118,11 +110,6 @@ h2 {
     left: 470px;
 }
 
-.container1 {
-    position: absolute;
-    top: 400px;
-    left: 470px;
-}
 
 #workspace {
     margin: 0 1em 0 2em;
@@ -363,15 +350,20 @@ button, input[type=submit], input[type=button] {
 General
 */
 .validation-message {
-    height: 8px;
+    height: 0px;
     margin-top: 0px;
 }
 
 /*
 Home
 */
-.location-about {
-    max-width: 520px;
+
+[data-page='Home'] #workspace {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
 }
 
 /*
@@ -408,6 +400,12 @@ Scheduling
     width: 100%;
 }
 
+/*
+Bootstrap
+*/
+.form-group {
+    margin-bottom: 1.2rem;
+}
 
 
 @media only screen and (max-width : 42em) {
@@ -423,6 +421,16 @@ Scheduling
     .signup-form {
         width: 100%;
     }
+
+    .store-info-1 {
+        width: 100%;
+        flex-direction: column;
+    }
+
+        .store-info-1 > * {
+            width: 100%;
+            margin-left: 0px !important;
+        }
 }
 
 @media only screen and (max-width : 35em) {

@@ -17,7 +17,7 @@
     @RenderSection("Styles", false)
     <title>@ViewBag.Title</title>
 </head>
-<body>
+<body data-page="@ViewBag.Title">
     <div id="frankie-bar">
         <a href="~/Home/Index" class="w3-bar-item w3-button bg-primary" title="Home"><i class="fa fa-home"></i></a>
         @if (user.IsAuthenticated)

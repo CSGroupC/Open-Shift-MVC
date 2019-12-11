@@ -27,12 +27,14 @@
 
 }
 
-
 <h1>
     Stores
 </h1>
 
-<div class="d-flex">
+<h1 class="text-left w-100">
+    Kotetsu
+</h1>
+<div class="d-flex store-info-1 w-100">
     <address class="card mb-3">
         <div class="card-body">
             <b>Contact</b>
@@ -60,7 +62,7 @@
         </div>
     </address>
 </div>
-<div class="card mb-3 location-about">
+<div class="card mb-3 w-100">
     <div class="card-body">
         <b>About</b>
         <p>
@@ -72,5 +74,27 @@
         </p>
     </div>
 </div>
+
+@if ((int)Model.User.IsManager == 1)
+{
+    <h1 class="mb-4">Associates</h1>
+
+    <div class="container-main pt-2">
+        <div>
+            <div class="display-4 text-center">
+                @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
+            </div>
+            <div class="text-muted">
+                @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
+                -
+                @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="mb-5">
+        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
+    </div>
+}
 
 <strong>Open Shift Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />

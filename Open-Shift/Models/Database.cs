@@ -729,6 +729,45 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+        // Gets the next shift by associate
+        public Shift GetNextShift(long associateID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = new SqlDataAdapter("GET_NEXT_SHIFT", cn);
+
+
+                Shift shift = null;
+
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        shift = new Shift(dr);
+                    }
+                }
+
+                return shift;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
         public bool DeleteShift(int ShiftID)
         {
             try

@@ -1,23 +1,24 @@
-﻿@model Open_Shift.Models.Home
+﻿@model Open_Shift.ViewModels.MainViewModel
 @{
     ViewBag.Title = "Main";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-@using (Html.BeginForm("Index", "Main", FormMethod.Post))
-{
-    <h2>
-        <a href="/Availability/Index">Availability</a> | <a href="/Schedule/Index">Schedule</a>
-    </h2>
-        
-    <h3>@Model.User.FirstName @Model.User.LastName </h3>
-    
-    <div class="section-bottom">
-        <label for="Next shift">Next Shift:</label>
-        <input type="text" id="Sqrt" />
-        <br>
-        <label for="Location ">Location:</label>
-        <input type="text" id="Sqrt" />
-        <br>
+
+<h1 class="mb-4">Next Shift</h1>
+
+<div class="container-main pt-2">
+    <div>
+        <div class="display-4 text-center">
+            @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
+        </div>
+        <div class="text-muted">
+            @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
+            -
+            @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
+        </div>
     </div>
-    
-}
+</div>
+<br />
+<div>
+    <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
+</div>

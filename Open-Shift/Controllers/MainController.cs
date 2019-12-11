@@ -19,10 +19,13 @@ namespace Open_Shift.Controllers
                     return RedirectToAction("SignIn", "Profile");
                 }
 
-                Models.Home h = new Models.Home();
-                h.User = Models.User.GetUserSession();
+                Models.Database db = new Models.Database();
 
-                return View(h);
+                var viewModel = new ViewModels.MainViewModel();
+                viewModel.User = Models.User.GetUserSession();
+                viewModel.NextShift = db.GetNextShift(viewModel.User.AssociateID);
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {

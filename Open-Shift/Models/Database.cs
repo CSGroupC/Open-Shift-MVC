@@ -11,36 +11,6 @@ namespace Open_Shift.Models
     //**TODO needs to change the table names and columns to match our database
     public class Database
     {
-        private User AddUser(DataRow dr)
-        {
-            try
-            {
-                User u = new User();
-                u.AssociateID = (int)dr["AssociateID"];
-                u.FirstName = dr["User.FirstName"].ToString();
-                u.LastName = dr["User.LastName"].ToString();
-                u.Birthday = (DateTime)dr["User.Birthday"];
-                u.AddressLine1 = dr["User.AddressLine1"].ToString();
-                u.AddressLine2 = dr["User.AddressLine2"].ToString();
-                u.PostalCode = dr["User.PostalCode"].ToString();
-                u.EmployeeNumber = (int)dr["User.EmployeeNumber"];
-                u.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["User.AssociateTitle"].ToString());
-                u.Phonenumber = dr["User.Phonenumber"].ToString();
-                u.Email = dr["User.Email"].ToString();
-                u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
-                u.Password = dr["User.Password"].ToString();
-                u.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), dr["User.blnIsManager"].ToString());
-                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["User.intStatusID"].ToString());
-                u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["User.intStoreID"].ToString());
-
-
-                //u.UserImage = GetUserImage(u.AssociateID);
-
-                return u;
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-        }
-
         public List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
         {
             try
@@ -68,7 +38,7 @@ namespace Open_Shift.Models
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        users.Add(AddUser(dr));
+                        users.Add(new User(dr));
                     }
                 }
 
@@ -800,6 +770,7 @@ namespace Open_Shift.Models
             try
             {
                 DataSet ds = new DataSet();
+                DataSet AssociatesDataSet = new DataSet();
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
                 SqlDataAdapter da = null;
@@ -810,10 +781,10 @@ namespace Open_Shift.Models
                 }
                 else
                 {
-                    da = new SqlDataAdapter("GET_ASSOCIATE_STORES", cn);
+                    da = new SqlDataAdapter("GET_STORES_BY_ASSOCIATE", cn);
                 }
 
-                List<Store> shifts = new List<Store>();
+                List<Store> stores = new List<Store>();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
@@ -822,22 +793,33 @@ namespace Open_Shift.Models
                 try
                 {
                     da.Fill(ds);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            stores.Add(new Store(dr));
+                            da = new SqlDataAdapter("GET_ASSOCIATES_BY_STORE", cn);
+                            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                            SetParameter(ref da, "@intStoreID", stores[stores.Count - 1].StoreID, SqlDbType.Int);
+                            da.Fill(AssociatesDataSet);
+                            stores[stores.Count - 1].Associates = new List<User>();
+
+                            foreach (DataRow AssociateDataRow in AssociatesDataSet.Tables[0].Rows)
+                            {
+                                stores[stores.Count - 1].Associates.Add(new User(AssociateDataRow));
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex2)
                 {
                     SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
                 }
-                finally { CloseDBConnection(ref cn); }
 
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        shifts.Add(new Store(dr));
-                    }
-                }
+                CloseDBConnection(ref cn);
 
-                return shifts;
+                return stores;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

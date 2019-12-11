@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace Open_Shift.Models
 {
@@ -353,6 +354,36 @@ namespace Open_Shift.Models
 
 
         }
+
+
+        public User(DataRow dr)
+        {
+            try
+            {
+                this.AssociateID = (int)dr["intAssociateID"];
+                this.EmployeeNumber = (int)dr["intEmployeeNumber"];
+                this.Email = dr["strEmail"].ToString();
+                this.Password = dr["strPassword"].ToString();
+                this.FirstName = dr["strFirstName"].ToString();
+                this.LastName = dr["strLastName"].ToString();
+                this.Birthday = (DateTime)dr["dtmBirthdate"];
+                this.AddressLine1 = dr["strAddressLine1"].ToString();
+                this.AddressLine2 = dr["strAddressLine2"].ToString();
+                this.PostalCode = dr["strPostalCode"].ToString();
+                this.Phonenumber = dr["strPhonenumber"].ToString();
+
+                this.EmailVerificationToken = dr["strEmailVerificationToken"].ToString();
+
+                this.IsManager = (User.IsManagerEnum)Convert.ToInt32(dr["blnIsManager"].ToString() == "True");
+                this.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["intStatusID"].ToString());
+                this.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["intStoreID"].ToString());
+                this.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
+
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
 
         //public User(string UserID, string Password, string FirstName, string LastName, DateTime Birthday, string AddressLine1, string AddressLine2, string PostalCode,
         //	 String StoreLocation, string EmployeeNumber, string AssociateTitle, string Phonenumber, string Email, string ConfirmEmail)

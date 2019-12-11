@@ -23,8 +23,8 @@ namespace Open_Shift.Models
                 ID = (int)dr["intShiftID"];
                 AvailabilityID = (int)dr["intAvailabilityID"];
                 AssociateID = (int)dr["intAssociateID"];
-                AssociateName = dr["strFirstName"].ToString() + " " + dr["strFirstName"].ToString();
-                //IsManager = (bool)dr["blnIsManager"];
+                AssociateName = dr["strFirstName"].ToString() + " " + dr["strLastName"].ToString();
+                IsManager = (bool)dr["blnIsManager"];
                 StartTime = (DateTime)dr["dtmShiftBegin"];
                 EndTime = (DateTime)dr["dtmShiftEnd"];
 

@@ -357,10 +357,10 @@ export class SchedulingCalendar extends Calendar {
 
         // Load existing shifts on the calendar
         for (let shift of shifts) {
-            let availabilityBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.AvailabilityID}'] .scheduling-bar`);
+            let schedulingBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.AvailabilityID}'] .scheduling-bar`);
             let associate = this.associates[shift.AssociateID];
 
-            this.toggleScheduled(availabilityBar, associate);
+            this.toggleScheduled(schedulingBar, associate);
         }
 
         // Show list of available associates
@@ -369,8 +369,9 @@ export class SchedulingCalendar extends Calendar {
 
         for (let id in this.associates) {
             let associate = this.associates[id];
+            console.log(associate);
             let associateElement = new CustomElement(`
-                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.FirstName} ${associate.LastName}</span></span>
+                <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.name}</span></span>
             `);
             cardBody.appendChild(associateElement);
         }

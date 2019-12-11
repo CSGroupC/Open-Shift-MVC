@@ -293,7 +293,7 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("ResetPassword", cn);
+                SqlDataAdapter da = new SqlDataAdapter("UPDATE_PASSWORD", cn);
                 DataSet ds;
                 User newUser = null;
 

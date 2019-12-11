@@ -5,3 +5,15 @@ Open-Shift/App_Log/sys_log.xls
 *.mdf
 *.ldf
 Open-Shift/Open-Shift.csproj.user
+Open-Shift/App_Data/OpenShift.mdf
+*.mdf
+Open-Shift/App_Data/OpenShift.mdf
+Open-Shift/App_Data/OpenShift_log.ldf
+Open-Shift/App_Data/OpenShift.mdf
+*.mdf
+*.ldf
+Open-Shift/App_Data/OpenShift.mdf
+Open-Shift/App_Data/OpenShift_log.ldf
+*.mdf
+Open-Shift/App_Data/OpenShift_log.ldf
+*.mdf

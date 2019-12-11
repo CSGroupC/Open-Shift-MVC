@@ -15,22 +15,22 @@ namespace Open_Shift.Controllers
     public class SmsController : TwilioController
     {
         // GET: Sms
-        public ActionResult SendSms(string phone)
-        {
-            var accountSid = ConfigurationManager.AppSettings["TwilioAccountSid"];
-            var authToken = ConfigurationManager.AppSettings["TwilioAuthToken"];
-            TwilioClient.Init(accountSid, authToken);
+        //public ActionResult SendSms(string phone)
+        //{
+        //    var accountSid = ConfigurationManager.AppSettings["TwilioAccountSid"];
+        //    var authToken = ConfigurationManager.AppSettings["TwilioAuthToken"];
+        //    TwilioClient.Init(accountSid, authToken);
 
-            var to = new PhoneNumber(phone); // pulled from sign up 
-            var from = ConfigurationManager.AppSettings["OpenShiftTwilioPhoneNumber"];
+        //    var to = new PhoneNumber(phone); // pulled from sign up 
+        //    var from = ConfigurationManager.AppSettings["OpenShiftTwilioPhoneNumber"];
 
-            var message = MessageResource.Create(
-                to: to,
-                from: from,
-                body: "Thank you for signing up to OpenShift! An email has been sent to your manager(s) to complete your registration. We hope you enjoy our app!");
+        //    var message = MessageResource.Create(
+        //        to: to,
+        //        from: from,
+        //        body: "Thank you for signing up to OpenShift! An email has been sent to your manager(s) to complete your registration. We hope you enjoy our app!");
 
-            return Content(message.Sid);
-        }
+        //    return Content(message.Sid);
+        //}
 
         public ActionResult ReceiveSms()
         {

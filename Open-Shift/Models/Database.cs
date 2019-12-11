@@ -790,6 +790,66 @@ namespace Open_Shift.Models
         }
 
 
+        // ====================================================================================================================================
+        // Stores 
+        // ====================================================================================================================================
+
+
+        public List<Store> GetStores(int AssociateID = 0)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = null;
+
+                if (AssociateID == 0)
+                {
+                    da = new SqlDataAdapter("GET_STORES", cn);
+                }
+                else
+                {
+                    da = new SqlDataAdapter("GET_ASSOCIATE_STORES", cn);
+                }
+
+                List<Store> shifts = new List<Store>();
+
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                if (AssociateID > 0) SetParameter(ref da, "@intAssociateID", AssociateID, SqlDbType.Int);
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        shifts.Add(new Store(dr));
+                    }
+                }
+
+                return shifts;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
+
+
+
+        // ====================================================================================================================================
+        // Database 
+        // ====================================================================================================================================
+
 
         private bool GetDBConnection(ref SqlConnection SQLConn)
         {

@@ -84,12 +84,12 @@ export function updateAvailability(associate, timePeriod, calendar) {
         });
 }
 
-export function deleteTimePeriod(availabilityId) {
+export function deleteTimePeriod(timePeriodId) {
 
     return fetch("Delete", {
         method: "DELETE",
         body: JSON.stringify({
-            ID: availabilityId
+            ID: timePeriodId
         }),
         headers: {
             'Accept': 'application/json',
@@ -98,7 +98,7 @@ export function deleteTimePeriod(availabilityId) {
     })
         .then(function (response) {
             if (!response.ok) {
-                throw new Error('Availability/Delete responded with ' + response.status);
+                throw new Error('/Delete responded with ' + response.status);
             }
             return response.json();
         })

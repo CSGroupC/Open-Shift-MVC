@@ -6,7 +6,6 @@ export const MONTH_NAMES = ["January", "February", "March", "April", "May", "Jun
 // Source: https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
 // This converts a given string to a color (hexidecimal format) that's unique to that string
 export function stringToColor(str) {
-    console.log("str", str)
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);

@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, updateAvailability } from "./database.js";
+import { createAvailability, updateAvailability, deleteTimePeriod } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -163,14 +163,12 @@ export class Calendar {
             let associate = null;
 
             if ("AssociateID" in timePeriod) {
-                associate = this.associates[timePeriod.associateId];
+                associate = this.associates[timePeriod.AssociateID];
             }
 
             let timePeriodElement = new TimePeriod(this, time, associate);
-            timePeriodElement.dataset.id = id;
 
-            console.log(timePeriod);
-            console.log(timePeriodElement);
+            timePeriodElement.dataset.availabilityId = id;
 
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
@@ -360,10 +358,10 @@ export class SchedulingCalendar extends Calendar {
 
         // Load existing shifts on the calendar
         for (let shift of shifts) {
-            let schedulingBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.AvailabilityID}'] .scheduling-bar`);
+            let schedulingBar = this.dayListElement.querySelector(`.time-period[data-availability-id='${shift.AvailabilityID}'] .scheduling-bar`);
             let associate = this.associates[shift.AssociateID];
 
-            this.toggleScheduled(schedulingBar, associate);
+            this.toggleScheduled(schedulingBar, associate, shift);
         }
 
         // Show list of available associates
@@ -372,7 +370,7 @@ export class SchedulingCalendar extends Calendar {
 
         for (let id in this.associates) {
             let associate = this.associates[id];
-            console.log(associate);
+
             let associateElement = new CustomElement(`
                 <span class="associate-list-item"><i class="fas fa-circle" style="color: ${associate.color}"></i><span>${associate.name}</span></span>
             `);
@@ -386,16 +384,20 @@ export class SchedulingCalendar extends Calendar {
         }
     }
 
-    toggleScheduled(timePeriodBar, associate) {
+    toggleScheduled(timePeriodBar, associate, shift) {
 
         let monthDay = timePeriodBar.closest(".month-day");
+        let timePeriod = timePeriodBar.closest(".time-period");
 
         if (timePeriodBar.classList.contains("scheduled") == false) {
             timePeriodBar.classList.add("scheduled");
+            timePeriod.dataset.shiftId = shift.ID;
             this.addAssociateToDay(monthDay, associate);
         } else {
             timePeriodBar.classList.remove("scheduled");
             this.removeAssociateFromDay(monthDay, associate);
+            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.shiftId);
+            delete timePeriod.dataset.shiftId;
         }
 
         /*

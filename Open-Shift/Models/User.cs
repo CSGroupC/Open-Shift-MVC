@@ -27,17 +27,17 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
-        [DisplayName("Birthday")]
+        [DisplayName("Date of Birth")]
         [Required(AllowEmptyStrings = false)]
         [RegularExpression(@"^((19|20)\d{2})/((0|1)\d{1})/((0|1|2)\d{1})", ErrorMessage = "Error: Please format your birthday as 'YYYY/MM/DD'")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
-        [DisplayName("Address Line One")]
+        [DisplayName("Address Line 1")]
         [Required(AllowEmptyStrings = false)]
         public string AddressLine1 { get; set; }
 
-        [DisplayName("Address Line Two")]
+        [DisplayName("Address Line 2")]
         [Required(AllowEmptyStrings = false)]
         public string AddressLine2 { get; set; }
 

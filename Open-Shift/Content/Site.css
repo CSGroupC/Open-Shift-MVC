@@ -111,9 +111,6 @@ h2 {
     display: inline-block;
 }
 
-a:hover {
-    background-color: darksalmon;
-}
 
 .right {
     position: absolute;

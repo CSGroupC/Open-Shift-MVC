@@ -112,9 +112,7 @@ namespace Open_Shift.Controllers
                     u.Phonenumber = col["User.Phonenumber"];
                     u.Email = col["User.Email"];
                     u.ConfirmEmail = col["User.ConfirmEmail"];
-                    u.Password = col["User.Password"];
                     u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
-                    u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
                     u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
                     //NEW CODE
@@ -297,7 +295,7 @@ namespace Open_Shift.Controllers
             try
             {
 
-				if (Models.User.GetUserSession().IsAuthenticated)
+                if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Main");
                 }
@@ -314,8 +312,8 @@ namespace Open_Shift.Controllers
                 Models.Home h = new Models.Home();
 
                 string EmailVerificationToken = Guid.NewGuid().ToString();
-				
-				h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
+
+                h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
                                           col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"], EmailVerificationToken);
@@ -373,21 +371,21 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
-				Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-				u.ResetPassword();
+                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+                u.ResetPassword();
 
-				if (u.IsAuthenticated)
-				{ //user found
-					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Main");
-				}
-				else
-				{ //user failed to log in
-					h.User = u;
-					return View(h);
-				}
-				u.Save();
-				return View(h);
+                if (u.IsAuthenticated)
+                { //user found
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Main");
+                }
+                else
+                { //user failed to log in
+                    h.User = u;
+                    return View(h);
+                }
+                u.Save();
+                return View(h);
 
             }
             catch (Exception ex)

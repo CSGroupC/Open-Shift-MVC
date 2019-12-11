@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Open_Shift.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -295,19 +296,29 @@ namespace Open_Shift.Controllers
         {
             try
             {
-				if (col["btnCancel"] == "cancel") return RedirectToAction("SignIn", "Profile");
-				if (col["btnClear"] == "clear") return RedirectToAction("SignUp", "Profile");
 
 				if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Main");
                 }
+
+                Database db = new Database();
+
+                string strEmail = col["User.Email"];
+
+                if (db.CheckIfUserExists(strEmail) == 0)
+                {
+                    return RedirectToAction("Index", "Main");
+                }
+
                 Models.Home h = new Models.Home();
+
+                string EmailVerificationToken = Guid.NewGuid().ToString();
 				
 				h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
-                                          col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"]);
+                                          col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"], EmailVerificationToken);
 
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
@@ -322,11 +333,9 @@ namespace Open_Shift.Controllers
                     Controllers.SmsController sms = new Controllers.SmsController();
                     // sms.SendSms(h.User.Phonenumber);
 
-                    //Send email to new user
-                    string fullName = h.User.FirstName + ' ' + h.User.LastName;
-                    Controllers.EmailController email = new Controllers.EmailController();
-                    email.SendEmail(h.User.Email, fullName);
-
+                    // //Send email to new user
+                    //EmailController.NewAssociateEmail(h.User.Email, fullName);
+                    EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
 
                     return RedirectToAction("Index", "Main");

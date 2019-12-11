@@ -10,15 +10,17 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
     if (endTime.split(":")[0] == 24) endTime = "23:59:59";
     endTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
+    let availability = {
+        AssociateID: associate.AssociateID,
+        AssociateName: associate.name,
+        IsManager: associate.IsManager,
+        StartTime: startTime,
+        EndTime: endTime,
+    };
+
     return fetch("Create", {
         method: "POST",
-        body: JSON.stringify({
-            AssociateID: associate.AssociateID,
-            AssociateName: associate.name,
-            IsManager: associate.IsManager,
-            StartTime: startTime,
-            EndTime: endTime,
-        }),
+        body: JSON.stringify(availability),
         headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'
@@ -33,16 +35,20 @@ export function createAvailability(associate, timePeriod, monthDay, calendar) {
         .then(function (response) {
             if (response.status == "AUTHENTICATION_FAILED") {
                 location.href = "/Profile/SignIn";
+            } else if (response.status == "INSERT_FAILED") {
+                // TODO: Tell the user something went wrong
+                console.error("/Profile/SignIn returned INSERT_FAILED");
+            } else {
+                availability.ID = response.id;
+                timePeriod.dataset.id = response.id;
             }
         });
 }
 
-export function updateAvailability(associate, timePeriodBar, calendar) {
+export function updateAvailability(associate, timePeriod, calendar) {
 
-    let timePeriod = timePeriodBar.closest(".time-period");
     let monthDay = timePeriod.closest(".month-day");
     let dayNumberElement = monthDay.getElementsByClassName("day-number")[0];
-
     let startTime = timePeriod.getElementsByClassName("time-start")[0].innerHTML + ":00";
     startTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${startTime}Z`;
     let endTime = timePeriod.getElementsByClassName("time-end")[0].innerHTML + ":00";
@@ -51,8 +57,9 @@ export function updateAvailability(associate, timePeriodBar, calendar) {
     endTime = `${calendar.date.getFullYear()}-${calendar.date.getMonth() + 1}-${dayNumberElement.innerHTML}T${endTime}Z`;
 
     return fetch("Update", {
-        method: "UPDATE",
+        method: "PUT",
         body: JSON.stringify({
+            ID: timePeriod.dataset.id,
             AssociateID: associate.AssociateID,
             AssociateName: associate.name,
             IsManager: associate.IsManager,
@@ -77,12 +84,12 @@ export function updateAvailability(associate, timePeriodBar, calendar) {
         });
 }
 
-export function deleteAvailability(availabilityId) {
+export function deleteTimePeriod(timePeriodId) {
 
     return fetch("Delete", {
         method: "DELETE",
         body: JSON.stringify({
-            ID: availabilityId
+            ID: timePeriodId
         }),
         headers: {
             'Accept': 'application/json',
@@ -91,7 +98,7 @@ export function deleteAvailability(availabilityId) {
     })
         .then(function (response) {
             if (!response.ok) {
-                throw new Error('Availability/Delete responded with ' + response.status);
+                throw new Error('/Delete responded with ' + response.status);
             }
             return response.json();
         })

@@ -1,13 +1,14 @@
 ﻿import { MONTH_NAMES, formatTime, getDateFromQueryString, preventDefault, Event } from "./utilities.js";
-import { deleteAvailability } from "./database.js";
+import { deleteTimePeriod } from "./database.js";
 
 class TimePeriodResizal {
     // NOTE: This class assumes event is a mouse event targeting the handle elment inside a time period
-    constructor(calendar, timePeriod, event = null) {
+    constructor(calendar, timePeriodBar, event = null) {
         this.calendar = calendar;
-        this.timePeriod = timePeriod;
-        this.leftHandle = this.timePeriod.getElementsByClassName("left-handle")[0];
-        this.rightHandle = this.timePeriod.getElementsByClassName("right-handle")[0];
+        this.bar = timePeriodBar;
+        this.timePeriod = this.bar.closest(".time-period");
+        this.leftHandle = this.bar.getElementsByClassName("left-handle")[0];
+        this.rightHandle = this.bar.getElementsByClassName("right-handle")[0];
         if (event != null) {
             this.start(event);
         }
@@ -21,21 +22,21 @@ class TimePeriodResizal {
             this.side = "End";
         }
 
-        this.startColumn = parseInt(this.timePeriod.style["gridColumn" + this.side]);
+        this.startColumn = parseInt(this.bar.style["gridColumn" + this.side]);
     }
 
     stop(event) {
-        this.timePeriod = null;
+        this.bar = null;
     }
 
     resize(event) {
 
-        let parentWidth = this.timePeriod.parentElement.clientWidth;
+        let parentWidth = this.bar.parentElement.clientWidth;
         let offset = event.clientX - this.startX;
         // parseInt to use addition rather than concatenation
-        let start = parseInt(this.timePeriod.style["gridColumn" + this.side]);
-        let rightColumn = parseInt(this.timePeriod.style.gridColumnEnd);
-        let leftColumn = parseInt(this.timePeriod.style.gridColumnStart);
+        let start = parseInt(this.bar.style["gridColumn" + this.side]);
+        let rightColumn = parseInt(this.bar.style.gridColumnEnd);
+        let leftColumn = parseInt(this.bar.style.gridColumnStart);
 
         let newStart = this.startColumn + this.calendar.pixelsToColumns(offset, parentWidth);
 
@@ -57,19 +58,20 @@ class TimePeriodResizal {
 
     // side: "Left" or "Right"
     setColumn(column, side = this.side) {
-        let timeElement = this.timePeriod.parentElement.getElementsByClassName("time-" + side.toLowerCase())[0];
+        let timeElement = this.bar.parentElement.getElementsByClassName("time-" + side.toLowerCase())[0];
         timeElement.innerHTML = this.calendar.columnToTime(column - 1);
 
-        this.timePeriod.style["gridColumn" + side] = column;
+        this.bar.style["gridColumn" + side] = column;
     }
 }
 
 class TimePeriodMovement {
     // NOTE: This class assumes the events are mouse events targeting a time period element
 
-    constructor(calendar, timePeriod, event = null) {
+    constructor(calendar, timePeriodBar, event = null) {
         this.calendar = calendar;
-        this.timePeriod = timePeriod;
+        this.bar = timePeriodBar;
+        this.timePeriod = this.bar.closest(".time-period");
         if (event != null) {
             this.start(event);
         }
@@ -266,7 +268,7 @@ export function TimePeriod(calendar, timeBuffer = { start: null, end: null }, as
     copyButton.onclick = handler;
 
     handler = new Event.PointerHandler((event) => {
-        deleteAvailability(timePeriod.dataset.id).then(() => {
+        deleteTimePeriod(timePeriod.dataset.availabilityId).then(() => {
             timePeriod.parentElement.removeChild(timePeriod);
         });
     });

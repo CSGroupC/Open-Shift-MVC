@@ -12,11 +12,3 @@ TODO:
 Annie:
 
 TODO:
-1. Add store ID as a parameter to GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE and GET_AVAILABILITIES_MONTHLY
-2. Add year as a parameter to GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE and GET_AVAILABILITIES_MONTHLY
-3. Add AvailabilityID to the result set of GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE and GET_AVAILABILITIES_MONTHLY
-4. Change ManagerStatus in GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE and GET_AVAILABILITIES_MONTHLY to 1/0 rather than a string
-
-QUESTIONS:
-1. Are month numbers (like the parameter in GET_AVAILABILITIES_MONTHLY_BY_ASSOCIATE) expected to start at 0 or 1
-2. What's the User.StoreLocationList enum for? Are we only going to allow a constant number of stores?

@@ -597,6 +597,30 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+        public bool ApproveNewAssociate(string token)
+        {
+            string sqlStatement = "Update TAssociates set intStatusID = 1, strEmailVerificationToken = '' where intAssociateID = (SELECT intAssociateID FROM TAssociates WHERE strEmailVerificationToken = '" + token + "');";
+
+            try
+            {
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand(sqlStatement, cn);
+
+                try
+                {
+                    cm.ExecuteNonQuery();
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+
+
+            return true;
+        }
+
         // ====================================================================================================================================
         // Shifts 
         // ====================================================================================================================================

@@ -368,9 +368,15 @@ General
 }
 
 /*
+Home
+*/
+.location-about {
+    max-width: 520px;
+}
+
+/*
 Signin
 */
-
 .signin-form {
     display: flex;
     flex-direction: column;

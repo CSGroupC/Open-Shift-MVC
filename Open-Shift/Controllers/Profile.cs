@@ -211,7 +211,7 @@ namespace Open_Shift.Controllers
             {
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 Models.Home h = new Models.Home();
                 return View(h);
@@ -234,7 +234,7 @@ namespace Open_Shift.Controllers
                 if (u.IsAuthenticated)
                 { //user found
                     u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 { //user failed to log in
@@ -277,7 +277,7 @@ namespace Open_Shift.Controllers
 
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 Models.Home h = new Models.Home();
                 return View(h);
@@ -297,7 +297,7 @@ namespace Open_Shift.Controllers
 
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 Database db = new Database();
@@ -306,7 +306,7 @@ namespace Open_Shift.Controllers
 
                 if (db.CheckIfUserExists(strEmail) == 0)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 Models.Home h = new Models.Home();
@@ -336,7 +336,7 @@ namespace Open_Shift.Controllers
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
 
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 { //user failed to log in
@@ -377,7 +377,7 @@ namespace Open_Shift.Controllers
                 if (u.IsAuthenticated)
                 { //user found
                     u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 { //user failed to log in

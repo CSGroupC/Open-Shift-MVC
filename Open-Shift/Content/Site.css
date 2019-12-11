@@ -360,6 +360,14 @@ button, input[type=submit], input[type=button] {
 
 
 /*
+General
+*/
+.validation-message {
+    height: 8px;
+    margin-top: 0px;
+}
+
+/*
 Signin
 */
 
@@ -370,6 +378,12 @@ Signin
 }
 
     .signin-form a {
+        text-align: center;
+    }
+
+    .signin-form .validation-message {
+        height: 16px;
+        margin-bottom: 10px;
         text-align: center;
     }
 

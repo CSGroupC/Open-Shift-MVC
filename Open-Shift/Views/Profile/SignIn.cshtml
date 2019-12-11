@@ -15,12 +15,12 @@
         <div>@Html.LabelFor(model => model.User.Password)</div>
         <div>@Html.TextBoxFor(model => model.User.Password, new { @class = "form-control", type = "password" })</div>
     </div>
-
-    <button class="btn btn-primary" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button><br>
     if (Model.User.LoginFailed)
     {
-        <span class="login-failed">Failed to login. Please try again.</span>
+        <small class="validation-message form-text text-danger">Failed to login. Please try again.</small>
     }
+
+    <button class="btn btn-primary mb-2" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button>
 
     <a href="/Profile/SignUp">First time user?</a> <br />
     <a href="/Profile/ResetPassword">Forgot your password?</a>

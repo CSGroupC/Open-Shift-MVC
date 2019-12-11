@@ -29,7 +29,7 @@ namespace Open_Shift.Models
 
         [DisplayName("Date of Birth")]
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"^((19|20)\d{2})/((0|1)\d{1})/((0|1|2)\d{1})", ErrorMessage = "Error: Please format your birthday as 'YYYY/MM/DD'")]
+        [RegularExpression(@"^((19|20)\d{2})/((0|1)\d{1})/((0|1|2)\d{1})", ErrorMessage = "Required format: YYYY/MM/DD")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
@@ -50,17 +50,17 @@ namespace Open_Shift.Models
         public int? EmployeeNumber { get; set; }
 
         [DisplayName("Phone Number")]
-        [RegularExpression(@"^[+]{1}[0-9]{11,13}$", ErrorMessage = "Error: Please format your phonenumber as '+' with country code and area code")]
+        [RegularExpression(@"^[+]{1}[0-9]{11,13}$", ErrorMessage = "Required format: +XXXXXXXXX")]
         [Required(AllowEmptyStrings = false)]
         public string Phonenumber { get; set; }
 
         [DisplayName("E-Mail")]
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@".+\@.+\..+", ErrorMessage = "Error: Your email isn't in the right format")]
+        [RegularExpression(@".+\@.+\..+", ErrorMessage = "Invalid email address")]
         public string Email { get; set; }
 
         [DisplayName("Confirm Email")]
-        [Compare("Email", ErrorMessage = "Error: Email does not match")]
+        [Compare("Email", ErrorMessage = "Emails do not match")]
         public string ConfirmEmail { get; set; }
 
         [DisplayName("Password")]
@@ -68,7 +68,7 @@ namespace Open_Shift.Models
         public string Password { get; set; }
 
         [DisplayName("New Password")]
-        [Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string NewPassword { get; set; }
 
         [DisplayName("Associate Title")]

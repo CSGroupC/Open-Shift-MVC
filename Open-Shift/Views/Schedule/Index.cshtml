@@ -13,6 +13,7 @@
 <div id="schedule-calendar"></div>
 <div id="schedule-data"
      data-associate="@JsonConvert.SerializeObject(Model.User)"
+     data-store-id="@((int)Model.User.StoreID)"
      data-availabilities="@JsonConvert.SerializeObject(Model.Availabilities)"
      data-shifts="@JsonConvert.SerializeObject(Model.Shifts)"></div>
 <script type="module" src="../Scripts/schedule-script.js">

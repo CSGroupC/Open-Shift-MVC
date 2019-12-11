@@ -1,6 +1,6 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
 import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, updateAvailability, deleteTimePeriod } from "./database.js";
+import { createAvailability, updateAvailability, deleteTimePeriod, createShift } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
@@ -347,8 +347,9 @@ export class AvailabilityCalendar extends Calendar {
 }
 
 export class SchedulingCalendar extends Calendar {
-    constructor(associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
+    constructor(storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
         super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
+        this.storeId = storeId;
 
         this.element.classList.add("scheduling-calendar");
 
@@ -384,27 +385,32 @@ export class SchedulingCalendar extends Calendar {
         }
     }
 
-    toggleScheduled(timePeriodBar, associate, shift) {
+    toggleScheduled(timePeriodBar, associate, shift = null) {
 
         let monthDay = timePeriodBar.closest(".month-day");
         let timePeriod = timePeriodBar.closest(".time-period");
 
         if (timePeriodBar.classList.contains("scheduled") == false) {
-            timePeriodBar.classList.add("scheduled");
-            timePeriod.dataset.shiftId = shift.ID;
-            this.addAssociateToDay(monthDay, associate);
-        } else {
-            timePeriodBar.classList.remove("scheduled");
-            this.removeAssociateFromDay(monthDay, associate);
-            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.shiftId);
-            delete timePeriod.dataset.shiftId;
-        }
 
-        /*
-        createAvailability(associate, timePeriod, element, this).then(() => {
-            element.querySelector(".time-period-section").prepend(timePeriod);
-        });
-        */
+            if (shift == null) {
+                createShift(associate, timePeriod, monthDay, this).then(() => {
+                    timePeriodBar.classList.add("scheduled");
+                    this.addAssociateToDay(monthDay, associate);
+                });
+            } else {
+                timePeriodBar.classList.add("scheduled");
+                this.addAssociateToDay(monthDay, associate);
+                timePeriod.dataset.shiftId = shift.ID;
+            }
+
+        } else {
+            deleteTimePeriod(timePeriod.dataset.shiftId).then(() => {
+                timePeriodBar.classList.remove("scheduled");
+                this.removeAssociateFromDay(monthDay, associate);
+
+                delete timePeriod.dataset.shiftId;
+            });
+        }
     }
 
 

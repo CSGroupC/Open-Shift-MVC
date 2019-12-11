@@ -54,13 +54,13 @@ namespace Open_Shift.Controllers
 
             Stream req = Request.InputStream;
             req.Seek(0, System.IO.SeekOrigin.Begin);
-            string availabilityJson = new StreamReader(req).ReadToEnd().ToString();
-            string buffer = availabilityJson.ToString();
+            string shiftJson = new StreamReader(req).ReadToEnd().ToString();
+            string buffer = shiftJson.ToString();
             var dateTimeConverter = new IsoDateTimeConverter();
 
-            var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
+            var shift = Newtonsoft.Json.JsonConvert.DeserializeObject<Shift>(shiftJson, dateTimeConverter);
 
-            var id = db.InsertAvailability(availability);
+            var id = db.InsertShift(shift);
 
             if (id > 0)
                 return Content("{\"status\": \"SUCCESS\", \"id\": " + id + "}", "application/json");

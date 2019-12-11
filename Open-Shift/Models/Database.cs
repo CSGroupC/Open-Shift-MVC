@@ -644,7 +644,7 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@dtmShiftBegin", a.StartTime, SqlDbType.DateTime);
                 SetParameter(ref da, "@dtmShiftEnd", a.EndTime, SqlDbType.DateTime);
                 SetParameter(ref da, "@strNotes", a.Notes, SqlDbType.NVarChar);
-                SetParameter(ref da, "@intAssociateTitleID", a.AssociateTitleID, SqlDbType.Int);
+                //SetParameter(ref da, "@intAssociateTitleID", a.AssociateTitleID, SqlDbType.Int);
                 SetParameter(ref da, "@blnIsOpen", a.IsOpen, SqlDbType.Bit);
                 SetParameter(ref da, "@intAvailabilityID", a.AvailabilityID, SqlDbType.Int);
 
@@ -663,7 +663,7 @@ namespace Open_Shift.Models
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         // NOTE: Just casting to int with (int) is not enough apparently
-                        intShiftID = Convert.ToInt32(dr["intAvailabilityID"].ToString());
+                        intShiftID = Convert.ToInt32(dr["intShiftID"].ToString());
                     }
                 }
 
@@ -728,39 +728,6 @@ namespace Open_Shift.Models
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
-
-
-        public bool UpdateShift(Shift a)
-        {
-            try
-            {
-                SqlConnection cn = null;
-                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("UPDATE_AVAILABILITY", cn);
-
-                SetParameter(ref cm, "@intAvailabilityID", a.ID, SqlDbType.Int);
-                SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
-                SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
-                SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
-
-                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
-
-                cm.ExecuteReader();
-
-                int intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
-                CloseDBConnection(ref cn);
-
-                switch (intReturnValue)
-                {
-                    case 1: //new availability created
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-        }
-
 
         public bool DeleteShift(int ShiftID)
         {

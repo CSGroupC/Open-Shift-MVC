@@ -18,6 +18,7 @@ namespace Open_Shift.Models
         public string AssociateName { get; set; }
         public string Notes { get; set; }
         public bool IsManager { get; set; }
+        public DateTime ShiftDate { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
@@ -40,6 +41,7 @@ namespace Open_Shift.Models
                 AssociateName = dr["strFirstName"].ToString() + " " + dr["strLastName"].ToString();
                 Notes = dr["strNotes"].ToString();
                 IsManager = (bool)dr["blnIsManager"];
+                ShiftDate = (DateTime)dr["dtmShiftDate"];
                 StartTime = (DateTime)dr["dtmShiftBegin"];
                 EndTime = (DateTime)dr["dtmShiftEnd"];
             }

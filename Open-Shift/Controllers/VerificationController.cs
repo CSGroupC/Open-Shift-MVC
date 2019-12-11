@@ -24,7 +24,7 @@ namespace Open_Shift.Controllers
             db.ApproveNewAssociate(token);
 
 
-            return RedirectToAction("Index", "Main");
+            return RedirectToAction("Index", "Home");
 
         }
 

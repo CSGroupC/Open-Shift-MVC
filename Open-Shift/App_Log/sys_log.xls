@@ -38,3 +38,5 @@ The statement has been terminated.
 12/11/2019 12:58:20 AM	Open_Shift.Models.Database	Cannot insert the value NULL into column 'intAssociateTitleID', table 'C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF.dbo.TShifts'; column does not allow nulls. INSERT fails.
 The statement has been terminated.
 12/11/2019 1:20:00 AM	Open_Shift.Controllers.ProfileController	The client or server is only configured for E-mail addresses with ASCII local-parts: 大輔斉藤@docomo.ne.jp.
+12/11/2019 1:21:40 PM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/11/2019 2:18:18 PM	Open_Shift.Controllers.MainController	Column 'strFirstName' does not belong to table Table.

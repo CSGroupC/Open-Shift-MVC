@@ -35,106 +35,97 @@
             </div>
         </div>*@
 
-    <div class="container-main ">
-        <div class="container ">
-            <div>
-                <div>@Html.LabelFor(model => model.User.FirstName)</div>
-                <div required>@Html.TextBoxFor(model => model.User.FirstName)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.FirstName)</div>
-            </div>
-            <div>
-                <div>@Html.LabelFor(model => model.User.LastName)</div>
-                <div required>@Html.TextBoxFor(model => model.User.LastName)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.LastName)</div>
-            </div>
-
-            <div>
-                <div>@Html.LabelFor(model => model.User.Birthday)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Birthday, "{0:yyyy/MM/dd}")</div>
-                <div>@Html.ValidationMessageFor(model => model.User.Birthday)</div>
-            </div>
-
-            <div>
-                <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
-                <div required>@Html.TextBoxFor(model => model.User.AddressLine1)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.AddressLine1)</div>
-            </div>
-
-            <div>
-                <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
-                <div required>@Html.TextBoxFor(model => model.User.AddressLine2)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.AddressLine2)</div>
-            </div>
-
-            <div>
-                <div>@Html.LabelFor(model => model.User.PostalCode)</div>
-                <div required>@Html.TextBoxFor(model => model.User.PostalCode)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.PostalCode)</div>
-            </div>
-        </div>
-
-        <div class="container" value="Store Info">
-            <div class="section-bottom">
-                <div>
-                    <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.StatusID, "Status")</div>
-                        <div>@Html.DropDownListFor(model => model.User.StatusID, new SelectList(Model.Lists.StatusList, "Value", "Text", Model.User.StatusID, new List<SelectListItem> { Model.Lists.StatusList[0] }), new { @title = "Select your status." })</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.StatusID)</div>
-                    </div>
-                    <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.StoreID, "Store")</div>
-                        <div>@Html.DropDownListFor(model => model.User.StoreID, new SelectList(Model.Lists.StoreLocationList, "Value", "Text", Model.User.StoreID), new { @title = "Select your location." })</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.StoreID)</div>
-                    </div>
-                    <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.IsManager, "Are You a Manager?")</div>
-                        <div>@Html.DropDownListFor(model => model.User.IsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.IsManager), new { @title = "Are you a manager?." })</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.IsManager)</div>
-                    </div>
-                    <div class="section-bottom">
-                        <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
-                        <div>@Html.TextBoxFor(model => model.User.EmployeeNumber)</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.EmployeeNumber)</div>
-                    </div>
-                    <div class="id-lists right-margin05">
-                        <div>@Html.LabelFor(model => model.User.AssociateTitle, "Associate Title")</div>
-                        <div>@Html.DropDownListFor(model => model.User.AssociateTitle, new SelectList(Model.Lists.AssociateTitle, "Value", "Text", Model.User.AssociateTitle), new { @title = "Associate Title." })</div>
-                        <div>@Html.ValidationMessageFor(model => model.User.AssociateID)</div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="container" value="Contact Info">
-            <div class="section-bottom">
-                <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Phonenumber)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.Phonenumber)</div>
-            </div>
-            <div class="section-bottom">
+    <div class="container-main">
+        <div>
+            <div class="form-group">
                 <div>@Html.LabelFor(model => model.User.Email)</div>
-                <div required>@Html.TextBoxFor(model => model.User.Email)</div>
-                <div>@Html.ValidationMessageFor(model => model.User.Email)</div>
+                <div>@Html.TextBoxFor(model => model.User.Email, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Email)</small>
             </div>
-            @*<div class="section-bottom">
-                    <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>
-                    <div required>@Html.TextBoxFor(model => model.User.ConfirmEmail)</div>
-                </div>*@
-            @*<div>
-                    <div>@Html.LabelFor(model => model.User.Password)</div>
-                    <div required>@Html.TextBoxFor(model => model.User.Password, new { type = "password" })</div>
-                </div>*@
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.Phonenumber)</div>
+                <div>@Html.TextBoxFor(model => model.User.Phonenumber, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Phonenumber)</small>
+            </div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.Birthday)</div>
+                <div>@Html.TextBoxFor(model => model.User.Birthday, "{0:yyyy/MM/dd}", new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Birthday)</small>
+
+            </div>
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.FirstName)</div>
+                <div>@Html.TextBoxFor(model => model.User.FirstName, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.FirstName)</small>
+            </div>
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.LastName)</div>
+                <div>@Html.TextBoxFor(model => model.User.LastName, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.LastName)</small>
+            </div>
+
+        </div>
+        <div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.AddressLine1)</div>
+                <div>@Html.TextBoxFor(model => model.User.AddressLine1, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.AddressLine1)</small>
+            </div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.AddressLine2)</div>
+                <div>@Html.TextBoxFor(model => model.User.AddressLine2, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.AddressLine2)</small>
+            </div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.PostalCode)</div>
+                <div>@Html.TextBoxFor(model => model.User.PostalCode, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.PostalCode)</small>
+            </div>
+
         </div>
 
 
+        <div>
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.StoreID, "Store")</div>
+                <div>@Html.DropDownListFor(model => model.User.StoreID, new SelectList(Model.Lists.StoreLocationList, "Value", "Text", Model.User.StoreID), new { @title = "Select your Location.", @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.StoreID)</small>
+            </div>
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.IsManager, "Are You a Manager?")</div>
+                <div>@Html.DropDownListFor(model => model.User.IsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.IsManager), new { @title = "Select your managerial status.", @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.IsManager)</small>
+            </div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>
+                <div>@Html.TextBoxFor(model => model.User.EmployeeNumber, new { @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.EmployeeNumber)</small>
+            </div>
+
+            <div class="form-group">
+                <div>@Html.LabelFor(model => model.User.AssociateTitle, "Associate Title")</div>
+
+                <div>@Html.DropDownListFor(model => model.User.AssociateTitle, new SelectList(Model.Lists.AssociateTitle, "Value", "Text", Model.User.AssociateTitle), new { @title = "Select your title.", @class = "form-control" })</div>
+                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.AssociateTitle)</small>
+            </div>
+
+        </div>
+
+        @*<div value="Notification">
+            @*<input type="checkbox" name="Notifications" value="Manager"> Are you a manager?<br>*@
+        @*<input type="checkbox" name="Notifications" value="Email"> Receive Email Notifications<br>
+            <input type="checkbox" name="Notifications" value="Textr"> Receive Text Notificatons<br>*@
+        @*</div>*@
     </div>
     <br />
-    <div class="inline">
-        @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
-        <br />
-        <br />
-        <button class="button-action" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Update</button>
-        <button class="button-action" id="btnClose" name="btnCancel" value="cancel" type="button" onclick="location.href='/Profile'">Cancel</button>
+    <div>
+        <button class="btn btn-success" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-save'></i> Save</button>
+        <button class="btn btn-success" id="btnClose" name="btnCancel" value="cancel" type="button" onclick="location.href='/Profile'">Cancel</button>
     </div>
 }

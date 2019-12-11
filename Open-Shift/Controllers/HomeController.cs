@@ -13,31 +13,24 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                Models.Home h = new Models.Home();
-                Models.Database db = new Models.Database();
-                h.User = Models.User.GetUserSession(); //h.User is my CurrentUser
+                if (!Models.User.GetUserSession().IsAuthenticated)
+                {
+                    return RedirectToAction("SignIn", "Profile");
+                }
 
-                return View(h);
+                Models.Database db = new Models.Database();
+
+                var viewModel = new ViewModels.HomeViewModel();
+                viewModel.User = Models.User.GetUserSession();
+                viewModel.NextShift = db.GetNextShift(viewModel.User.AssociateID);
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {
                 Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
                 return RedirectToAction("Index", "Error");
             }
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

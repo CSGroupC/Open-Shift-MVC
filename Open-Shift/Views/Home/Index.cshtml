@@ -1,65 +1,76 @@
-﻿@model Open_Shift.Models.Home
+﻿@model Open_Shift.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
-<style>
-    .mycanvas-follow {
-        color: darkgray;
-    }
+@if (Model.User.IsAuthenticated)
+{
+    <h1 class="mb-4">Next Shift</h1>
 
-    .mycanvas-following {
-        color: green;
-    }
+    <div class="container-main pt-2">
+        <div>
+            <div class="display-4 text-center">
+                @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
+            </div>
+            <div class="text-muted">
+                @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
+                -
+                @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="mb-5">
+        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
+    </div>
 
-    .follow-link:hover {
-        cursor: pointer;
-    }
+}
 
-    .follow-link {
-        text-decoration: none;
-    }
 
-    .your-item {
-        color: darkgrey
-    }
-</style>
+<h1>
+    Stores
+</h1>
 
-<h3>Open Shift</h3>
-<b>Contact</b>
-<address>
-    2 Chome-39-13 Kitazawa <br />
-    世田谷区 Setagaya City Tokyo 155-0031 <br />
-    Japan  Redmond, WA 98052-6399 <br />
-    <abbr title="Phone">P:</abbr>
-    +81 3-5465-0044
-</address>
+<div class="d-flex">
+    <address class="card mb-3">
+        <div class="card-body">
+            <b>Contact</b>
+            <div>
+                2 Chome-39-13 Kitazawa <br />
+                世田谷区 Setagaya City Tokyo 155-0031 <br />
+                Japan  Redmond, WA 98052-6399 <br />
+                <abbr title="Phone">P:</abbr>
+                +81 3-5465-0044
+            </div>
+        </div>
+    </address>
 
-<address>
-    </br>
+    <address class="card ml-3">
 
-    <b>Hours:</b></br>
-    Sunday	    11:30AM–3PM, 5–10:30PM </br>
-    Monday	    11:30AM–3PM, 5–10:30PM </br>
-    Tuesday	    Closed</br>
-    Wednesday	11:30AM–3PM, 5–10:30PM</br>
-    Thursday	11:30AM–3PM, 5–10:30PM </br>
-    Friday	    11:30AM–3PM, 5–10:30PM </br>
-    Saturday	11:30AM–3PM, 5–10:30PM </br>
-</address>
+        <div class="card-body">
+            <b>Hours</b>  <br />
+            Sunday:	    <strong>closed</strong> <br />
+            Monday:	    17:00–24:00 <br />
+            Tuesday:	    17:00–24:00<br />
+            Wednesday:	17:00–24:00<br />
+            Thursday:	17:00–24:00 <br />
+            Friday:	    17:00–24:00 <br />
+            Saturday:	<strong>closed</strong> <br />
+        </div>
+    </address>
+</div>
+<div class="card mb-3 location-about">
+    <div class="card-body">
+        <b>About</b>
+        <p>
+            Kotetsu is a noodle restaraut located in Tokyo
+            Kotetsu offers authentic Japanese comfort food in a cozy setting
+            Perfect noodles and succulent beef share a savoury-broth bath
+            It is also a fun place to work
+            We give our employees opportunity to grow
+        </p>
+    </div>
+</div>
 
-<address>
-    </br>
-    <strong>Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />
-</address>
-</br>
-<b> About</b>
-<p>
-    Kotetsu is a noodle restaraut located in Tokyo</br>
-    Kotetsu offers authentic Japanese comfort food in a cozy setting </br>
-    Perfect noodles and succulent beef share a savoury-broth bath </br>
-    It is also a fun place to work </br>
-    We give our employees opportunity to grow </br>
-</p>
-
+<strong>Open Shift Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />

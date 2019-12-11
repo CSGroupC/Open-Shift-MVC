@@ -81,7 +81,7 @@ h2 {
     max-width: 690px;
     border: 1px solid #DDD;
     border-radius: 3px;
-    box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
     padding: 20px;
 }
 
@@ -111,9 +111,6 @@ h2 {
     display: inline-block;
 }
 
-a:hover {
-    background-color: darksalmon;
-}
 
 .right {
     position: absolute;
@@ -363,9 +360,23 @@ button, input[type=submit], input[type=button] {
 
 
 /*
+General
+*/
+.validation-message {
+    height: 8px;
+    margin-top: 0px;
+}
+
+/*
+Home
+*/
+.location-about {
+    max-width: 520px;
+}
+
+/*
 Signin
 */
-
 .signin-form {
     display: flex;
     flex-direction: column;
@@ -373,6 +384,12 @@ Signin
 }
 
     .signin-form a {
+        text-align: center;
+    }
+
+    .signin-form .validation-message {
+        height: 16px;
+        margin-bottom: 10px;
         text-align: center;
     }
 

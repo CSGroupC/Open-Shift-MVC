@@ -1,18 +1,19 @@
 ﻿import { CustomElement, TimePeriod } from "./dom-elements.js";
-import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, stringToColor, Event } from "./utilities.js";
-import { createAvailability, updateAvailability, deleteTimePeriod } from "./database.js";
+import { MONTH_NAMES, formatTime, stringToDate, getDateFromQueryString, nameToColor, Event } from "./utilities.js";
+import { createAvailability, updateAvailability, deleteTimePeriod, createShift } from "./database.js";
 
 let WEEKDAY_INDEXES = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
 
 export class Calendar {
 
     // Strings in format "HH:MM"
-    constructor(timePeriods, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn) {
+    constructor(associate, timePeriods, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn) {
 
         // Require mouseup and mousedown to target the same element in order for click events to fire
         Event.preventFalseClicks();
         //Event.registerTouchEvent();
 
+        this.associate = associate;
         this.twentyFourHourMode = true;
         this.minutesPerColumn = minutesPerColumn;
 
@@ -36,6 +37,8 @@ export class Calendar {
         this.focusedTimePeriod = null;
 
         this.currentDate = new Date();
+
+        this.element.dataset.isManager = this.associate.IsManager;
 
         // Objects that represent an instance of resizing or movement
         this.timePeriodResizal = null;
@@ -130,17 +133,21 @@ export class Calendar {
         this.timePeriods = [];
 
         if (timePeriods != [] && timePeriods != null) {
+            let associateIndex = 0;
             // Convert the array into an object with the IDs as keys
             this.timePeriods = timePeriods.reduce((object, timePeriod) => {
 
-                if ("AssociateID" in timePeriod) {
+                if ("AssociateID" in timePeriod && !(timePeriod.AssociateID in this.associates)) {
 
                     this.associates[timePeriod.AssociateID] = {
                         id: timePeriod.AssociateID,
+                        index: associateIndex,
                         name: timePeriod.AssociateName,
                         isManager: timePeriod.IsManager,
-                        color: stringToColor(timePeriod.AssociateID + timePeriod.AssociateName)
+                        color: nameToColor(timePeriod.AssociateID, timePeriod.AssociateName)
                     };
+
+                    associateIndex++;
                 }
 
                 object[timePeriod.ID] = timePeriod;
@@ -167,10 +174,12 @@ export class Calendar {
             }
 
             let timePeriodElement = new TimePeriod(this, time, associate);
+            timePeriodElement.classList.add("associate-" + associate.index);
 
             timePeriodElement.dataset.availabilityId = id;
-
-            this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
+            let monthDay = this.element.querySelector(`[data-month-day='${time.start.getDate()}']`);
+            monthDay.dataset.availableAssociateCount = parseInt(monthDay.dataset.availableAssociateCount) + 1;
+            monthDay.querySelector(`.time-period-section`).prepend(timePeriodElement);
         }
 
 
@@ -249,7 +258,7 @@ export class Calendar {
 
         for (let i = 1; i <= count; i++) {
             html += `
-            <div class="${classes}" data-month-day="${i}" data-associate-count="0" data-manager-count="0">
+            <div class="${classes}" data-month-day="${i}" data-available-associate-count="0" data-associate-count="0" data-manager-count="0">
                 <div class="day-number-wrapper"><span class="day-number">${i}</span></div>
                 <span class="error-icons">
                     <i class="fas fa-exclamation-triangle warning-icon" data-tooltip="Not enough managers."></i>
@@ -270,7 +279,7 @@ export class Calendar {
 
 export class AvailabilityCalendar extends Calendar {
     constructor(availabilities = [], associate = { AssociateID: 0 }, closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
-        super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
+        super(associate, availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
 
         this.element.classList.add("availability-calendar");
         // NOTE: This is required to allow making new time period templates
@@ -278,7 +287,7 @@ export class AvailabilityCalendar extends Calendar {
 
         if (associate.AssociateID > 0) {
             associate.name = associate.FirstName + " " + associate.LastName;
-            associate.color = stringToColor(associate.AssociateID + associate.name);
+            associate.color = nameToColor(associate.AssociateID, associate.name);
         }
 
         let card = new CustomElement(`<div class="card time-period-template-card"><div class="card-body"></div></div>`);
@@ -347,8 +356,9 @@ export class AvailabilityCalendar extends Calendar {
 }
 
 export class SchedulingCalendar extends Calendar {
-    constructor(associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
-        super(availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
+    constructor(associate = null, storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
+        super(associate, availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
+        this.storeId = storeId;
 
         this.element.classList.add("scheduling-calendar");
 
@@ -384,27 +394,36 @@ export class SchedulingCalendar extends Calendar {
         }
     }
 
-    toggleScheduled(timePeriodBar, associate, shift) {
+    toggleScheduled(timePeriodBar, associate, shift = null) {
 
         let monthDay = timePeriodBar.closest(".month-day");
         let timePeriod = timePeriodBar.closest(".time-period");
 
         if (timePeriodBar.classList.contains("scheduled") == false) {
-            timePeriodBar.classList.add("scheduled");
-            timePeriod.dataset.shiftId = shift.ID;
-            this.addAssociateToDay(monthDay, associate);
-        } else {
-            timePeriodBar.classList.remove("scheduled");
-            this.removeAssociateFromDay(monthDay, associate);
-            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.shiftId);
-            delete timePeriod.dataset.shiftId;
-        }
 
-        /*
-        createAvailability(associate, timePeriod, element, this).then(() => {
-            element.querySelector(".time-period-section").prepend(timePeriod);
-        });
-        */
+            if (shift == null) {
+                if (this.associate.IsManager == 1) {
+                    createShift(associate, timePeriod, monthDay, this).then(() => {
+                        timePeriodBar.classList.add("scheduled");
+                        this.addAssociateToDay(monthDay, associate);
+                    });
+                }
+            } else {
+                timePeriodBar.classList.add("scheduled");
+                this.addAssociateToDay(monthDay, associate);
+                timePeriod.dataset.shiftId = shift.ID;
+            }
+
+        } else {
+            if (this.associate.IsManager == 1) {
+                deleteTimePeriod(timePeriod.dataset.shiftId).then(() => {
+                    timePeriodBar.classList.remove("scheduled");
+                    this.removeAssociateFromDay(monthDay, associate);
+
+                    delete timePeriod.dataset.shiftId;
+                });
+            }
+        }
     }
 
 
@@ -412,7 +431,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) + 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.IsManager == true) {
+        if (associate.isManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) + 1;
             monthDay.dataset.managerCount = managerCount;
         }
@@ -423,7 +442,7 @@ export class SchedulingCalendar extends Calendar {
         let associateCount = parseInt(monthDay.dataset.associateCount) - 1;
         monthDay.dataset.associateCount = associateCount;
 
-        if (associate.IsManager == true) {
+        if (associate.isManager == true) {
             let managerCount = parseInt(monthDay.dataset.managerCount) - 1;
             monthDay.dataset.managerCount = managerCount;
         }

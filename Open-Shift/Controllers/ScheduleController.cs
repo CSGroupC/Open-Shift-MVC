@@ -49,48 +49,28 @@ namespace Open_Shift.Controllers
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
-
-            Models.Database db = new Database();
-
-            Stream req = Request.InputStream;
-            req.Seek(0, System.IO.SeekOrigin.Begin);
-            string availabilityJson = new StreamReader(req).ReadToEnd().ToString();
-            string buffer = availabilityJson.ToString();
-            var dateTimeConverter = new IsoDateTimeConverter();
-
-            var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
-
-            var id = db.InsertAvailability(availability);
-
-            if (id > 0)
-                return Content("{\"status\": \"SUCCESS\", \"id\": " + id + "}", "application/json");
-            else
-                return Content("{\"status\": \"INSERT_FAILED\"}", "application/json");
-
-        }
-
-        [HttpPut]
-        public ActionResult Update()
-        {
-            var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (u.IsManager == 0)
             {
-                return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
+                return Content("{\"status\": \"PERMISSION_DENIED\"}", "application/json");
             }
 
             Models.Database db = new Database();
 
             Stream req = Request.InputStream;
             req.Seek(0, System.IO.SeekOrigin.Begin);
-            string availabilityJson = new StreamReader(req).ReadToEnd().ToString();
-            string buffer = availabilityJson.ToString();
+            string shiftJson = new StreamReader(req).ReadToEnd().ToString();
+            string buffer = shiftJson.ToString();
             var dateTimeConverter = new IsoDateTimeConverter();
 
-            var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
+            var shift = Newtonsoft.Json.JsonConvert.DeserializeObject<Shift>(shiftJson, dateTimeConverter);
 
-            availability.Save();
+            var id = db.InsertShift(shift);
 
-            return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            if (id > 0)
+                return Content("{\"status\": \"SUCCESS\", \"id\": " + id + "}", "application/json");
+            else
+                return Content("{\"status\": \"INSERT_FAILED\"}", "application/json");
+
         }
 
         [HttpDelete]
@@ -100,6 +80,10 @@ namespace Open_Shift.Controllers
             if (!u.IsAuthenticated)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
+            }
+            if (u.IsManager == 0)
+            {
+                return Content("{\"status\": \"PERMISSION_DENIED\"}", "application/json");
             }
 
             Models.Database db = new Database();

@@ -16,12 +16,14 @@ namespace Open_Shift.Models
         public int AssociateID = 0;
 
         [DisplayName("First Name")]
-        [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "First Name Cannot Contain Numbers")]
+        // NOTE: Names will have Japanese characters
+        // [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "First Name Cannot Contain Numbers")]
         [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
         [DisplayName("Last Name")]
-        [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "Last Name Cannot Contain Numbers")]
+        // NOTE: Names will have Japanese characters
+        // [RegularExpression(@"^[A-Za-z]*$", ErrorMessage = "Last Name Cannot Contain Numbers")]
         [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
@@ -65,17 +67,17 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-		[DisplayName("New Password")]
-		[Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
-		public string NewPassword { get; set; }
+        [DisplayName("New Password")]
+        [Compare("Password", ErrorMessage = "Error: Your passwords do not match")]
+        public string NewPassword { get; set; }
 
-		[DisplayName("Associate Title")]
+        [DisplayName("Associate Title")]
         [Required(AllowEmptyStrings = false)]
         public AssociateTitles AssociateTitle { get; set; } = AssociateTitles.NoType;
 
         public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
-        public IsManagerEnum IsManager { get; set; } = IsManagerEnum.NoType; //by default
+        public IsManagerEnum IsManager { get; set; } = IsManagerEnum.Associate; //by default
         public bool LoginAttempted { get; set; } = false;
 
         public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
@@ -106,11 +108,11 @@ namespace Open_Shift.Models
             KotetsuBrazil = 3
         }
 
+        // NOTE: Since this enum will be converted to a boolean, it is MUCH easier to use 1 and 0 as true and false
         public enum IsManagerEnum
         {
-            NoType = 0,
-            Associate = 1,
-            Manager = 2
+            Associate = 0,
+            Manager = 1
         }
 
 
@@ -200,19 +202,19 @@ namespace Open_Shift.Models
         //Not sure if this works
         public bool ResetPassword()
         {
-			try
-			{
-				User u = new User();
-				u = (User)HttpContext.Current.Session["CurrentUser"];
-				Database db = new Database();
-				Password = u.NewPassword;
-			       db.UpdateUser(this);
-				return true;
-			}
-			catch (Exception ex) { throw new Exception(ex.Message); }
-		}
+            try
+            {
+                User u = new User();
+                u = (User)HttpContext.Current.Session["CurrentUser"];
+                Database db = new Database();
+                Password = u.NewPassword;
+                db.UpdateUser(this);
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
 
-		public bool RemoveUserSession()
+        public bool RemoveUserSession()
         {
             try
             {

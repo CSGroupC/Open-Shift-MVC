@@ -40,13 +40,11 @@
 <div class="d-flex store-info-1 w-100">
     <address class="card mb-3">
         <div class="card-body">
-            <b>Contact</b>
-            <div>
-                2 Chome-39-13 Kitazawa <br />
-                世田谷区 Setagaya City Tokyo 155-0031 <br />
-                Japan  Redmond, WA 98052-6399 <br />
-                <abbr title="Phone">P:</abbr>
-                +81 3-5465-0044
+            <iframe frameborder="0" style="border:0"
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Model.Stores[0].StoreName @Model.Stores[0].AddressLine1 @Model.Stores[0].AddressLine2" allowfullscreen></iframe>
+            <div class="text-muted">
+                @Model.Stores[0].AddressLine1 <br />
+                @Model.Stores[0].AddressLine2
             </div>
         </div>
     </address>

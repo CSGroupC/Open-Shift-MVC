@@ -11,7 +11,12 @@ namespace Open_Shift.Models
         public int ID { get; set; }
         public int AvailabilityID { get; set; }
         public int AssociateID { get; set; }
+        public int StoreID { get; set; }
+        public int AssociateTitleID { get; set; }
+        public bool IsOpen { get; set; }
+
         public string AssociateName { get; set; }
+        public string Notes { get; set; }
         public bool IsManager { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
@@ -23,13 +28,20 @@ namespace Open_Shift.Models
                 ID = (int)dr["intShiftID"];
                 AvailabilityID = (int)dr["intAvailabilityID"];
                 AssociateID = (int)dr["intAssociateID"];
+                StoreID = (int)dr["intStoreID"];
+                AssociateTitleID = (int)dr["intAssociateTitleID"];
+                IsOpen = (bool)dr["blnIsOpen"];
+
                 AssociateName = dr["strFirstName"].ToString() + " " + dr["strLastName"].ToString();
+                Notes = dr["strNotes"].ToString();
                 IsManager = (bool)dr["blnIsManager"];
                 StartTime = (DateTime)dr["dtmShiftBegin"];
                 EndTime = (DateTime)dr["dtmShiftEnd"];
-
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Save()

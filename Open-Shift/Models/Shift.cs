@@ -21,6 +21,11 @@ namespace Open_Shift.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        public Shift()
+        {
+
+        }
+
         public Shift(DataRow dr)
         {
             try

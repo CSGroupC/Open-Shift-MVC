@@ -98,7 +98,7 @@ export function deleteTimePeriod(timePeriodId) {
     })
         .then(function (response) {
             if (!response.ok) {
-                throw new Error('Availability/Delete responded with ' + response.status);
+                throw new Error('/Delete responded with ' + response.status);
             }
             return response.json();
         })

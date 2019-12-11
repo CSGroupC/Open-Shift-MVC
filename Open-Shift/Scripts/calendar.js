@@ -167,7 +167,9 @@ export class Calendar {
             }
 
             let timePeriodElement = new TimePeriod(this, time, associate);
-            timePeriodElement.dataset.id = id;
+
+            timePeriodElement.dataset.availabilityId = id;
+
             this.element.querySelector(`[data-month-day='${time.start.getDate()}'] .time-period-section`).prepend(timePeriodElement);
         }
 
@@ -356,10 +358,10 @@ export class SchedulingCalendar extends Calendar {
 
         // Load existing shifts on the calendar
         for (let shift of shifts) {
-            let schedulingBar = this.dayListElement.querySelector(`.time-period[data-id='${shift.AvailabilityID}'] .scheduling-bar`);
+            let schedulingBar = this.dayListElement.querySelector(`.time-period[data-availability-id='${shift.AvailabilityID}'] .scheduling-bar`);
             let associate = this.associates[shift.AssociateID];
 
-            this.toggleScheduled(schedulingBar, associate);
+            this.toggleScheduled(schedulingBar, associate, shift);
         }
 
         // Show list of available associates
@@ -382,17 +384,20 @@ export class SchedulingCalendar extends Calendar {
         }
     }
 
-    toggleScheduled(timePeriodBar, associate) {
+    toggleScheduled(timePeriodBar, associate, shift) {
 
         let monthDay = timePeriodBar.closest(".month-day");
+        let timePeriod = timePeriodBar.closest(".time-period");
 
         if (timePeriodBar.classList.contains("scheduled") == false) {
             timePeriodBar.classList.add("scheduled");
+            timePeriod.dataset.shiftId = shift.ID;
             this.addAssociateToDay(monthDay, associate);
         } else {
             timePeriodBar.classList.remove("scheduled");
             this.removeAssociateFromDay(monthDay, associate);
-            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.id);
+            deleteTimePeriod(timePeriodBar.closest(".time-period").dataset.shiftId);
+            delete timePeriod.dataset.shiftId;
         }
 
         /*

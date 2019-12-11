@@ -170,6 +170,51 @@ namespace Open_Shift.Models
         //}
         //}
 
+
+
+        public int CheckIfUserExists(string strEmail)
+        {
+            try
+            {
+
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                var da = new SqlDataAdapter("CHECK_USER_EXISTS", cn);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                string strReturnEmail = "";
+                int intReturnValue = -1;
+
+                SetParameter(ref da, "@strEmail", strEmail, SqlDbType.NVarChar);
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    intReturnValue = 1;
+                }
+                else intReturnValue = 0;
+
+                return intReturnValue;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+
         public int InsertUser(User u)
         {
             try

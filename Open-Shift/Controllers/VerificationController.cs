@@ -30,9 +30,23 @@ namespace Open_Shift.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult EmailManagerApproval(int associateID)
+        {
+           // EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
 
-   
-    
+            Models.Database db = new Database();
+            db.ChangeAssocToActive(associateID);
+
+
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+
+
 
         [HttpPost]
         public ActionResult Create()

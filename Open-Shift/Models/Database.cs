@@ -45,7 +45,11 @@ namespace Open_Shift.Models
 
                 return users;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool DeleteUser(long AssociateID)
@@ -66,7 +70,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         //public Image GetUserImage(long AssociateID = 0, long UserImageID = 0)
@@ -179,6 +187,8 @@ namespace Open_Shift.Models
             }
             catch (Exception ex)
             {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+
 
                 throw new Exception(ex.Message);
             }
@@ -261,7 +271,11 @@ namespace Open_Shift.Models
                 }
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public Models.User Login(Models.User u)
@@ -307,7 +321,11 @@ namespace Open_Shift.Models
                 }
                 return existingUser; //alls well in the world
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public User GetUserByPasswordResetToken(string token)
@@ -346,7 +364,11 @@ namespace Open_Shift.Models
 
                 return user;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool ResetPassword(User u)
@@ -412,7 +434,11 @@ namespace Open_Shift.Models
 
                 return UserInfo;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool UpdateUser(User u)
@@ -485,7 +511,11 @@ namespace Open_Shift.Models
                         return false;
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -516,7 +546,11 @@ namespace Open_Shift.Models
                         return false;
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -547,7 +581,11 @@ namespace Open_Shift.Models
                         return false;
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -596,7 +634,11 @@ namespace Open_Shift.Models
                     return 0;
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         // TODO: Maybe change storeID to an int
@@ -648,7 +690,11 @@ namespace Open_Shift.Models
 
                 return availabilities;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -681,7 +727,11 @@ namespace Open_Shift.Models
                         return false;
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -715,7 +765,11 @@ namespace Open_Shift.Models
                 else
                     return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool ApproveNewAssociate(string token)
@@ -736,7 +790,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
 
 
             return true;
@@ -760,7 +818,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
 
 
             return true;
@@ -803,7 +865,11 @@ namespace Open_Shift.Models
 
                 return managers;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -860,7 +926,11 @@ namespace Open_Shift.Models
                     return 0;
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -913,7 +983,11 @@ namespace Open_Shift.Models
 
                 return shifts;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         // Gets the next shift by associate
@@ -952,7 +1026,11 @@ namespace Open_Shift.Models
 
                 return shift;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool DeleteShift(int ShiftID)
@@ -973,7 +1051,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -1038,7 +1120,11 @@ namespace Open_Shift.Models
 
                 return stores;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -1061,7 +1147,10 @@ namespace Open_Shift.Models
                 return true;
             }
             catch (Exception ex)
-            { throw new Exception(ex.Message); }
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private bool CloseDBConnection(ref SqlConnection SQLConn)
@@ -1076,7 +1165,11 @@ namespace Open_Shift.Models
                 }
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private int SetParameter(ref SqlCommand cm, string ParameterName, Object Value
@@ -1100,7 +1193,11 @@ namespace Open_Shift.Models
 
                 return 0;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private int SetParameter(ref SqlDataAdapter cm, string ParameterName, Object Value
@@ -1124,7 +1221,11 @@ namespace Open_Shift.Models
 
                 return 0;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public string HashPassword(string password, byte[] salt = null)

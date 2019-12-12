@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Security.Cryptography;
 
 namespace Open_Shift.Models
 {
@@ -233,7 +234,7 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
-                SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPassword", HashPassword(u.Password), SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intStatusID", Status, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
                 SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
@@ -271,12 +272,14 @@ namespace Open_Shift.Models
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
                 SqlDataAdapter da = new SqlDataAdapter("LOGIN", cn);
                 DataSet ds;
-                User newUser = new User();
+                User existingUser = new User();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
-                SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
+                // NOTE: When you use password hashing, you pass in the password.
+                //       You select the password, then compare it here in this code.
+                // SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
                 {
@@ -285,8 +288,13 @@ namespace Open_Shift.Models
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         DataRow dr = ds.Tables[0].Rows[0];
-                        newUser = new User(dr);
+                        existingUser = new User(dr);
 
+                        if (VerifyPassword(u.Password, existingUser.Password) == false)
+                        {
+                            // DE-AUTHENTICATE
+                            existingUser.AssociateID = 0;
+                        }
                     }
                 }
                 catch (Exception ex2)
@@ -297,7 +305,7 @@ namespace Open_Shift.Models
                 {
                     CloseDBConnection(ref cn);
                 }
-                return newUser; //alls well in the world
+                return existingUser; //alls well in the world
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -1086,6 +1094,46 @@ namespace Open_Shift.Models
                 return 0;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public string HashPassword(string password, byte[] salt = null)
+        {
+            var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, 32, 10000);
+
+            if (salt != null)
+            {
+                rfc2898DeriveBytes.Salt = salt;
+            }
+
+            byte[] hash = rfc2898DeriveBytes.GetBytes(20);
+
+            if (salt == null)
+            {
+                salt = rfc2898DeriveBytes.Salt;
+            }
+
+            return Convert.ToBase64String(salt) + "|" + Convert.ToBase64String(hash);
+        }
+
+        // Compare the given password to the given other hash
+        public bool VerifyPassword(string password, string otherHash)
+        {
+            string[] parts = otherHash.Split('|');
+            string salt = parts[0];
+            string hash = parts[1];
+
+            string newHash = HashPassword(password, Convert.FromBase64String(salt));
+
+            newHash = HashPassword(password, Convert.FromBase64String(salt));
+
+            if (newHash == otherHash)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

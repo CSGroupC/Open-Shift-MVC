@@ -302,7 +302,6 @@ namespace Open_Shift.Controllers
         {
             try
             {
-
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Home");

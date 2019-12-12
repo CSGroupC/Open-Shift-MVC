@@ -90,7 +90,7 @@ namespace Open_Shift.Controllers
                     "</tr>" +
                     "</table>" +
                     "<br><br>" +
-                    "Click here to confirm the information is correct." +
+                    "Click <a href='http://localhost:4040/Verification/EmailManagerApproval/?AssociateID=" + u.AssociateID + "' target='_blank'><b>here</b></a> to confirm the information is correct." +
                     "<br><br>" +
                     "Your OpenShift Support Team";
 

@@ -599,6 +599,31 @@ namespace Open_Shift.Models
             return true;
         }
 
+        public bool ChangeAssocToActive(int AssociateID)
+        {
+            string sqlStatement = "Update TAssociates set intStatusID = 1 where intAssociateID = " + AssociateID + ";";
+
+            try
+            {
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand(sqlStatement, cn);
+
+                try
+                {
+                    cm.ExecuteNonQuery();
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                return true;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+
+
+            return true;
+        }
+
+
 
         public List<User> GetManagersAndOwners()
         {

@@ -599,6 +599,47 @@ namespace Open_Shift.Models
         }
 
 
+        public List<User> GetManagersAndOwners()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = null;
+
+                da = new SqlDataAdapter("Select * from tassociates where blnIsManager='True' and strEmailVerificationToken='';", cn);
+              
+                List<User> managers = new List<User>();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        managers.Add(new User(dr));
+                    }
+                }
+
+                return managers;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
+
+
         // ====================================================================================================================================
         // Shifts 
         // ====================================================================================================================================

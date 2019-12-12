@@ -421,6 +421,8 @@ namespace Open_Shift.Controllers
 
                 string PasswordVerificationToken = Guid.NewGuid().ToString();
 
+                EmailController.NewPasswordRequest(h.User.Email, h.User.FirstName, h.User.LastName, PasswordVerificationToken);
+
                 u.ResetPassword();
 
                 if (u.IsAuthenticated)

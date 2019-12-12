@@ -520,6 +520,37 @@ namespace Open_Shift.Models
         }
 
 
+        public bool UpdateUserStatus(int AssociateID, User.StatusList StatusID)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("SET_USER_STATUS", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@intStatusID", StatusID, SqlDbType.Int);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: // user updated
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
         // ====================================================================================================================================
         // Availabilities 
         // ====================================================================================================================================

@@ -14,7 +14,7 @@ namespace Open_Shift.Controllers
     {
 
         [HttpPut]
-        public ActionResult Update()
+        public ActionResult UpdateManagerStatus()
         {
             var u = Models.User.GetUserSession();
             if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
@@ -36,6 +36,38 @@ namespace Open_Shift.Controllers
             var body = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(bodyJson, bodyType);
 
             if (db.UpdateUserManagerStatus(body.AssociateID, body.IsManager))
+            {
+                return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            }
+            else
+            {
+                return Content("{\"status\": \"UPDATE_FAILED\"}", "application/json");
+            }
+        }
+
+        [HttpPut]
+        public ActionResult UpdateStatus()
+        {
+            var u = Models.User.GetUserSession();
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
+            {
+                return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
+            }
+
+            Models.Database db = new Database();
+
+            Stream req = Request.InputStream;
+            req.Seek(0, System.IO.SeekOrigin.Begin);
+            string bodyJson = new StreamReader(req).ReadToEnd().ToString();
+            var dateTimeConverter = new IsoDateTimeConverter();
+            var bodyType = new
+            {
+                AssociateID = 0,
+                StatusID = Open_Shift.Models.User.StatusList.NoType
+            };
+            var body = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(bodyJson, bodyType);
+
+            if (db.UpdateUserStatus(body.AssociateID, body.StatusID))
             {
                 return Content("{\"status\": \"SUCCESS\"}", "application/json");
             }

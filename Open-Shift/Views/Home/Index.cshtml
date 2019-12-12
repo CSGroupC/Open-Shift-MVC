@@ -90,17 +90,27 @@
 
                             <div class="form-group">
                                 <label>@(Associate.FirstName + " " + Associate.LastName)</label>
-                                @Html.DropDownListFor(model => Associate.IsManager, new SelectList(Model.User.Lists.IsManager, "Value", "Text", Associate.IsManager), new { @title = "Promote/demote.", @class = "form-control manager-status" })
+                                <div class="row">
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(model => Associate.IsManager, new SelectList(Model.User.Lists.IsManager, "Value", "Text", Associate.IsManager), new { @title = "Promote/demote.", @class = "form-control manager-status" })
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(model => Associate.StatusID, new SelectList(Model.User.Lists.StatusList, "Value", "Text", Associate.StatusID), new { @title = "Activate/deactivate.", @class = "form-control status" })
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <script type="module">
-                            import { updateAssociateManagerStatus } from "../Scripts/database.js";
+                            import { updateAssociateManagerStatus, updateAssociateStatus } from "../Scripts/database.js";
 
                             let form = document.querySelector(".associate-form[data-associate-id='@Associate.AssociateID']");
                             let selectList = form.getElementsByClassName( "manager-status" )[0];
                             selectList.onchange = ( ) => { updateAssociateManagerStatus( @Associate.AssociateID, selectList.value ) };
+
+                            selectList = form.getElementsByClassName( "status" )[0];
+                            selectList.onchange = ( ) => { updateAssociateStatus( @Associate.AssociateID, selectList.value ) };
                         </script>
                     }
                 }

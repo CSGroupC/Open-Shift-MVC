@@ -164,7 +164,7 @@ export function createShift(associate, timePeriod, monthDay, calendar) {
 
 export function updateAssociateManagerStatus(associateId, managerStatus) {
 
-    return fetch("Manager/Update", {
+    return fetch("Manager/UpdateManagerStatus", {
         method: "PUT",
         body: JSON.stringify({
             AssociateID: associateId,
@@ -177,7 +177,7 @@ export function updateAssociateManagerStatus(associateId, managerStatus) {
     })
         .then(function (response) {
             if (!response.ok) {
-                throw new Error('Availability/Update responded with ' + response.status);
+                throw new Error('Manager/Update responded with ' + response.status);
             }
             return response.json();
         })
@@ -187,3 +187,32 @@ export function updateAssociateManagerStatus(associateId, managerStatus) {
             }
         });
 }
+
+export function updateAssociateStatus(associateId, status) {
+
+    console.log(status);
+
+    return fetch("Manager/UpdateStatus", {
+        method: "PUT",
+        body: JSON.stringify({
+            AssociateID: associateId,
+            StatusID: status
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Manager/Update responded with ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (response) {
+            if (response.status == "AUTHENTICATION_FAILED") {
+                location.href = "/Profile/SignIn";
+            }
+        });
+}
+

@@ -269,8 +269,17 @@ export function TimePeriod(calendar, timeBuffer = { start: null, end: null }, as
     copyButton.onclick = handler;
 
     handler = new Event.PointerHandler((event) => {
-        deleteTimePeriod(timePeriod.dataset.availabilityId).then(() => {
-            timePeriod.parentElement.removeChild(timePeriod);
+        deleteTimePeriod(timePeriod.dataset.availabilityId).then((response) => {
+            console.log(response);
+            if (response.status == "CANNOT_DELETE") {
+                timePeriod.dataset.temporaryTooltip = "Already scheduled! \nContact your manager.";
+
+                setTimeout(() => {
+                    delete timePeriod.dataset.temporaryTooltip;
+                }, 4000);
+            } else {
+                timePeriod.parentElement.removeChild(timePeriod);
+            }
         });
     });
 

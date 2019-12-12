@@ -106,6 +106,7 @@ export function deleteTimePeriod(timePeriodId) {
             if (response.status == "AUTHENTICATION_FAILED") {
                 location.href = "/Profile/SignIn";
             }
+            return response;
         });
 }
 

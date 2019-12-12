@@ -112,7 +112,6 @@ h2 {
 
 
 #workspace {
-    margin: 0 1em 0 2em;
     padding-bottom: 1em;
     padding-top: 2em;
     display: flex;
@@ -409,9 +408,10 @@ Bootstrap
 
 
 @media only screen and (max-width : 42em) {
-    #workspace {
-        margin-left: 1.0em;
-        padding-bottom: 0.25em;
+    body[data-page='Availability'] #workspace,
+    body[data-page='Schedule'] #workspace {
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
     #frankie-bar .link-text {
@@ -435,8 +435,13 @@ Bootstrap
 
 @media only screen and (max-width : 35em) {
 
+    form {
+        width: 100%;
+    }
+
     .container-main {
         flex-direction: column;
+        width: 100%;
     }
 
         .container-main > * {
@@ -445,8 +450,7 @@ Bootstrap
         }
 
     #workspace {
-        margin-right: 0.5em;
-        padding-right: 0.5em;
+        padding: 15px;
     }
 
     .full-content {

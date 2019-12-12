@@ -186,6 +186,7 @@ export class Calendar {
         let handler = new Event.PointerHandler((event) => {
             this.mobileOverlay.classList.add("hidden");
             this.focusedTimePeriod.classList.remove("focused");
+            delete this.focusedTimePeriod.dataset.temporaryTooltip;
             this.focusedTimePeriod = null;
         });
 

@@ -15,7 +15,7 @@
                 <div class="display-4 text-center">
                     @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
                 </div>
-                <div class="text-muted">
+                <div class="text-muted text-center">
                     @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
                     -
                     @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
@@ -44,10 +44,10 @@
             <div class="card-body">
                 <iframe frameborder="0" style="border:0"
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Store.StoreName @Store.AddressLine1 @Store.AddressLine2" allowfullscreen></iframe>
-                <div class="text-muted">
+                <small class="text-muted">
                     @Store.AddressLine1 <br />
                     @Store.AddressLine2
-                </div>
+                </small>
             </div>
         </address>
 

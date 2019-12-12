@@ -115,8 +115,7 @@ namespace Open_Shift.Controllers
                 return Content("{\"status\": \"SUCCESS\"}", "application/json");
             }
             else
-                return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");    // JOE how should we handle it if the availability cant be deleted?
+                return Content("{\"status\": \"CANNOT_DELETE\"}", "application/json");
         }
-    }
     }
 }

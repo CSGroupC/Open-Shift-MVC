@@ -534,18 +534,30 @@ namespace Open_Shift.Models
             try
             {
                 SqlConnection cn = new SqlConnection();
+                DataSet ds = new DataSet();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("DELETE_AVAILABILITY", cn);
+                var da = new SqlDataAdapter("DELETE_AVAILABILITY", cn);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-                SetParameter(ref cm, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
-
+                SetParameter(ref da, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
+           
                 try
                 {
-                    cm.ExecuteNonQuery();
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
                 }
                 finally { CloseDBConnection(ref cn); }
 
-                return true;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    return false;
+                }
+
+                else
+                    return true;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

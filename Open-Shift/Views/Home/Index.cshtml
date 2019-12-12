@@ -82,9 +82,25 @@
             <div class="card-body">
                 @foreach (var Associate in Store.Associates)
                 {
-                    <div>
-                        @(Associate.FirstName + " " + Associate.LastName)
-                    </div>
+                    if (Associate.AssociateID != Model.User.AssociateID)
+                    {
+                        <form class="associate-form" data-associate-id="@Associate.AssociateID">
+
+                            <div class="form-group">
+                                <label>@(Associate.FirstName + " " + Associate.LastName)</label>
+                                @Html.DropDownListFor(model => Associate.IsManager, new SelectList(Model.User.Lists.IsManager, "Value", "Text", Associate.IsManager), new { @title = "Promote/demote.", @class = "form-control manager-status" })
+
+                            </div>
+                        </form>
+
+                        <script type="module">
+                            import { updateAssociateManagerStatus } from "../Scripts/database.js";
+
+                            let form = document.querySelector(".associate-form[data-associate-id='@Associate.AssociateID']");
+                            let selectList = form.getElementsByClassname( "manager-status" )[0];
+                            updateAssociateManagerStatus( @Associate.AssociateID, selectList.value );
+                        </script>
+                    }
                 }
             </div>
         </div>

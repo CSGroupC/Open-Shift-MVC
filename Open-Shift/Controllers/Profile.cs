@@ -118,7 +118,7 @@ namespace Open_Shift.Controllers
                     //NEW CODE
 
                     u.Save();
-                    if (u.IsAuthenticated)
+                    if (u.IsAuthenticated && u.EmailVerificationToken != "")
                     { //user found
                       //if (UserImage != null)
                       //{
@@ -231,8 +231,9 @@ namespace Open_Shift.Controllers
                 Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
                 u.Login();
 
-                if (u.IsAuthenticated)
+                if (u.IsAuthenticated && u.EmailVerificationToken == "")
                 { //user found
+
                     u.SaveUserSession(); //save the user session object
                     return RedirectToAction("Index", "Home");
                 }
@@ -323,7 +324,7 @@ namespace Open_Shift.Controllers
                 h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 h.User.StatusID = Models.User.StatusList.InActive;
                 h.User.Save();
-                if (h.User.IsAuthenticated)
+                if (h.User.IsAuthenticated && h.User.EmailVerificationToken != "")
                 { //user found
                     h.User.SaveUserSession(); //save the user session object
 
@@ -373,7 +374,7 @@ namespace Open_Shift.Controllers
                 Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
                 u.ResetPassword();
 
-                if (u.IsAuthenticated)
+                if (u.IsAuthenticated && u.EmailVerificationToken != "")
                 { //user found
                     u.SaveUserSession(); //save the user session object
                     return RedirectToAction("Index", "Home");

@@ -7,8 +7,9 @@ NOTES:
 Joe:
 
 TODO:
-1. Account for User statuses
-2. Indicate which store a User is a manager at, and account for that
+1. Make the first user who signs up at a store a manager
+2. Restrict user access depending on user status (inactive/active)
+3. Indicate which store a User is a manager at, and account for that
 
 Annie:
 

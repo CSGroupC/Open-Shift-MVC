@@ -58,6 +58,7 @@ export class Calendar {
             <a href="?m=${nextMonth}&d=${this.date.getDate()}&y=${this.date.getFullYear()}" class="calendar-month-next"><i class="fas fa-chevron-right"></i></a>
             <span class="month-title h4">${MONTH_NAMES[this.date.getMonth()]} ${this.date.getFullYear()}</span>
             <a href="?m=${this.currentDate.getMonth() + 1}&d=${this.currentDate.getDate()}&y=${this.currentDate.getFullYear()}" class="btn btn-primary">Today</a>
+            <i class="announce-button fas fa-bullhorn text-primary"></i>
         </div>
         `;
 
@@ -365,11 +366,10 @@ export class AvailabilityCalendar extends Calendar {
 export class SchedulingCalendar extends Calendar {
     constructor(associate = null, storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
         super(associate, availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
-        this.storeId = storeId;
 
-        this.element.classList.add("scheduling-calendar");
-        //let announceButton = new CustomElement(`<i class="fas fa-bullhorn"></i>`);
-        //this.element.prepend(announceButton);
+        this.element.classList.add("schedule-calendar");
+
+        this.storeId = storeId;
 
         this.associateMinimum = associateMinimum;
         this.managerMinimum = managerMinimum;

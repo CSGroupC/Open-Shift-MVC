@@ -164,7 +164,7 @@ export function createShift(associate, timePeriod, monthDay, calendar) {
 
 export function updateAssociateManagerStatus(associateId, managerStatus) {
 
-    return fetch("Manager/UpdateManagerStatus", {
+    return fetch("/Manager/UpdateManagerStatus", {
         method: "PUT",
         body: JSON.stringify({
             AssociateID: associateId,
@@ -190,9 +190,7 @@ export function updateAssociateManagerStatus(associateId, managerStatus) {
 
 export function updateAssociateStatus(associateId, status) {
 
-    console.log(status);
-
-    return fetch("Manager/UpdateStatus", {
+    return fetch("/Manager/UpdateStatus", {
         method: "PUT",
         body: JSON.stringify({
             AssociateID: associateId,

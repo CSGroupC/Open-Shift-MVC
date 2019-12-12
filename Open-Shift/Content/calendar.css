@@ -403,12 +403,11 @@
 
 .scheduling-calendar .time-period-bar {
     min-height: 18px;
-    opacity: 0.5;
 }
 
-    .scheduling-calendar .time-period-bar.scheduled {
-        opacity: 1;
-    }
+.scheduling-calendar .time-period:not([data-shift-id]) {
+    opacity: 0.4;
+}
 
 .scheduling-calendar .month-day-list:not(.closed-month) .month-day:not(.closed-day).manager-minimum-error .warning-icon {
     display: initial;

@@ -91,11 +91,6 @@
                 <div>@Html.DropDownListFor(model => model.User.StoreID, new SelectList(Model.Lists.StoreLocationList, "Value", "Text", Model.User.StoreID), new { @title = "Select your Location.", @class = "form-control" })</div>
                 <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.StoreID)</small>
             </div>
-            <div class="form-group">
-                <div>@Html.LabelFor(model => model.User.IsManager, "Are You a Manager?")</div>
-                <div>@Html.DropDownListFor(model => model.User.IsManager, new SelectList(Model.Lists.IsManager, "Value", "Text", Model.User.IsManager), new { @title = "Select your managerial status.", @class = "form-control" })</div>
-                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.IsManager)</small>
-            </div>
 
             <div class="form-group">
                 <div>@Html.LabelFor(model => model.User.EmployeeNumber)</div>

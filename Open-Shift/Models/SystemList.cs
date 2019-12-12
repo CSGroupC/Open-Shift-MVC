@@ -7,30 +7,30 @@ using System.Web.Mvc;
 
 namespace Open_Shift.Models
 {
-	public class SystemLists
-	{
+    public class SystemLists
+    {
 
-		public List<SelectListItem> StatusList = new List<SelectListItem>();
-		public List<SelectListItem> StoreLocationList = new List<SelectListItem>();
+        public List<SelectListItem> StatusList = new List<SelectListItem>();
+        public List<SelectListItem> StoreLocationList = new List<SelectListItem>();
         public List<SelectListItem> IsManager = new List<SelectListItem>();
         public List<SelectListItem> AssociateTitle = new List<SelectListItem>();
 
 
         public SystemLists()
-		{
-			try
-			{
-				StatusList = new List<SelectListItem>();
-				StatusList.Add(new SelectListItem() { Value = "", Text = "" });
-				StatusList.Add(new SelectListItem() { Value = User.StatusList.Active.ToString(), Text = "Active" });
-				StatusList.Add(new SelectListItem() { Value = User.StatusList.InActive.ToString(), Text = "In-Active" });
+        {
+            try
+            {
+                StatusList = new List<SelectListItem>();
+                StatusList.Add(new SelectListItem() { Value = "", Text = "" });
+                StatusList.Add(new SelectListItem() { Value = User.StatusList.Active.ToString(), Text = "Active" });
+                StatusList.Add(new SelectListItem() { Value = User.StatusList.InActive.ToString(), Text = "In-Active" });
 
 
-				StoreLocationList = new List<SelectListItem>();
-				StoreLocationList.Add(new SelectListItem() { Value = "", Text = "" });
-				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.Kotetsu.ToString(), Text = "Kotetsu" });
-				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuLondon.ToString(), Text = "Kotetsu-London" });
-				StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuBrazil.ToString(), Text = "Kotetsu-Brazil" });
+                StoreLocationList = new List<SelectListItem>();
+                StoreLocationList.Add(new SelectListItem() { Value = "", Text = "" });
+                StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.Kotetsu.ToString(), Text = "Kotetsu" });
+                StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuLondon.ToString(), Text = "Kotetsu-London" });
+                StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuBrazil.ToString(), Text = "Kotetsu-Brazil" });
 
                 IsManager = new List<SelectListItem>();
                 IsManager.Add(new SelectListItem() { Value = "", Text = "" });
@@ -41,15 +41,14 @@ namespace Open_Shift.Models
                 AssociateTitle.Add(new SelectListItem() { Value = "", Text = "" });
                 AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Cook.ToString(), Text = "Cook" });
                 AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Server.ToString(), Text = "Server" });
-                AssociateTitle.Add(new SelectListItem() { Value = User.AssociateTitles.Owner.ToString(), Text = "Owner" });
 
             }
-			catch (Exception ex)
-			{
-				SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
-				return;
-			}
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                return;
+            }
 
-		}
-	}
+        }
+    }
 }

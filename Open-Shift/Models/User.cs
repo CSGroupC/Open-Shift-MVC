@@ -92,8 +92,7 @@ namespace Open_Shift.Models
         {
             NoType = 0,
             Cook = 1,
-            Server = 2,
-            Owner = 3
+            Server = 2
         }
 
         public enum StatusList
@@ -217,6 +216,8 @@ namespace Open_Shift.Models
             {
                 //this.UserImage = null; //don't save the user image
                 HttpContext.Current.Session["CurrentUser"] = this;
+                // One month
+                HttpContext.Current.Session.Timeout = 43800;
                 return true;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

@@ -373,7 +373,8 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.Date);
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
+                // NOTE: Don't allow updating the manager status here. Do it in the manager's controller actions
+                // SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.TinyInt);
 

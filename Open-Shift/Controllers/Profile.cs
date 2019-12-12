@@ -335,14 +335,6 @@ namespace Open_Shift.Controllers
 
                 if (h.User.IsAuthenticated)
                 { //user found
-
-                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
-                    {
-                        return SignIn(h.User, col);
-                    }
-
-                    h.User.SaveUserSession(); //save the user session object
-
                     //Send text message to new user
                     Controllers.SmsController sms = new Controllers.SmsController();
                     // sms.SendSms(h.User.Phonenumber);
@@ -352,6 +344,13 @@ namespace Open_Shift.Controllers
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
                     return RedirectToAction("Index", "Home");
+
+                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
+                    {
+                        return SignIn(h.User, col);
+                    }
+
+                    h.User.SaveUserSession(); //save the user session object
                 }
                 else
                 { //user failed to log in

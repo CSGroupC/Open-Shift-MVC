@@ -190,12 +190,35 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = null;
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                User.IsManagerEnum IsManager = User.IsManagerEnum.Associate;
+
+                SqlDataAdapter da = new SqlDataAdapter("GET_ASSOCIATE_COUNT_BY_STORE", cn);
+                SetParameter(ref da, "@intStoreID", u.StoreID, SqlDbType.Int);
+                try
+                {
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        int AssociateCount = (int)ds.Tables[0].Rows[0]["AssociateCount"];
+                        if (AssociateCount == 0)
+                        {
+                            IsManager = User.IsManagerEnum.Manager;
+                        }
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+
+
                 SqlCommand cm = new SqlCommand("INSERT_USER", cn);
                 int intReturnValue = -1;
                 int intAssociateID = -1;
 
                 SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
-
 
                 SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
@@ -210,12 +233,14 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strEmailVerificationToken", u.EmailVerificationToken, SqlDbType.NVarChar);
 
                 cm.ExecuteReader();
 
                 intAssociateID = (int)cm.Parameters["@intAssociateID"].Value;
+
+
 
                 CloseDBConnection(ref cn);
 

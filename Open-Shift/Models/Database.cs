@@ -11,36 +11,6 @@ namespace Open_Shift.Models
     //**TODO needs to change the table names and columns to match our database
     public class Database
     {
-        private User AddUser(DataRow dr)
-        {
-            try
-            {
-                User u = new User();
-                u.AssociateID = (int)dr["AssociateID"];
-                u.FirstName = dr["User.FirstName"].ToString();
-                u.LastName = dr["User.LastName"].ToString();
-                u.Birthday = (DateTime)dr["User.Birthday"];
-                u.AddressLine1 = dr["User.AddressLine1"].ToString();
-                u.AddressLine2 = dr["User.AddressLine2"].ToString();
-                u.PostalCode = dr["User.PostalCode"].ToString();
-                u.EmployeeNumber = (int)dr["User.EmployeeNumber"];
-                u.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["User.AssociateTitle"].ToString());
-                u.Phonenumber = dr["User.Phonenumber"].ToString();
-                u.Email = dr["User.Email"].ToString();
-                u.ConfirmEmail = dr["User.ConfirmEmail"].ToString();
-                u.Password = dr["User.Password"].ToString();
-                u.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), dr["User.blnIsManager"].ToString());
-                u.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["User.intStatusID"].ToString());
-                u.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["User.intStoreID"].ToString());
-
-
-                //u.UserImage = GetUserImage(u.AssociateID);
-
-                return u;
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-        }
-
         public List<User> GetUsers(long AssociateID = 0, byte StatusID = 0, byte PrivacyID = 0)
         {
             try
@@ -68,7 +38,7 @@ namespace Open_Shift.Models
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        users.Add(AddUser(dr));
+                        users.Add(new User(dr));
                     }
                 }
 
@@ -241,7 +211,7 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Int);
+                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strEmailVerificationToken", u.EmailVerificationToken, SqlDbType.NVarChar);
 
                 cm.ExecuteReader();
@@ -369,36 +339,43 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-        /*
-        public long UpdateUserImage(User u)
+       public User getNewAssociateData(string token)
         {
             try
             {
-                SqlConnection cn = null;
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("UPDATE_USER_IMAGE", cn);
+                SqlDataAdapter da = null;
 
-                SetParameter(ref cm, "@user_image_id", u.UserImage.ImageID, SqlDbType.BigInt);
-                if (u.UserImage.Primary)
-                    SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
-                else
-                    SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
+                da = new SqlDataAdapter("SELECT * FROM Tassociates where strEmailVerificationToken ='" + token + "';", cn);
+             
+                User UserInfo = null;
 
-                SetParameter(ref cm, "@image", u.UserImage.ImageData, SqlDbType.VarBinary);
-                SetParameter(ref cm, "@file_name", u.UserImage.FileName, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@image_size", u.UserImage.Size, SqlDbType.BigInt);
+                da.SelectCommand.CommandType = CommandType.Text;
 
-                cm.ExecuteReader();
-                CloseDBConnection(ref cn);
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
 
-                return 0; //success	
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        UserInfo = new User(dr);
+                    }
+                }
+
+                return UserInfo;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Concat(this.ToString(), ".", MethodBase.GetCurrentMethod().Name.ToString(), "(): ", ex.Message));
-            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
-        */
 
         public bool UpdateUser(User u)
         {
@@ -599,7 +576,7 @@ namespace Open_Shift.Models
 
         public bool ApproveNewAssociate(string token)
         {
-            string sqlStatement = "Update TAssociates set intStatusID = 1, strEmailVerificationToken = '' where intAssociateID = (SELECT intAssociateID FROM TAssociates WHERE strEmailVerificationToken = '" + token + "');";
+            string sqlStatement = "Update TAssociates set strEmailVerificationToken = '' where intAssociateID = (SELECT intAssociateID FROM TAssociates WHERE strEmailVerificationToken = '" + token + "');";
 
             try
             {
@@ -644,7 +621,7 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@dtmShiftBegin", a.StartTime, SqlDbType.DateTime);
                 SetParameter(ref da, "@dtmShiftEnd", a.EndTime, SqlDbType.DateTime);
                 SetParameter(ref da, "@strNotes", a.Notes, SqlDbType.NVarChar);
-                SetParameter(ref da, "@intAssociateTitleID", a.AssociateTitleID, SqlDbType.Int);
+                //SetParameter(ref da, "@intAssociateTitleID", a.AssociateTitleID, SqlDbType.Int);
                 SetParameter(ref da, "@blnIsOpen", a.IsOpen, SqlDbType.Bit);
                 SetParameter(ref da, "@intAvailabilityID", a.AvailabilityID, SqlDbType.Int);
 
@@ -663,7 +640,7 @@ namespace Open_Shift.Models
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         // NOTE: Just casting to int with (int) is not enough apparently
-                        intShiftID = Convert.ToInt32(dr["intAvailabilityID"].ToString());
+                        intShiftID = Convert.ToInt32(dr["intShiftID"].ToString());
                     }
                 }
 
@@ -729,38 +706,44 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-
-        public bool UpdateShift(Shift a)
+        // Gets the next shift by associate
+        public Shift GetNextShift(long associateID)
         {
             try
             {
-                SqlConnection cn = null;
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("UPDATE_AVAILABILITY", cn);
+                SqlDataAdapter da = new SqlDataAdapter("GET_NEXT_SHIFT", cn);
 
-                SetParameter(ref cm, "@intAvailabilityID", a.ID, SqlDbType.Int);
-                SetParameter(ref cm, "@intAssociateID", a.AssociateID, SqlDbType.Int);
-                SetParameter(ref cm, "@dtmBeginAvailability", a.StartTime, SqlDbType.DateTime);
-                SetParameter(ref cm, "@dtmEndAvailability", a.EndTime, SqlDbType.DateTime);
 
-                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+                Shift shift = null;
 
-                cm.ExecuteReader();
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                SetParameter(ref da, "@intAssociateID", associateID, SqlDbType.Int);
 
-                int intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
-                CloseDBConnection(ref cn);
-
-                switch (intReturnValue)
+                try
                 {
-                    case 1: //new availability created
-                        return true;
-                    default:
-                        return false;
+                    da.Fill(ds);
                 }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        shift = new Shift(dr);
+                    }
+                }
+
+                return shift;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
-
 
         public bool DeleteShift(int ShiftID)
         {
@@ -783,6 +766,76 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+
+        // ====================================================================================================================================
+        // Stores 
+        // ====================================================================================================================================
+
+
+        public List<Store> GetStores(int AssociateID = 0)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                DataSet AssociatesDataSet = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = null;
+
+                if (AssociateID == 0)
+                {
+                    da = new SqlDataAdapter("GET_STORES", cn);
+                }
+                else
+                {
+                    da = new SqlDataAdapter("GET_STORES_BY_ASSOCIATE", cn);
+                }
+
+                List<Store> stores = new List<Store>();
+
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                if (AssociateID > 0) SetParameter(ref da, "@intAssociateID", AssociateID, SqlDbType.Int);
+
+                try
+                {
+                    da.Fill(ds);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            stores.Add(new Store(dr));
+                            da = new SqlDataAdapter("GET_ASSOCIATES_BY_STORE", cn);
+                            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                            SetParameter(ref da, "@intStoreID", stores[stores.Count - 1].StoreID, SqlDbType.Int);
+                            da.Fill(AssociatesDataSet);
+                            stores[stores.Count - 1].Associates = new List<User>();
+
+                            foreach (DataRow AssociateDataRow in AssociatesDataSet.Tables[0].Rows)
+                            {
+                                stores[stores.Count - 1].Associates.Add(new User(AssociateDataRow));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+
+                CloseDBConnection(ref cn);
+
+                return stores;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
+
+        // ====================================================================================================================================
+        // Database 
+        // ====================================================================================================================================
 
 
         private bool GetDBConnection(ref SqlConnection SQLConn)

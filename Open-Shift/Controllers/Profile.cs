@@ -112,9 +112,7 @@ namespace Open_Shift.Controllers
                     u.Phonenumber = col["User.Phonenumber"];
                     u.Email = col["User.Email"];
                     u.ConfirmEmail = col["User.ConfirmEmail"];
-                    u.Password = col["User.Password"];
                     u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
-                    u.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"].ToString());
                     u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
                     //NEW CODE
@@ -213,7 +211,7 @@ namespace Open_Shift.Controllers
             {
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 Models.Home h = new Models.Home();
                 return View(h);
@@ -236,7 +234,7 @@ namespace Open_Shift.Controllers
                 if (u.IsAuthenticated)
                 { //user found
                     u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 { //user failed to log in
@@ -279,7 +277,7 @@ namespace Open_Shift.Controllers
 
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 Models.Home h = new Models.Home();
                 return View(h);
@@ -297,9 +295,9 @@ namespace Open_Shift.Controllers
             try
             {
 
-				if (Models.User.GetUserSession().IsAuthenticated)
+                if (Models.User.GetUserSession().IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 Database db = new Database();
@@ -308,14 +306,14 @@ namespace Open_Shift.Controllers
 
                 if (db.CheckIfUserExists(strEmail) == 0)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 Models.Home h = new Models.Home();
 
                 string EmailVerificationToken = Guid.NewGuid().ToString();
-				
-				h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
+
+                h.User = new Models.User(col["User.FirstName"], col["User.LastName"], Convert.ToDateTime(col["User.Birthday"]),
                                                 col["User.AddressLine1"], col["User.AddressLine2"], col["User.PostalCode"],
                                                Convert.ToInt32(col["User.EmployeeNumber"]),
                                           col["User.PhoneNumber"], col["User.Email"], col["User.ConfirmEmail"], col["User.Password"], EmailVerificationToken);
@@ -323,7 +321,7 @@ namespace Open_Shift.Controllers
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
                 h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
-                h.User.StatusID = (Models.User.StatusList)Enum.Parse(typeof(Models.User.StatusList), col["User.StatusID"]);
+                h.User.StatusID = Models.User.StatusList.InActive;
                 h.User.Save();
                 if (h.User.IsAuthenticated)
                 { //user found
@@ -337,8 +335,7 @@ namespace Open_Shift.Controllers
                     //EmailController.NewAssociateEmail(h.User.Email, fullName);
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
-
-                    return RedirectToAction("Index", "Main");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 { //user failed to log in
@@ -373,21 +370,21 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
-				Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-				u.ResetPassword();
+                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+                u.ResetPassword();
 
-				if (u.IsAuthenticated)
-				{ //user found
-					u.SaveUserSession(); //save the user session object
-					return RedirectToAction("Index", "Main");
-				}
-				else
-				{ //user failed to log in
-					h.User = u;
-					return View(h);
-				}
-				u.Save();
-				return View(h);
+                if (u.IsAuthenticated)
+                { //user found
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                { //user failed to log in
+                    h.User = u;
+                    return View(h);
+                }
+                u.Save();
+                return View(h);
 
             }
             catch (Exception ex)
@@ -396,6 +393,57 @@ namespace Open_Shift.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+
+
+
+
+        public ActionResult ResetPasswordRequest()
+        {
+            try
+            {
+                Models.Home h = new Models.Home();
+                return View(h);
+            }
+            catch (Exception ex)
+            {
+                Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ResetPasswordRequest(Models.User m, FormCollection col)
+        {
+            try
+            {
+                Models.Home h = new Models.Home();
+                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+
+                string PasswordVerificationToken = Guid.NewGuid().ToString();
+
+                u.ResetPassword();
+
+                if (u.IsAuthenticated)
+                { //user found
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                { //user failed to log in
+                    return RedirectToAction("ResetPassword", "Profile");
+                }
+                u.Save();
+                return View(h);
+
+            }
+            catch (Exception ex)
+            {
+                Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+
 
     }
 }

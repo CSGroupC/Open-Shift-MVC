@@ -1,65 +1,94 @@
-﻿@model Open_Shift.Models.Home
+﻿@model Open_Shift.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
-<style>
-    .mycanvas-follow {
-        color: darkgray;
+@if (Model.User.IsAuthenticated)
+{
+    if (Model.NextShift != null)
+    {
+        <h1 class="mb-4">Next Shift</h1>
+
+        <div class="container-main pt-2">
+            <div>
+                <div class="display-4 text-center">
+                    @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
+                </div>
+                <div class="text-muted">
+                    @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
+                    -
+                    @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
+                </div>
+            </div>
+        </div>
+        <br />
     }
+    <div class="mb-5">
+        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
+    </div>
 
-    .mycanvas-following {
-        color: green;
+}
+
+<h1>
+    Stores
+</h1>
+
+@foreach (var Store in Model.Stores)
+{
+    <div class="h2 text-left w-100">
+        Kotetsu
+    </div>
+    <div class="d-flex store-info-1 w-100">
+        <address class="card mb-3">
+            <div class="card-body">
+                <iframe frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Store.StoreName @Store.AddressLine1 @Store.AddressLine2" allowfullscreen></iframe>
+                <div class="text-muted">
+                    @Store.AddressLine1 <br />
+                    @Store.AddressLine2
+                </div>
+            </div>
+        </address>
+
+        <address class="card ml-3">
+
+            <div class="card-body">
+                <b>Hours</b>  <br />
+                Sunday:	    <strong>closed</strong> <br />
+                Monday:	    17:00–24:00 <br />
+                Tuesday:	    17:00–24:00<br />
+                Wednesday:	17:00–24:00<br />
+                Thursday:	17:00–24:00 <br />
+                Friday:	    17:00–24:00 <br />
+                Saturday:	<strong>closed</strong> <br />
+            </div>
+        </address>
+    </div>
+    <div class="card mb-3 w-100">
+        <div class="card-body">
+            <b>About</b>
+            <p>
+                @Store.Description
+            </p>
+        </div>
+    </div>
+
+    if ((int)Model.User.IsManager == 1)
+    {
+        <h1 class="mb-4">Associates</h1>
+
+        <div class="card mb-3 w-100">
+            <div class="card-body">
+                @foreach (var Associate in Store.Associates)
+                {
+                    <div>
+                        @(Associate.FirstName + " " + Associate.LastName)
+                    </div>
+                }
+            </div>
+        </div>
     }
+}
 
-    .follow-link:hover {
-        cursor: pointer;
-    }
-
-    .follow-link {
-        text-decoration: none;
-    }
-
-    .your-item {
-        color: darkgrey
-    }
-</style>
-
-<h3>Open Shift</h3>
-<b>Contact</b>
-<address>
-    2 Chome-39-13 Kitazawa <br />
-    世田谷区 Setagaya City Tokyo 155-0031 <br />
-    Japan  Redmond, WA 98052-6399 <br />
-    <abbr title="Phone">P:</abbr>
-    +81 3-5465-0044
-</address>
-
-<address>
-    </br>
-
-    <b>Hours:</b></br>
-    Sunday	    11:30AM–3PM, 5–10:30PM </br>
-    Monday	    11:30AM–3PM, 5–10:30PM </br>
-    Tuesday	    Closed</br>
-    Wednesday	11:30AM–3PM, 5–10:30PM</br>
-    Thursday	11:30AM–3PM, 5–10:30PM </br>
-    Friday	    11:30AM–3PM, 5–10:30PM </br>
-    Saturday	11:30AM–3PM, 5–10:30PM </br>
-</address>
-
-<address>
-    </br>
-    <strong>Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />
-</address>
-</br>
-<b> About</b>
-<p>
-    Kotetsu is a noodle restaraut located in Tokyo</br>
-    Kotetsu offers authentic Japanese comfort food in a cozy setting </br>
-    Perfect noodles and succulent beef share a savoury-broth bath </br>
-    It is also a fun place to work </br>
-    We give our employees opportunity to grow </br>
-</p>
-
+<strong>Open Shift Support:</strong>   <a href="mailto:OpenShiftScheduler@gmail.com">OpenShiftScheduler@gmail.com</a><br />

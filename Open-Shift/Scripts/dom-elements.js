@@ -202,6 +202,7 @@ export function TimePeriod(calendar, timeBuffer = { start: null, end: null }, as
     let deleteButton = timePeriod.getElementsByClassName("time-period-delete")[0];
 
     if (associate != null) {
+        timePeriod.dataset.associateId = associate.id;
         schedulingBar.style.backgroundColor = associate.color;
         availabilityBar.style.backgroundColor = associate.color;
     } else if (Object.keys(calendar.associates).length > 0) {

@@ -25,3 +25,23 @@ Date-Time	Application	Message
 12/10/2019 6:31:39 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_SHIFTS_MONTHLY'.
 12/10/2019 6:42:28 PM	Open_Shift.Models.Database	Procedure or function 'GET_SHIFT_STORE_MONTH_YEAR' expects parameter '@intMonthID', which was not supplied.
 12/10/2019 7:42:11 PM	Open_Shift.Controllers.ProfileController	Procedure or function 'INSERT_USER' expects parameter '@strEmailVerificationToken', which was not supplied.
+12/11/2019 12:39:41 AM	Open_Shift.Models.Database	The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TAvailabilities_TAssociates". The conflict occurred in database "C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF", table "dbo.TAssociates", column 'intAssociateID'.
+The statement has been terminated.
+12/11/2019 12:42:42 AM	Open_Shift.Models.Database	The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TShifts_TAssociateTitles". The conflict occurred in database "C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF", table "dbo.TAssociateTitles", column 'intAssociateTitleID'.
+The statement has been terminated.
+12/11/2019 12:44:11 AM	Open_Shift.Models.Database	The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TShifts_TAssociateTitles". The conflict occurred in database "C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF", table "dbo.TAssociateTitles", column 'intAssociateTitleID'.
+The statement has been terminated.
+12/11/2019 12:44:27 AM	Open_Shift.Models.Database	The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TShifts_TAssociateTitles". The conflict occurred in database "C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF", table "dbo.TAssociateTitles", column 'intAssociateTitleID'.
+The statement has been terminated.
+12/11/2019 12:44:54 AM	Open_Shift.Models.Database	The INSERT statement conflicted with the FOREIGN KEY constraint "FK_TShifts_TAssociateTitles". The conflict occurred in database "C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF", table "dbo.TAssociateTitles", column 'intAssociateTitleID'.
+The statement has been terminated.
+12/11/2019 12:58:20 AM	Open_Shift.Models.Database	Cannot insert the value NULL into column 'intAssociateTitleID', table 'C:\USERS\JOE\DOCUMENTS\VISUAL STUDIO 2017\PROJECTS\OPEN-SHIFT-MVC\OPEN-SHIFT\APP_DATA\OPENSHIFT.MDF.dbo.TShifts'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+12/11/2019 1:20:00 AM	Open_Shift.Controllers.ProfileController	The client or server is only configured for E-mail addresses with ASCII local-parts: 大輔斉藤@docomo.ne.jp.
+12/11/2019 1:21:40 PM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/11/2019 2:18:18 PM	Open_Shift.Controllers.MainController	Column 'strFirstName' does not belong to table Table.
+12/11/2019 4:05:50 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
+12/11/2019 4:05:50 PM	Open_Shift.Controllers.HomeController	Cannot find table 0.
+12/11/2019 4:06:51 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
+12/11/2019 4:06:53 PM	Open_Shift.Controllers.HomeController	Cannot find table 0.
+12/11/2019 4:07:24 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.

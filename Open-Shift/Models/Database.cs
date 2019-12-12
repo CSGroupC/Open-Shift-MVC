@@ -396,6 +396,38 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+
+        public bool UpdateUserManagerStatus(int AssociateID, User.IsManagerEnum IsManager)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("UPDATE_USER_MANAGER_STATUS", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: // user updated
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
         // ====================================================================================================================================
         // Availabilities 
         // ====================================================================================================================================
@@ -541,7 +573,7 @@ namespace Open_Shift.Models
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 SetParameter(ref da, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
-           
+
                 try
                 {
                     da.Fill(ds);

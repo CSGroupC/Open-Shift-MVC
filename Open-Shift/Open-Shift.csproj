@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AvailabilityController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\Profile.cs" />
     <Compile Include="Controllers\VerificationController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
@@ -270,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Log\" />
+    <Folder Include="Views\Manager\" />
     <Folder Include="Views\Sms\" />
   </ItemGroup>
   <PropertyGroup>

@@ -11,17 +11,13 @@ using Twilio.TwiML;
 using Twilio.AspNet.Mvc;
 using System.Net.Mail;
 using System.Net;
+using Open_Shift.Models;
 
 namespace Open_Shift.Controllers
 {
     public class EmailController : Controller
     {
-        public static void NewAssociateEmail(string UserEmail, string FirstName, string LastName)
-        {
-            string sub = "Welcome to OpenShift!";
-            string body = "Thank you so much for signing up to <b>Open Shift</b>!";
-            SendEmail(UserEmail, FirstName, LastName, sub, body);
-        }
+    
 
         public static void NewAssociateVerification(string UserEmail, string FirstName, string LastName, string EmailVerificationToken)
         {
@@ -34,6 +30,87 @@ namespace Open_Shift.Controllers
             SendEmail(UserEmail, FirstName, LastName, sub, body);
         }
 
+        public static void NewAssociateVerificationManager(string token)
+            {
+
+                Database db = new Database();
+                User u = db.getNewAssociateData(token);
+                List<User> m = db.GetManagersAndOwners();
+
+                string sub = "Please verify your new associate so they can access OpenShift!";
+                string body = "You've got a new sign up! Please verify their information so they can start using OpenShift!<br><br>" +
+                    "<table align'center'>" +
+                    "<tr>" +
+                        "<th>First Name</th>" +
+                        "<td>" + u.FirstName +"</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Last Name</th>" +
+                        "<td>" + u.LastName + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Birthday</th>" +
+                        "<td>" + u.Birthday + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Address 1</th>" +
+                        "<td>" + u.AddressLine1 + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Address 2</th>" +
+                        "<td>" + u.AddressLine2 + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Postal Code</th>" +
+                        "<td>" + u.PostalCode + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Employee Number</th>" +
+                        "<td>" + u.EmployeeNumber + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Phone Number</th>" +
+                        "<td>" + u.Phonenumber + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Email</th>" +
+                        "<td>" + u.Email + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Associate Title</th>" +
+                        "<td>" + u.AssociateTitle + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Store Location</th>" +
+                        "<td>" + u.StoreID + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                        "<th>Is a manager?</th>" +
+                        "<td>" + u.IsManager +"</td>" +
+                    "</tr>" +
+                    "</table>" +
+                    "<br><br>" +
+                    "Click here to confirm the information is correct." +
+                    "<br><br>" +
+                    "Your OpenShift Support Team";
+
+
+                foreach (var manager in m)
+                {
+                    SendEmail(manager.Email, manager.FirstName, manager.LastName, sub, body);
+                }
+        }
+
+        public static void NewPasswordRequest(string UserEmail, string FirstName, string LastName, string PasswordResetToken)
+        {
+            string sub = "Change your password with OpenShift";
+            string body = "Hi " + FirstName + "! <br><br> Thanks so much for signing up for OpenShift!" +
+                " Please click <a href='http://localhost:4040/Verification/EmailVerification/?token=" + PasswordResetToken + "' target='_blank'><b>here</b></a> to verify your email. " +
+                "After you verify your email, your manager will approve your access into OpenShift. We look forward to helping you take the work out of scheduling!" +
+                "<br><br>" +
+                "Your OpenShift Support Team";
+            SendEmail(UserEmail, FirstName, LastName, sub, body);
+        }
 
 
         //this void sends all emails. ***Must specify UserEmail, Name, subject ( called "sub" ) and body in all voids above

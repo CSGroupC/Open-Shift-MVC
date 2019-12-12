@@ -304,13 +304,14 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("ResetPassword", cn);
+                SqlDataAdapter da = new SqlDataAdapter("UPDATE_PASSWORD", cn);
                 DataSet ds;
                 User newUser = null;
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
+                SetParameter(ref da, "@intAssociateID", u.AssociateID, SqlDbType.NVarChar);
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
+
 
 
                 try
@@ -339,36 +340,43 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-        /*
-        public long UpdateUserImage(User u)
+       public User getNewAssociateData(string token)
         {
             try
             {
-                SqlConnection cn = null;
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("UPDATE_USER_IMAGE", cn);
+                SqlDataAdapter da = null;
 
-                SetParameter(ref cm, "@user_image_id", u.UserImage.ImageID, SqlDbType.BigInt);
-                if (u.UserImage.Primary)
-                    SetParameter(ref cm, "@primary_image", "Y", SqlDbType.Char);
-                else
-                    SetParameter(ref cm, "@primary_image", "N", SqlDbType.Char);
+                da = new SqlDataAdapter("SELECT * FROM Tassociates where strEmailVerificationToken ='" + token + "';", cn);
+             
+                User UserInfo = null;
 
-                SetParameter(ref cm, "@image", u.UserImage.ImageData, SqlDbType.VarBinary);
-                SetParameter(ref cm, "@file_name", u.UserImage.FileName, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@image_size", u.UserImage.Size, SqlDbType.BigInt);
+                da.SelectCommand.CommandType = CommandType.Text;
 
-                cm.ExecuteReader();
-                CloseDBConnection(ref cn);
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
 
-                return 0; //success	
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        UserInfo = new User(dr);
+                    }
+                }
+
+                return UserInfo;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Concat(this.ToString(), ".", MethodBase.GetCurrentMethod().Name.ToString(), "(): ", ex.Message));
-            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
-        */
 
         public bool UpdateUser(User u)
         {
@@ -569,7 +577,7 @@ namespace Open_Shift.Models
 
         public bool ApproveNewAssociate(string token)
         {
-            string sqlStatement = "Update TAssociates set intStatusID = 1, strEmailVerificationToken = '' where intAssociateID = (SELECT intAssociateID FROM TAssociates WHERE strEmailVerificationToken = '" + token + "');";
+            string sqlStatement = "Update TAssociates set strEmailVerificationToken = '' where intAssociateID = (SELECT intAssociateID FROM TAssociates WHERE strEmailVerificationToken = '" + token + "');";
 
             try
             {
@@ -590,6 +598,47 @@ namespace Open_Shift.Models
 
             return true;
         }
+
+
+        public List<User> GetManagersAndOwners()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlDataAdapter da = null;
+
+                da = new SqlDataAdapter("Select * from tassociates where blnIsManager='True' and strEmailVerificationToken='';", cn);
+              
+                List<User> managers = new List<User>();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+
+                try
+                {
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        managers.Add(new User(dr));
+                    }
+                }
+
+                return managers;
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+
 
 
         // ====================================================================================================================================

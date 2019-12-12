@@ -365,11 +365,15 @@ namespace Open_Shift.Controllers
             }
         }
 
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string token)
         {
             try
             {
-                Models.Home h = new Models.Home();
+                Models.Database db = new Database();
+
+                Home h = new Home();
+                h.User = db.GetUserByPasswordResetToken(token);
+
                 return View(h);
             }
             catch (Exception ex)
@@ -380,27 +384,19 @@ namespace Open_Shift.Controllers
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(Models.User m, FormCollection col)
+        public ActionResult ResetPassword(FormCollection col)
         {
             try
             {
                 Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-                u.ResetPassword();
-
-                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
+                h.User = new Models.User(col["User.Email"], col["User.Password"]);
+                h.User.PasswordResetToken = col["User.PasswordResetToken"];
+                if (!h.User.ResetPassword())
+                {
+                    // TODO: Handle this error
                 }
-                else
-                { //user failed to log in
-                    h.User = u;
-                    return View(h);
-                }
-                u.Save();
-                return View(h);
 
+                return View("~/Views/Profile/SignIn.cshtml", h);
             }
             catch (Exception ex)
             {
@@ -431,26 +427,15 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+                string PasswordResetToken = Guid.NewGuid().ToString();
 
-                string PasswordVerificationToken = Guid.NewGuid().ToString();
+                Models.Database db = new Database();
 
-                EmailController.NewPasswordRequest(h.User.Email, h.User.FirstName, h.User.LastName, PasswordVerificationToken);
+                db.SetUserPasswordResetToken(col["User.Email"], PasswordResetToken);
 
-                u.ResetPassword();
+                EmailController.NewPasswordRequest(col["User.Email"], PasswordResetToken);
 
-                if (u.IsAuthenticated)
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                { //user failed to log in
-                    return RedirectToAction("ResetPassword", "Profile");
-                }
-                u.Save();
-                return View(h);
+                return RedirectToAction("SignIn", "Profile");
 
             }
             catch (Exception ex)

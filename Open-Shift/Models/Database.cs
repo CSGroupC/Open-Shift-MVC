@@ -46,6 +46,7 @@ namespace Open_Shift.Models
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
         public bool DeleteUser(long AssociateID)
         {
             try
@@ -301,45 +302,71 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-        //Not sure if this will work, so
-        public Models.User ResetPassword(User u)
+        public User GetUserByPasswordResetToken(string token)
         {
             try
             {
+                User user = null;
                 SqlConnection cn = new SqlConnection();
-                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("UPDATE_PASSWORD", cn);
-                DataSet ds;
-                User newUser = null;
-
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                SetParameter(ref da, "@intAssociateID", u.AssociateID, SqlDbType.NVarChar);
-                SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
                 {
-                    ds = new DataSet();
+                    DataSet ds = new DataSet();
+                    if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                    SqlDataAdapter da = new SqlDataAdapter("GET_USER_BY_PASSWORD_RESET_TOKEN", cn);
+
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                    SetParameter(ref da, "@strPasswordResetToken", token, SqlDbType.NVarChar);
+
                     da.Fill(ds);
-                    if (ds.Tables[0].Rows.Count > 0)
+
+                    if (ds.Tables[0].Rows.Count != 0)
                     {
-                        newUser = new User();
-                        DataRow dr = ds.Tables[0].Rows[0];
-                        newUser.AssociateID = (int)dr["AssociateID"];
-                        newUser.Email = u.Email;
-                        newUser.Password = u.Password;
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            user = new User(dr);
+                        }
                     }
                 }
                 catch (Exception ex2)
                 {
                     SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
                 }
-                finally
-                {
-                    CloseDBConnection(ref cn);
-                }
-                return newUser; //alls well in the world
+                finally { CloseDBConnection(ref cn); }
+
+
+                return user;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public bool ResetPassword(User u)
+        {
+            SqlConnection cn = null;
+            if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+            SqlCommand cm = new SqlCommand("UPDATE_PASSWORD", cn);
+            int intReturnValue = -1;
+
+            SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPasswordResetToken", u.PasswordResetToken, SqlDbType.NVarChar);
+
+            SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+            cm.ExecuteReader();
+
+            intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+            CloseDBConnection(ref cn);
+
+            switch (intReturnValue)
+            {
+                case 1: //new user created
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
         public User getNewAssociateData(string token)
@@ -404,6 +431,36 @@ namespace Open_Shift.Models
                 // SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.TinyInt);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: //new user created
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+        }
+
+        public bool SetUserPasswordResetToken(string Email, string PasswordResetToken)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("SET_USER_PASSWORD_RESET_TOKEN", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@strEmail", Email, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPasswordResetToken", PasswordResetToken, SqlDbType.NVarChar);
 
                 SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
 

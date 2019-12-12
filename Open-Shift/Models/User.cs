@@ -68,9 +68,9 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-        [DisplayName("New Password")]
+        [DisplayName("Confirm Password")]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
 
         [DisplayName("Associate Title")]
         [Required(AllowEmptyStrings = false)]
@@ -80,6 +80,7 @@ namespace Open_Shift.Models
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
         public IsManagerEnum IsManager { get; set; } = IsManagerEnum.Associate; //by default
         public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
+        public string PasswordResetToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
 
         //public Image UserImage = new Image();
 
@@ -173,10 +174,7 @@ namespace Open_Shift.Models
         {
             try
             {
-                User u = new User();
-                u = (User)HttpContext.Current.Session["CurrentUser"];
                 Database db = new Database();
-                Password = u.NewPassword;
                 db.ResetPassword(this);
                 return true;
             }
@@ -342,6 +340,7 @@ namespace Open_Shift.Models
                 this.Phonenumber = dr["strPhonenumber"].ToString();
 
                 this.EmailVerificationToken = dr["strEmailVerificationToken"].ToString();
+                this.PasswordResetToken = dr["strPasswordResetToken"].ToString();
 
                 this.IsManager = (User.IsManagerEnum)Convert.ToInt32(dr["blnIsManager"].ToString() == "True");
                 this.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["intStatusID"].ToString());

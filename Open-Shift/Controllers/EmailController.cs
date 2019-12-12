@@ -35,6 +35,7 @@ namespace Open_Shift.Controllers
 
                 Database db = new Database();
                 User u = db.getNewAssociateData(token);
+                List<User> m = db.GetManagersAndOwners();
 
                 string sub = "Please verify your new associate so they can access OpenShift!";
                 string body = "You've got a new sign up! Please verify their information so they can start using OpenShift!<br><br>" +
@@ -93,8 +94,12 @@ namespace Open_Shift.Controllers
                     "<br><br>" +
                     "Your OpenShift Support Team";
 
-                SendEmail("stephanivester@yahoo.com", "Stephan", "Ivester", sub, body);
-            }
+
+                foreach (var manager in m)
+                {
+                    SendEmail(manager.Email, manager.FirstName, manager.LastName, sub, body);
+                }
+        }
 
 
 

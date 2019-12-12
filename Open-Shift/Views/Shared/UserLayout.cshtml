@@ -20,7 +20,7 @@
 <body data-page="@ViewBag.Title">
     <div id="frankie-bar">
         <a href="~/Home/Index" class="w3-bar-item w3-button bg-primary" title="Home"><i class="fa fa-home"></i></a>
-        @if (user.IsAuthenticated)
+        @if (user.IsAuthenticated && user.EmailVerificationToken == "")
         {
             <a href="~/Profile/Index" class="w3-bar-item w3-button" title="Account"><i class="fa fa-address-card"></i> <span class="link-text">Account</span></a>
             <a href="~/Profile/SignOut" class="w3-bar-item w3-button" title="Sign Out"><i class="fas fa-sign-out-alt"></i> <span class="link-text">Sign Out</span></a>

@@ -167,39 +167,6 @@ namespace Open_Shift.Models
             }
         }
 
-        public bool Login()
-        {
-            try
-            {
-                Database db = new Database();
-                User newUser = new User();
-
-                LoginAttempted = true;
-                newUser = db.Login(this);
-                if (newUser != null)
-                {
-                    AssociateID = newUser.AssociateID;
-                    Password = newUser.Password;
-                    Email = newUser.Email;
-                    FirstName = newUser.FirstName;
-                    LastName = newUser.LastName;
-                    Birthday = newUser.Birthday;
-                    AddressLine1 = newUser.AddressLine1;
-                    AddressLine2 = newUser.AddressLine2;
-                    PostalCode = newUser.PostalCode;
-                    StoreID = newUser.StoreID;
-                    StatusID = newUser.StatusID;
-                    EmployeeNumber = newUser.EmployeeNumber;
-                    AssociateTitle = newUser.AssociateTitle;
-                    Phonenumber = newUser.Phonenumber;
-                    IsManager = newUser.IsManager;
-                    return true;
-                }
-                else { return false; }
-            }
-            catch (Exception ex) { throw new Exception(ex.Message); }
-        }
-
         //Not sure if this works
         public bool ResetPassword()
         {
@@ -360,7 +327,6 @@ namespace Open_Shift.Models
         {
             try
             {
-                this.AssociateID = (int)dr["intAssociateID"];
                 this.EmployeeNumber = (int)dr["intEmployeeNumber"];
                 this.Email = dr["strEmail"].ToString();
                 this.Password = dr["strPassword"].ToString();
@@ -379,6 +345,8 @@ namespace Open_Shift.Models
                 this.StoreID = (User.StoreLocationList)Enum.Parse(typeof(User.StoreLocationList), dr["intStoreID"].ToString());
                 this.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
 
+                // NOTE: Do this last, so authentication will fail if the above fails
+                this.AssociateID = (int)dr["intAssociateID"];
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }

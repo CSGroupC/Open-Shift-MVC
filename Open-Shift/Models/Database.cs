@@ -153,7 +153,6 @@ namespace Open_Shift.Models
                 var da = new SqlDataAdapter("CHECK_USER_EXISTS", cn);
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-                string strReturnEmail = "";
                 int intReturnValue = -1;
 
                 SetParameter(ref da, "@strEmail", strEmail, SqlDbType.NVarChar);
@@ -170,9 +169,9 @@ namespace Open_Shift.Models
 
                 if (ds.Tables[0].Rows.Count == 0)
                 {
-                    intReturnValue = 1;
+                    intReturnValue = 0;
                 }
-                else intReturnValue = 0;
+                else intReturnValue = 1;
 
                 return intReturnValue;
             }
@@ -257,31 +256,9 @@ namespace Open_Shift.Models
                     da.Fill(ds);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
-                        newUser = new User();
                         DataRow dr = ds.Tables[0].Rows[0];
-                        newUser.Password = u.Password;
-                        newUser.FirstName = (string)dr["strFirstName"];
-                        newUser.LastName = (string)dr["strLastName"];
-                        newUser.Birthday = (DateTime)dr["dtmBirthdate"];
-                        newUser.AddressLine1 = (string)dr["strAddressLine1"];
-                        newUser.AddressLine2 = (string)dr["strAddressLine2"];
-                        newUser.PostalCode = (string)dr["strPostalCode"];
+                        newUser = new User(dr);
 
-                        newUser.EmployeeNumber = (int)dr["intEmployeeNumber"];
-                        newUser.AssociateTitle = (User.AssociateTitles)Enum.Parse(typeof(User.AssociateTitles), dr["intAssociateTitleID"].ToString());
-                        newUser.Phonenumber = (string)dr["strPhonenumber"];
-                        newUser.Email = u.Email;
-                        //	newUser.ConfirmEmail = (string)dr["strConfirmEmail"];
-                        var managerStatus = "Associate";
-                        if (dr["blnIsManager"].ToString() == "True") managerStatus = "Manager";
-
-                        //newUser.blnIsManager = 1;
-                        newUser.IsManager = (User.IsManagerEnum)Enum.Parse(typeof(User.IsManagerEnum), managerStatus);
-                        newUser.StatusID = (User.StatusList)Convert.ToInt32(dr["intStatusID"].ToString());
-                        newUser.StoreID = (User.StoreLocationList)Convert.ToInt32(dr["intStoreID"].ToString());
-
-                        // NOTE: Do this last, so authentication will fail if the above fails
-                        newUser.AssociateID = (int)dr["intAssociateID"];
                     }
                 }
                 catch (Exception ex2)
@@ -312,8 +289,6 @@ namespace Open_Shift.Models
                 SetParameter(ref da, "@intAssociateID", u.AssociateID, SqlDbType.NVarChar);
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
-
-
                 try
                 {
                     ds = new DataSet();
@@ -340,7 +315,7 @@ namespace Open_Shift.Models
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
-       public User getNewAssociateData(string token)
+        public User getNewAssociateData(string token)
         {
             try
             {
@@ -350,7 +325,7 @@ namespace Open_Shift.Models
                 SqlDataAdapter da = null;
 
                 da = new SqlDataAdapter("SELECT * FROM Tassociates where strEmailVerificationToken ='" + token + "';", cn);
-             
+
                 User UserInfo = null;
 
                 da.SelectCommand.CommandType = CommandType.Text;
@@ -610,7 +585,7 @@ namespace Open_Shift.Models
                 SqlDataAdapter da = null;
 
                 da = new SqlDataAdapter("Select * from tassociates where blnIsManager='True' and strEmailVerificationToken='';", cn);
-              
+
                 List<User> managers = new List<User>();
 
                 da.SelectCommand.CommandType = CommandType.Text;

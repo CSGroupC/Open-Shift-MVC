@@ -110,9 +110,13 @@ namespace Open_Shift.Controllers
 
             var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
 
-            availability.Delete();
-
-            return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            if (availability.Delete())
+            {
+                return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            }
+            else
+                return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");    // JOE how should we handle it if the availability cant be deleted?
         }
+    }
     }
 }

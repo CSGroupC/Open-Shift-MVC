@@ -24,9 +24,6 @@
         </div>
         <br />
     }
-    <div class="mb-5">
-        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
-    </div>
 
 }
 
@@ -36,8 +33,12 @@
 
 @foreach (var Store in Model.Stores)
 {
+
     <div class="h2 text-left w-100">
         Kotetsu
+    </div>
+    <div class="mb-2 text-left w-100">
+        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
     </div>
     <div class="d-flex store-info-1 w-100">
         <address class="card mb-3">

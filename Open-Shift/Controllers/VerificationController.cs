@@ -19,14 +19,20 @@ namespace Open_Shift.Controllers
         [HttpGet]
         public ActionResult EmailVerification(string token)
         {
+            EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
 
             Models.Database db = new Database();
             db.ApproveNewAssociate(token);
 
 
+
             return RedirectToAction("Index", "Home");
 
         }
+
+
+   
+    
 
         [HttpPost]
         public ActionResult Create()

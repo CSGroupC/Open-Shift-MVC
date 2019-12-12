@@ -5,9 +5,6 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <h1 class="mb-4">Account</h1>
 @using (Html.BeginForm("Update", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))

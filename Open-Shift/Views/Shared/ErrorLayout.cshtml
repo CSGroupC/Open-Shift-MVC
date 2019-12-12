@@ -15,7 +15,7 @@
     <div class="">
         <div id="frankie-bar" class="w3-bar w3-light-grey w3-border w3-xlarge">
             <a href="~/Home/Index" class="w3-bar-item w3-button w3-green" title="Home"><i class="fa fa-home"></i></a>
-            @if (Model.User.IsAuthenticated)
+            @if (Model.User.IsAuthenticated && Model.User.EmailVerificationToken != "" && Model.User.StatusID == Open_Shift.Models.User.StatusList.InActive)
             {
                 <a href="~/Profile/Index" class="w3-bar-item w3-button" title="Profile"><i class="fa fa-address-card"></i></a>
                 <a href="~/Profile/SignOut" class="w3-bar-item w3-button" title="Sign-out"><i class="fas fa-sign-out-alt"></i></a>

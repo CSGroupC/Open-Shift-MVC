@@ -335,7 +335,6 @@ namespace Open_Shift.Controllers
                     //EmailController.NewAssociateEmail(h.User.Email, fullName);
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
-
                     return RedirectToAction("Index", "Home");
                 }
                 else

@@ -14,7 +14,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -45,11 +46,11 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
                 if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
@@ -69,7 +70,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -89,72 +91,69 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
                 if (col["btnCancel"] == "cancel") return RedirectToAction("Index", "Profile");
 
-                {
-                    u = Models.User.GetUserSession();
+                u.FirstName = col["User.FirstName"];
+                u.LastName = col["User.LastName"];
+                u.Birthday = Convert.ToDateTime(col["User.Birthday"]);
+                u.AddressLine1 = col["User.AddressLine1"];
+                u.AddressLine2 = col["User.AddressLine2"];
+                u.PostalCode = col["User.PostalCode"];
+                u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+                u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
+                u.Phonenumber = col["User.Phonenumber"];
+                u.Email = col["User.Email"];
+                u.ConfirmEmail = col["User.ConfirmEmail"];
+                u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
+                u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
-                    u.FirstName = col["User.FirstName"];
-                    u.LastName = col["User.LastName"];
-                    u.Birthday = Convert.ToDateTime(col["User.Birthday"]);
-                    u.AddressLine1 = col["User.AddressLine1"];
-                    u.AddressLine2 = col["User.AddressLine2"];
-                    u.PostalCode = col["User.PostalCode"];
-                    u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-                    u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
-                    u.Phonenumber = col["User.Phonenumber"];
-                    u.Email = col["User.Email"];
-                    u.ConfirmEmail = col["User.ConfirmEmail"];
-                    u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
-                    u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
+                //NEW CODE
 
-                    //NEW CODE
-
-                    u.Save();
-                    if (u.IsAuthenticated && u.EmailVerificationToken == "")
-                    { //user found
-                      //if (UserImage != null)
-                      //{
-                      //	u.UserImage = new Models.Image();
-                      //	u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
-                      //	u.UserImage.Primary = true;
-                      //	u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
-                      //	if (u.UserImage.IsImageFile())
-                      //	{
-                      //		u.UserImage.Size = UserImage.ContentLength;
-                      //		Stream stream = UserImage.InputStream;
-                      //		BinaryReader binaryReader = new BinaryReader(stream);
-                      //		u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
-                      //		u.UpdatePrimaryImage();
-                      //	}
-                      //}
-                        u.SaveUserSession(); //save the user session object
-                        return RedirectToAction("Index", "Profile");
-                    }
-                    else
-                    { //user failed to log in
-                        h.User.FirstName = col["User.FirstName"];
-                        h.User.LastName = col["User.LastName"];
-                        h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
-                        h.User.AddressLine1 = col["User.AddressLine1"];
-                        h.User.AddressLine2 = col["User.AddressLine2"];
-                        h.User.PostalCode = col["User.PostalCode"];
-
-                        h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-                        h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
-                        h.User.Phonenumber = col["User.Phonenumber"];
-                        h.User.Email = col["User.Email"];
-                        h.User.ConfirmEmail = col["User.ConfirmEmail"];
-                        h.User.Password = col["User.Password"];
-                    }
+                u.Save();
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
+                { //user found
+                  //if (UserImage != null)
+                  //{
+                  //	u.UserImage = new Models.Image();
+                  //	u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
+                  //	u.UserImage.Primary = true;
+                  //	u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
+                  //	if (u.UserImage.IsImageFile())
+                  //	{
+                  //		u.UserImage.Size = UserImage.ContentLength;
+                  //		Stream stream = UserImage.InputStream;
+                  //		BinaryReader binaryReader = new BinaryReader(stream);
+                  //		u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
+                  //		u.UpdatePrimaryImage();
+                  //	}
+                  //}
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Profile");
                 }
+                else
+                { //user failed to log in
+                    h.User.FirstName = col["User.FirstName"];
+                    h.User.LastName = col["User.LastName"];
+                    h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
+                    h.User.AddressLine1 = col["User.AddressLine1"];
+                    h.User.AddressLine2 = col["User.AddressLine2"];
+                    h.User.PostalCode = col["User.PostalCode"];
+
+                    h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+                    h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
+                    h.User.Phonenumber = col["User.Phonenumber"];
+                    h.User.Email = col["User.Email"];
+                    h.User.ConfirmEmail = col["User.ConfirmEmail"];
+                    h.User.Password = col["User.Password"];
+                }
+
                 return View(u);
             }
             catch (Exception ex)
@@ -168,7 +167,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -188,13 +188,13 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
+
                 if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
-                u = Models.User.GetUserSession();
                 u.Delete();
                 return RedirectToAction("SignUp", "Profile");
             }
@@ -209,7 +209,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" || u.StatusID == Open_Shift.Models.User.StatusList.Active)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -235,7 +236,7 @@ namespace Open_Shift.Controllers
                 u = db.Login(u);
                 u.LoginAttempted = true;
 
-                if (u.IsAuthenticated && u.EmailVerificationToken == "")
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
                 { //user found
 
                     u.SaveUserSession(); //save the user session object
@@ -259,7 +260,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -326,7 +328,7 @@ namespace Open_Shift.Controllers
 
                 if (db.CheckIfUserExists(strEmail) == 1)
                 {
-                    // TODO: Tell the user that the email is already taken
+                    h.User.EmailTaken = true;
                     return View(h);
                 }
 
@@ -335,7 +337,7 @@ namespace Open_Shift.Controllers
                 if (h.User.IsAuthenticated)
                 { //user found
 
-                    if (h.User.EmailVerificationToken != "")
+                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
                     {
                         return SignIn(h.User, col);
                     }
@@ -388,7 +390,7 @@ namespace Open_Shift.Controllers
                 Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
                 u.ResetPassword();
 
-                if (u.IsAuthenticated && u.EmailVerificationToken == "")
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
                 { //user found
                     u.SaveUserSession(); //save the user session object
                     return RedirectToAction("Index", "Home");

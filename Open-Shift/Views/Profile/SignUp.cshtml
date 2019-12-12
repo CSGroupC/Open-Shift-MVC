@@ -4,7 +4,6 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
@@ -17,7 +16,14 @@
             <div class="form-group">
                 <div>@Html.LabelFor(model => model.User.Email)</div>
                 <div>@Html.TextBoxFor(model => model.User.Email, new { @class = "form-control" })</div>
-                <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Email)</small>
+                @if (Model.User.EmailTaken)
+                {
+                    <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Email, "Email already in use.")</small>
+                }
+                else
+                {
+                    <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.Email)</small>
+                }
             </div>
             <div class="form-group">
                 <div>@Html.LabelFor(model => model.User.ConfirmEmail)</div>

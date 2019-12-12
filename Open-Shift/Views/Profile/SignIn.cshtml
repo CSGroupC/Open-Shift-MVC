@@ -19,6 +19,10 @@
     {
         <small class="validation-message form-text text-danger">Please verify your account to continue.<br />Check your inbox for an email with instructions.</small>
     }
+    else if (Model.User.StatusID == Open_Shift.Models.User.StatusList.InActive)
+    {
+        <small class="validation-message form-text text-danger">You account is not active. <br />See your manager about activation.</small>
+    }
     else if (Model.User.LoginFailed)
     {
         <small class="validation-message form-text text-danger">Login failed, please try again.</small>

@@ -13,7 +13,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn", "Profile");
                 }

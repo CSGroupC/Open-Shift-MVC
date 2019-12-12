@@ -33,7 +33,7 @@ namespace Open_Shift.Controllers
         [HttpGet]
         public ActionResult EmailManagerApproval(int associateID)
         {
-           // EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
+            // EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
 
             Models.Database db = new Database();
             db.ChangeAssocToActive(associateID);
@@ -52,7 +52,7 @@ namespace Open_Shift.Controllers
         public ActionResult Create()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -80,7 +80,7 @@ namespace Open_Shift.Controllers
         public ActionResult Update()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -104,7 +104,7 @@ namespace Open_Shift.Controllers
         public ActionResult Delete()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }

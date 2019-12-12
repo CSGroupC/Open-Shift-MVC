@@ -79,12 +79,14 @@ namespace Open_Shift.Models
         public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
         public IsManagerEnum IsManager { get; set; } = IsManagerEnum.Associate; //by default
-        public bool LoginAttempted { get; set; } = false;
-
         public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
 
-
         //public Image UserImage = new Image();
+
+        // Validation properties:
+        public bool EmailTaken { get; set; } = false;
+        public bool LoginAttempted { get; set; } = false;
+
 
         public enum AssociateTitles
         {

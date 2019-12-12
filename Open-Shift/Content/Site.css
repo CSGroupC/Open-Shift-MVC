@@ -392,11 +392,27 @@ Availability
     width: 100%;
 }
 
+[data-page='Availability'] #workspace {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
+}
+
 /*
 Scheduling
 */
 #schedule-calendar {
     width: 100%;
+}
+
+[data-page='Schedule'] #workspace {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
 }
 
 /*

@@ -259,7 +259,9 @@
 .calendar .announce-button {
     display: none;
     margin-left: auto;
-    font-size: 30px;
+    font-size: 35px;
+    cursor: pointer;
+    margin-right: 10px;
 }
 
 
@@ -275,9 +277,11 @@
 /* schedule                                                                                                       */
 /* **************************************************************************************************************** */
 
+/*
 .schedule-calendar .announce-button {
     display: initial;
 }
+*/
 
 .schedule-calendar .time-period-section {
     position: relative;

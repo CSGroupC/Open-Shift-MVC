@@ -160,3 +160,8 @@ export function createShift(associate, timePeriod, monthDay, calendar) {
             }
         });
 }
+
+export function updateAssociateManagerStatus(associateId, managerStatus) {
+    console.log(associateId);
+    console.log(managerStatus);
+}

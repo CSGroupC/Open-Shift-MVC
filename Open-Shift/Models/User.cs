@@ -209,7 +209,7 @@ namespace Open_Shift.Models
                 u = (User)HttpContext.Current.Session["CurrentUser"];
                 Database db = new Database();
                 Password = u.NewPassword;
-                db.UpdateUser(this);
+                db.ResetPassword(this);
                 return true;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }

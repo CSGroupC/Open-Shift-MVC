@@ -15,19 +15,20 @@
         <div>@Html.LabelFor(model => model.User.Password)</div>
         <div>@Html.TextBoxFor(model => model.User.Password, new { @class = "form-control", type = "password" })</div>
     </div>
-    if (Model.User.LoginFailed)
-    {
-        <small class="validation-message form-text text-danger">Failed to login. Please try again.</small>
-    }
-    else if (Model.User.EmailVerificationToken != "")
+    if (Model.User.EmailVerificationToken != "")
     {
         <small class="validation-message form-text text-danger">Please verify your account to continue.<br />Check your inbox for an email with instructions.</small>
     }
+    else if (Model.User.LoginFailed)
+    {
+        <small class="validation-message form-text text-danger">Login failed, please try again.</small>
+    }
+
 
     <button class="btn btn-primary mb-2" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button>
 
-    <a href="/Profile/SignUp">First time user?</a> <br />
-    <a href="/Profile/ResetPasswordRequest">Forgot your password?</a>
+    <a href="/Profile/SignUp"> First time user?</a> <br />
+    <a href="/Profile/ResetPasswordRequest"> Forgot your password?</a>
 }
 
 

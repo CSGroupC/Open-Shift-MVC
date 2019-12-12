@@ -190,7 +190,8 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = null;
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                User.IsManagerEnum IsManager = User.IsManagerEnum.Associate;
+                var IsManager = User.IsManagerEnum.Associate;
+                var Status = User.StatusList.InActive;
 
                 SqlDataAdapter da = new SqlDataAdapter("GET_ASSOCIATE_COUNT_BY_STORE", cn);
                 SetParameter(ref da, "@intStoreID", u.StoreID, SqlDbType.Int);
@@ -205,6 +206,7 @@ namespace Open_Shift.Models
                         if (AssociateCount == 0)
                         {
                             IsManager = User.IsManagerEnum.Manager;
+                            Status = User.StatusList.Active;
                         }
                     }
                 }
@@ -231,7 +233,7 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
                 SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
+                SetParameter(ref cm, "@intStatusID", Status, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
                 SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strEmailVerificationToken", u.EmailVerificationToken, SqlDbType.NVarChar);

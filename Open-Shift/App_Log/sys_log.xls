@@ -47,3 +47,4 @@ The statement has been terminated.
 12/11/2019 4:07:24 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
 12/11/2019 10:09:05 PM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
 12/11/2019 11:30:35 PM	Open_Shift.Controllers.ProfileController	String was not recognized as a valid DateTime.
+12/12/2019 3:41:39 AM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_COUNT_BY_STORE'.

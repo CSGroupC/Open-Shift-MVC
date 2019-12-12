@@ -379,7 +379,7 @@ namespace Open_Shift.Models
             int intReturnValue = -1;
 
             SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
-            SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPassword", HashPassword(u.Password), SqlDbType.NVarChar);
             SetParameter(ref cm, "@strPasswordResetToken", u.PasswordResetToken, SqlDbType.NVarChar);
 
             SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);

@@ -81,7 +81,7 @@
                 <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.PostalCode)</small>
             </div>
 
-            <button class="btn btn-primary form-control full-content" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
+            <button class="btn btn-primary form-control full-content" tabindex="-1" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
         </div>
 
 
@@ -105,7 +105,7 @@
                 <small class="validation-message form-text text-danger">@Html.ValidationMessageFor(model => model.User.AssociateTitle)</small>
             </div>
 
-            <button class="btn btn-primary form-control mobile-content" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
+            <button class="btn btn-primary form-control mobile-content" tabindex="-1" id="btnSignUp" name="btnSubmit" value="signup">Sign-Up</button>
         </div>
 
         @*<div value="Notification">
@@ -122,6 +122,6 @@
     }
 }
 <script type="text/javascript">
-    $("#User_FirstName").focus();
+    $("#User_Email").focus();
 </script>
 

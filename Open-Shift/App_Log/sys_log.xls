@@ -66,3 +66,7 @@ Parameter name: address
 12/12/2019 7:04:52 AM	Open_Shift.Models.Database	Salt is not at least eight bytes.
 12/12/2019 7:08:29 AM	Open_Shift.Models.Database	There is no row at position 0.
 12/12/2019 7:08:29 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 7:19:07 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:26:44 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:27:00 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:27:34 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.

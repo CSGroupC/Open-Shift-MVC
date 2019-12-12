@@ -196,6 +196,7 @@ namespace Open_Shift.Controllers
 
                 if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
                 u.Delete();
+                u.RemoveUserSession();
                 return RedirectToAction("SignUp", "Profile");
             }
             catch (Exception ex)

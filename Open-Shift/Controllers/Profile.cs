@@ -394,5 +394,56 @@ namespace Open_Shift.Controllers
             }
         }
 
+
+
+
+        public ActionResult ResetPasswordRequest()
+        {
+            try
+            {
+                Models.Home h = new Models.Home();
+                return View(h);
+            }
+            catch (Exception ex)
+            {
+                Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ResetPasswordRequest(Models.User m, FormCollection col)
+        {
+            try
+            {
+                Models.Home h = new Models.Home();
+                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+
+                string PasswordVerificationToken = Guid.NewGuid().ToString();
+
+                u.ResetPassword();
+
+                if (u.IsAuthenticated)
+                { //user found
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                { //user failed to log in
+                    return RedirectToAction("ResetPassword", "Profile");
+                }
+                u.Save();
+                return View(h);
+
+            }
+            catch (Exception ex)
+            {
+                Models.SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+
+
     }
 }

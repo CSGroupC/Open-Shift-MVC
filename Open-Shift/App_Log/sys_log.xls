@@ -45,3 +45,4 @@ The statement has been terminated.
 12/11/2019 4:06:51 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
 12/11/2019 4:06:53 PM	Open_Shift.Controllers.HomeController	Cannot find table 0.
 12/11/2019 4:07:24 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
+12/11/2019 10:09:05 PM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.

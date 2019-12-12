@@ -245,7 +245,8 @@ namespace Open_Shift.Controllers
                 { //user failed to log in
                     Models.Home h = new Models.Home();
                     h.User = u;
-                    return View(h);
+                    // NOTE: This is required, in case we get to this line from the SignUp action
+                    return View("~/Views/Profile/SignIn.cshtml", h);
                 }
             }
             catch (Exception ex)

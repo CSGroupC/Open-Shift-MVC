@@ -270,7 +270,7 @@ namespace Open_Shift.Models
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
                 SqlDataAdapter da = new SqlDataAdapter("LOGIN", cn);
                 DataSet ds;
-                User newUser = null;
+                User newUser = new User();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 

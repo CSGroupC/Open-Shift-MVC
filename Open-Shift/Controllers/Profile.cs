@@ -210,7 +210,7 @@ namespace Open_Shift.Controllers
             try
             {
                 var u = Models.User.GetUserSession();
-                if (u.IsAuthenticated && u.EmailVerificationToken == "" || u.StatusID == Open_Shift.Models.User.StatusList.Active)
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Open_Shift.Models.User.StatusList.Active)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -343,12 +343,12 @@ namespace Open_Shift.Controllers
                     //EmailController.NewAssociateEmail(h.User.Email, fullName);
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
-                    return RedirectToAction("Index", "Home");
-
                     if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
                     {
                         return SignIn(h.User, col);
                     }
+
+                    return RedirectToAction("Index", "Home");
 
                     h.User.SaveUserSession(); //save the user session object
                 }

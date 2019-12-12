@@ -304,13 +304,14 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = new SqlConnection();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("ResetPassword", cn);
+                SqlDataAdapter da = new SqlDataAdapter("UPDATE_PASSWORD", cn);
                 DataSet ds;
                 User newUser = null;
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
+                SetParameter(ref da, "@intAssociateID", u.AssociateID, SqlDbType.NVarChar);
                 SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
+
 
 
                 try

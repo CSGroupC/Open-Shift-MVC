@@ -101,9 +101,19 @@ namespace Open_Shift.Controllers
                 }
         }
 
+        public static void NewPasswordRequest(string UserEmail, string FirstName, string LastName, string PasswordResetToken)
+        {
+            string sub = "Change your password with OpenShift";
+            string body = "Hi " + FirstName + "! <br><br> Thanks so much for signing up for OpenShift!" +
+                " Please click <a href='http://localhost:4040/Verification/EmailVerification/?token=" + PasswordResetToken + "' target='_blank'><b>here</b></a> to verify your email. " +
+                "After you verify your email, your manager will approve your access into OpenShift. We look forward to helping you take the work out of scheduling!" +
+                "<br><br>" +
+                "Your OpenShift Support Team";
+            SendEmail(UserEmail, FirstName, LastName, sub, body);
+        }
 
 
-         //this void sends all emails. ***Must specify UserEmail, Name, subject ( called "sub" ) and body in all voids above
+        //this void sends all emails. ***Must specify UserEmail, Name, subject ( called "sub" ) and body in all voids above
         public static void SendEmail(string UserEmail, string FirstName, string LastName, string sub, string body)
         {
 

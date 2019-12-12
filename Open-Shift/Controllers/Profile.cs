@@ -328,7 +328,7 @@ namespace Open_Shift.Controllers
 
                 if (db.CheckIfUserExists(strEmail) == 1)
                 {
-                    // TODO: Tell the user that the email is already taken
+                    h.User.EmailTaken = true;
                     return View(h);
                 }
 

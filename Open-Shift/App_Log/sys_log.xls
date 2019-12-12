@@ -47,3 +47,35 @@ The statement has been terminated.
 12/11/2019 4:07:24 PM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_STORES'.
 12/11/2019 10:09:05 PM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
 12/11/2019 11:30:35 PM	Open_Shift.Controllers.ProfileController	String was not recognized as a valid DateTime.
+12/12/2019 3:41:39 AM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_COUNT_BY_STORE'.
+12/12/2019 3:47:39 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 3:47:53 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 3:48:23 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 3:50:17 AM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_COUNT_BY_STORE'.
+12/12/2019 3:51:32 AM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_COUNT_BY_STORE'.
+12/12/2019 3:53:15 AM	Open_Shift.Models.Database	Could not find stored procedure 'GET_ASSOCIATE_COUNT_BY_STORE'.
+12/12/2019 4:06:27 AM	Open_Shift.Controllers.ProfileController	The parameter 'address' cannot be an empty string.
+Parameter name: address
+12/12/2019 4:41:02 AM	Open_Shift.Controllers.ProfileController	Error converting data type nvarchar to int.
+12/12/2019 4:42:21 AM	Open_Shift.Controllers.ProfileController	Error converting data type nvarchar to int.
+12/12/2019 5:09:35 AM	Open_Shift.Models.Database	Procedure or function 'GET_USER_BY_PASSWORD_RESET_TOKEN' expects parameter '@strPasswordResetToken', which was not supplied.
+12/12/2019 5:10:56 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 5:20:54 AM	Open_Shift.Models.Database	Procedure or function 'GET_USER_BY_PASSWORD_RESET_TOKEN' expects parameter '@strPasswordResetToken', which was not supplied.
+12/12/2019 7:01:31 AM	Open_Shift.Models.Database	Salt is not at least eight bytes.
+12/12/2019 7:04:43 AM	Open_Shift.Models.Database	Salt is not at least eight bytes.
+12/12/2019 7:04:52 AM	Open_Shift.Models.Database	Salt is not at least eight bytes.
+12/12/2019 7:08:29 AM	Open_Shift.Models.Database	There is no row at position 0.
+12/12/2019 7:08:29 AM	Open_Shift.Controllers.ProfileController	Object reference not set to an instance of an object.
+12/12/2019 7:19:07 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:26:44 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:27:00 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:27:34 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:29:21 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:40:04 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:41:30 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:42:48 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:43:50 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:45:33 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 7:47:55 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 8:03:28 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/12/2019 8:06:52 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.

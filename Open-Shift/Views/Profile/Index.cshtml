@@ -118,7 +118,7 @@
         <button class="btn btn-primary" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-edit'></i> Edit</button>
         <button class="btn btn-primary" id="btnResetPassword" name="btnSubmit" value="resetpassword">Reset Password </button>
 
-        <button class="btn-outline-danger float-right" name="btnSubmit" value="delete" type="button" onclick="confirmDeactivate( )"><i class='far fa-trash-alt'></i> Deactivate Account</button>
+        <button class="btn-outline-danger float-right" name="btnSubmit" value="delete" type="button" onclick="confirmDeactivate( )"><i class='far fa-trash-alt'></i> <span class="full-content">Deactivate Account</span></button>
     </div>
 
 }
@@ -128,17 +128,17 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deactivateModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="deactivateModalLabel">Warning!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to deactivate your account?
+                Deactivating your account will prevent you from using Open Shift again until your account is reactivated. Are you sure you want to deactivate your account?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form action="Profile/Delete" method="POST">
+                <form action="Delete" method="POST">
                     <button class="deactivate-button btn btn-outline-danger" name="btnSubmit" value="delete">Deactivate</button>
                 </form>
             </div>

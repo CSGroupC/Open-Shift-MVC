@@ -15,7 +15,7 @@
                 <div class="display-4 text-center">
                     @(((Open_Shift.Models.User.StoreLocationList)Model.NextShift.StoreID).ToString())
                 </div>
-                <div class="text-muted">
+                <div class="text-muted text-center">
                     @Model.NextShift.StartTime.ToString("yyyy/MM/dd HH:mm")
                     -
                     @Model.NextShift.EndTime.ToString("yyyy/MM/dd HH:mm")
@@ -24,9 +24,6 @@
         </div>
         <br />
     }
-    <div class="mb-5">
-        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
-    </div>
 
 }
 
@@ -36,17 +33,23 @@
 
 @foreach (var Store in Model.Stores)
 {
+
     <div class="h2 text-left w-100">
         Kotetsu
+    </div>
+    <div class="mb-2 text-left w-100">
+        <a class="btn btn-primary" href="/Availability/Index">Availability</a> <a class="btn btn-primary" href="/Schedule/Index">Schedule</a>
     </div>
     <div class="d-flex store-info-1 w-100">
         <address class="card mb-3">
             <div class="card-body">
                 <iframe frameborder="0" style="border:0"
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDp5x2XwmnaBmxAmea-hOhtWG-N8BI8K6o&q=@Store.StoreName @Store.AddressLine1 @Store.AddressLine2" allowfullscreen></iframe>
-                <div class="text-muted">
-                    @Store.AddressLine1 <br />
-                    @Store.AddressLine2
+                <div>
+                    <small class="text-muted">
+                        @Store.AddressLine1 <br />
+                        @Store.AddressLine2
+                    </small>
                 </div>
             </div>
         </address>
@@ -88,17 +91,27 @@
 
                             <div class="form-group">
                                 <label>@(Associate.FirstName + " " + Associate.LastName)</label>
-                                @Html.DropDownListFor(model => Associate.IsManager, new SelectList(Model.User.Lists.IsManager, "Value", "Text", Associate.IsManager), new { @title = "Promote/demote.", @class = "form-control manager-status" })
+                                <div class="row">
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(model => Associate.IsManager, new SelectList(Model.User.Lists.IsManager, "Value", "Text", Associate.IsManager), new { @title = "Promote/demote.", @class = "form-control manager-status" })
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(model => Associate.StatusID, new SelectList(Model.User.Lists.StatusList, "Value", "Text", Associate.StatusID), new { @title = "Activate/deactivate.", @class = "form-control status" })
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <script type="module">
-                            import { updateAssociateManagerStatus } from "../Scripts/database.js";
+                            import { updateAssociateManagerStatus, updateAssociateStatus } from "../Scripts/database.js";
 
                             let form = document.querySelector(".associate-form[data-associate-id='@Associate.AssociateID']");
                             let selectList = form.getElementsByClassName( "manager-status" )[0];
                             selectList.onchange = ( ) => { updateAssociateManagerStatus( @Associate.AssociateID, selectList.value ) };
+
+                            selectList = form.getElementsByClassName( "status" )[0];
+                            selectList.onchange = ( ) => { updateAssociateStatus( @Associate.AssociateID, selectList.value ) };
                         </script>
                     }
                 }

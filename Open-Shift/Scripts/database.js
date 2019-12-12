@@ -106,6 +106,7 @@ export function deleteTimePeriod(timePeriodId) {
             if (response.status == "AUTHENTICATION_FAILED") {
                 location.href = "/Profile/SignIn";
             }
+            return response;
         });
 }
 
@@ -162,6 +163,56 @@ export function createShift(associate, timePeriod, monthDay, calendar) {
 }
 
 export function updateAssociateManagerStatus(associateId, managerStatus) {
-    console.log(associateId);
-    console.log(managerStatus);
+
+    return fetch("Manager/UpdateManagerStatus", {
+        method: "PUT",
+        body: JSON.stringify({
+            AssociateID: associateId,
+            IsManager: managerStatus
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Manager/Update responded with ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (response) {
+            if (response.status == "AUTHENTICATION_FAILED") {
+                location.href = "/Profile/SignIn";
+            }
+        });
 }
+
+export function updateAssociateStatus(associateId, status) {
+
+    console.log(status);
+
+    return fetch("Manager/UpdateStatus", {
+        method: "PUT",
+        body: JSON.stringify({
+            AssociateID: associateId,
+            StatusID: status
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Manager/Update responded with ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (response) {
+            if (response.status == "AUTHENTICATION_FAILED") {
+                location.href = "/Profile/SignIn";
+            }
+        });
+}
+

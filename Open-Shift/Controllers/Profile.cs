@@ -196,6 +196,7 @@ namespace Open_Shift.Controllers
 
                 if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
                 u.Delete();
+                u.RemoveUserSession();
                 return RedirectToAction("SignUp", "Profile");
             }
             catch (Exception ex)
@@ -210,7 +211,7 @@ namespace Open_Shift.Controllers
             try
             {
                 var u = Models.User.GetUserSession();
-                if (u.IsAuthenticated && u.EmailVerificationToken == "" || u.StatusID == Open_Shift.Models.User.StatusList.Active)
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Open_Shift.Models.User.StatusList.Active)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -302,7 +303,6 @@ namespace Open_Shift.Controllers
         {
             try
             {
-
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Home");
@@ -323,7 +323,6 @@ namespace Open_Shift.Controllers
 
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
-                h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 h.User.StatusID = Models.User.StatusList.InActive;
 
                 if (db.CheckIfUserExists(strEmail) == 1)
@@ -336,14 +335,6 @@ namespace Open_Shift.Controllers
 
                 if (h.User.IsAuthenticated)
                 { //user found
-
-                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
-                    {
-                        return SignIn(h.User, col);
-                    }
-
-                    h.User.SaveUserSession(); //save the user session object
-
                     //Send text message to new user
                     Controllers.SmsController sms = new Controllers.SmsController();
                     // sms.SendSms(h.User.Phonenumber);
@@ -352,7 +343,14 @@ namespace Open_Shift.Controllers
                     //EmailController.NewAssociateEmail(h.User.Email, fullName);
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
+                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
+                    {
+                        return SignIn(h.User, col);
+                    }
+
                     return RedirectToAction("Index", "Home");
+
+                    h.User.SaveUserSession(); //save the user session object
                 }
                 else
                 { //user failed to log in
@@ -367,11 +365,15 @@ namespace Open_Shift.Controllers
             }
         }
 
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string token)
         {
             try
             {
-                Models.Home h = new Models.Home();
+                Models.Database db = new Database();
+
+                Home h = new Home();
+                h.User = db.GetUserByPasswordResetToken(token);
+
                 return View(h);
             }
             catch (Exception ex)
@@ -382,27 +384,19 @@ namespace Open_Shift.Controllers
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(Models.User m, FormCollection col)
+        public ActionResult ResetPassword(FormCollection col)
         {
             try
             {
                 Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-                u.ResetPassword();
-
-                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
+                h.User = new Models.User(col["User.Email"], col["User.Password"]);
+                h.User.PasswordResetToken = col["User.PasswordResetToken"];
+                if (!h.User.ResetPassword())
+                {
+                    // TODO: Handle this error
                 }
-                else
-                { //user failed to log in
-                    h.User = u;
-                    return View(h);
-                }
-                u.Save();
-                return View(h);
 
+                return View("~/Views/Profile/SignIn.cshtml", h);
             }
             catch (Exception ex)
             {
@@ -433,26 +427,15 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+                string PasswordResetToken = Guid.NewGuid().ToString();
 
-                string PasswordVerificationToken = Guid.NewGuid().ToString();
+                Models.Database db = new Database();
 
-                EmailController.NewPasswordRequest(h.User.Email, h.User.FirstName, h.User.LastName, PasswordVerificationToken);
+                db.SetUserPasswordResetToken(col["User.Email"], PasswordResetToken);
 
-                u.ResetPassword();
+                EmailController.NewPasswordRequest(col["User.Email"], PasswordResetToken);
 
-                if (u.IsAuthenticated)
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                { //user failed to log in
-                    return RedirectToAction("ResetPassword", "Profile");
-                }
-                u.Save();
-                return View(h);
+                return RedirectToAction("SignIn", "Profile");
 
             }
             catch (Exception ex)

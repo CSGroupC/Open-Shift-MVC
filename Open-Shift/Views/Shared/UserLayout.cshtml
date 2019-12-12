@@ -19,10 +19,10 @@
 </head>
 <body data-page="@ViewBag.Title">
     <div id="frankie-bar">
-        <a href="~/Home/Index" class="w3-bar-item w3-button bg-primary" title="Home"><i class="fa fa-home"></i></a>
+        <a href="~/Home/Index" class="w3-bar-item w3-button bg-primary text-light" title="Home"><i class="fa fa-home"></i> <span class="link-text">Home</span></a>
         @if (user.IsAuthenticated && user.EmailVerificationToken == "" && user.StatusID == Open_Shift.Models.User.StatusList.Active)
         {
-            <a href="~/Profile/Index" class="w3-bar-item w3-button" title="Account"><i class="fa fa-address-card"></i> <span class="link-text">Account</span></a>
+            <a href="~/Profile/Index" class="w3-bar-item w3-button" title="Account"><i class="fa fa-address-card"></i> <span class="link-text">@(user.FirstName + " " + user.LastName)</span></a>
             <a href="~/Profile/SignOut" class="w3-bar-item w3-button" title="Sign Out"><i class="fas fa-sign-out-alt"></i> <span class="link-text">Sign Out</span></a>
         }
         else

@@ -19,6 +19,10 @@
     {
         <small class="validation-message form-text text-danger">Failed to login. Please try again.</small>
     }
+    else if (Model.User.EmailVerificationToken != "")
+    {
+        <small class="validation-message form-text text-danger">Please verify your account to continue.<br />Check your inbox for an email with instructions.</small>
+    }
 
     <button class="btn btn-primary mb-2" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button>
 

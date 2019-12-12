@@ -178,7 +178,11 @@ namespace Open_Shift.Models
                 db.ResetPassword(this);
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool RemoveUserSession()
@@ -188,7 +192,11 @@ namespace Open_Shift.Models
                 HttpContext.Current.Session["CurrentUser"] = null;
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public static User GetUserSession()
@@ -205,7 +213,11 @@ namespace Open_Shift.Models
                 //u.UserImage = db.GetUserImage(u.AssociateID);
                 return u;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile("User.cs", MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool SaveUserSession()
@@ -218,7 +230,11 @@ namespace Open_Shift.Models
                 HttpContext.Current.Session.Timeout = 43800;
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Delete()
@@ -230,7 +246,11 @@ namespace Open_Shift.Models
                 RemoveUserSession();
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Save()
@@ -251,7 +271,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         //public sbyte UpdatePrimaryImage()
@@ -350,7 +374,11 @@ namespace Open_Shift.Models
                 // NOTE: Do this last, so authentication will fail if the above fails
                 this.AssociateID = (int)dr["intAssociateID"];
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 

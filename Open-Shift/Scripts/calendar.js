@@ -164,6 +164,7 @@ export class Calendar {
             }, {});
         }
 
+        this.element.dataset.associateCount = Object.keys(this.associates).length;
 
         // Load existing time periods onto the calendar
         for (let id in this.timePeriods) {

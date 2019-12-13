@@ -52,7 +52,7 @@ export function getDateFromQueryString() {
         date = new Date();
         // NOTE: The controller depends on reloading the page with the query string
         //window.history.replaceState(null, null, `?m=${date.getMonth() + 1}&d=${date.getDate()}&y=${date.getFullYear()}`);
-        location.href = `?m=${date.getMonth() + 1}&d=${date.getDate()}&y=${date.getFullYear()}`;
+        location.replace(`?m=${date.getMonth() + 1}&d=${date.getDate()}&y=${date.getFullYear()}`);
         requestData = new URLSearchParams(location.search);
     }
 

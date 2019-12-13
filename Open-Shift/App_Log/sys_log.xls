@@ -86,3 +86,13 @@ Parameter name: address
 12/12/2019 8:45:37 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
 12/12/2019 8:46:53 AM	Open_Shift.Models.Database	Index was outside the bounds of the array.
 12/12/2019 3:31:35 PM	Open_Shift.Models.Database	Index was outside the bounds of the array.
+12/13/2019 12:19:52 AM	Open_Shift.Controllers.ProfileController	Value cannot be null.
+Parameter name: value
+12/13/2019 12:20:40 AM	Open_Shift.Controllers.ProfileController	Value cannot be null.
+Parameter name: value
+12/13/2019 12:21:47 AM	Open_Shift.Models.User	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.
+12/13/2019 12:21:47 AM	Open_Shift.Controllers.ProfileController	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.
+12/13/2019 12:24:05 AM	Open_Shift.Models.User	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.
+12/13/2019 12:24:05 AM	Open_Shift.Controllers.ProfileController	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.
+12/13/2019 12:25:05 AM	Open_Shift.Models.User	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.
+12/13/2019 12:25:05 AM	Open_Shift.Controllers.ProfileController	Procedure or function 'UPDATE_USER' expects parameter '@blnIsManager', which was not supplied.

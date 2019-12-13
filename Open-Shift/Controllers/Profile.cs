@@ -109,9 +109,7 @@ namespace Open_Shift.Controllers
                 u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
                 u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
                 u.Phonenumber = col["User.Phonenumber"];
-                u.Email = col["User.Email"];
                 u.ConfirmEmail = col["User.ConfirmEmail"];
-                u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
                 //NEW CODE

@@ -27,8 +27,6 @@ namespace Open_Shift.Models
 
                 StoreLocationList = new List<SelectListItem>();
                 StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.Kotetsu.ToString(), Text = "Kotetsu" });
-                StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuLondon.ToString(), Text = "Kotetsu-London" });
-                StoreLocationList.Add(new SelectListItem() { Value = User.StoreLocationList.KotetsuBrazil.ToString(), Text = "Kotetsu-Brazil" });
 
                 IsManager = new List<SelectListItem>();
                 IsManager.Add(new SelectListItem() { Value = User.IsManagerEnum.Associate.ToString(), Text = "Associate" });

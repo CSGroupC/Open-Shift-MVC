@@ -55,7 +55,7 @@ namespace Open_Shift.Controllers
 
                 if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
                 if (col["btnSubmit"] == "close") return RedirectToAction("Index", "Home");
-                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPassword", "Profile");
+                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPasswordRequest", "Profile");
                 if (col["btnSubmit"] == "update") return RedirectToAction("Update", "Profile");
                 return View(u);
             }
@@ -411,6 +411,7 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
+                h.User = Models.User.GetUserSession();
                 return View(h);
             }
             catch (Exception ex)

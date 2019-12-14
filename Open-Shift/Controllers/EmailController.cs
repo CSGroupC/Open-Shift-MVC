@@ -17,24 +17,28 @@ namespace Open_Shift.Controllers
 {
     public class EmailController : Controller
     {
-
+        static string domainName = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
 
         public static void NewAssociateVerification(string UserEmail, string FirstName, string LastName, string EmailVerificationToken)
         {
             string sub = "Welcome To OpenShift! Please Verify Your Email";
             string body = "Hi " + FirstName + "! <br><br> Thanks so much for signing up for OpenShift!" +
-                " Please click <a href='http://localhost:4040/Verification/EmailVerification/?token=" + EmailVerificationToken + "' target='_blank'><b>here</b></a> to verify your email. " +
+                " Please click <a href='" + domainName + "/Verification/EmailVerification/?token=" + EmailVerificationToken + "' target='_blank'><b>here</b></a> to verify your email. " +
                 "After you verify your email, your manager will approve your access into OpenShift. We look forward to helping you take the work out of scheduling!" +
                 "<br><br>" +
                 "Your OpenShift Support Team";
             SendEmail(UserEmail, FirstName, LastName, sub, body);
         }
 
-        public static void NewAssociateVerificationManager(string token)
+        public static bool NewAssociateVerificationManager(string token)
         {
 
             Database db = new Database();
             User u = db.getNewAssociateData(token);
+            if( u == null)
+            {
+                return false;
+            }
             List<User> m = db.GetManagersAndOwners();
 
             string sub = "Please verify your new associate so they can access OpenShift!";
@@ -90,7 +94,7 @@ namespace Open_Shift.Controllers
                 "</tr>" +
                 "</table>" +
                 "<br><br>" +
-                "Click <a href='http://localhost:4040/Verification/EmailManagerApproval/?AssociateID=" + u.AssociateID + "' target='_blank'><b>here</b></a> to confirm the information is correct." +
+                "Click <a href='" + domainName + "/Verification/EmailManagerApproval/?AssociateID=" + u.AssociateID + "' target='_blank'><b>here</b></a> to confirm the information is correct." +
                 "<br><br>" +
                 "Your OpenShift Support Team";
 
@@ -99,13 +103,15 @@ namespace Open_Shift.Controllers
             {
                 SendEmail(manager.Email, manager.FirstName, manager.LastName, sub, body);
             }
+
+            return true;
         }
 
         public static void NewPasswordRequest(string UserEmail, string PasswordResetToken)
         {
             string sub = "OpenShift password reset request";
             string body = "It seems you've opened a password reset request." +
-                "Please click <a href='http://localhost:4040/Profile/ResetPassword/?token=" + PasswordResetToken + "' target='_blank'><b>here</b></a> to reset your password. " +
+                "Please click <a href='" + domainName + "/Profile/ResetPassword/?token=" + PasswordResetToken + "' target='_blank'><b>here</b></a> to reset your password. " +
                 "If you did not open this request, then you can ignore this email." +
                 "<br><br>" +
                 "Your OpenShift Support Team";

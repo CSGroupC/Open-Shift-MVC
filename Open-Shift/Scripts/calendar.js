@@ -45,17 +45,25 @@ export class Calendar {
         this.timePeriodMovement = null;
 
         let previousMonth = this.date.getMonth();
-        if (previousMonth < 1) previousMonth = 12;
+        let previousYear = this.date.getFullYear();
+        if (previousMonth < 1) {
+            previousMonth = 12;
+            previousYear -= 1;
+        }
 
         let nextMonth = this.date.getMonth() + 2;
-        if (nextMonth > 12) nextMonth = 1;
+        let nextYear = this.date.getFullYear();
+        if (nextMonth > 12) {
+            nextMonth = 1;
+            nextYear += 1;
+        }
 
         this.element.classList.add("calendar");
         this.element.innerHTML += `
         <div class="calendar-mobile-overlay hidden"></div>
         <div class="calendar-header">
-            <a href="?m=${previousMonth}&d=${this.date.getDate()}&y=${this.date.getFullYear()}" class="calendar-month-previous"><i class="fas fa-chevron-left"></i></a>
-            <a href="?m=${nextMonth}&d=${this.date.getDate()}&y=${this.date.getFullYear()}" class="calendar-month-next"><i class="fas fa-chevron-right"></i></a>
+            <a href="?m=${previousMonth}&d=${this.date.getDate()}&y=${previousYear}" class="calendar-month-previous"><i class="fas fa-chevron-left"></i></a>
+            <a href="?m=${nextMonth}&d=${this.date.getDate()}&y=${nextYear}" class="calendar-month-next"><i class="fas fa-chevron-right"></i></a>
             <span class="month-title h4">${MONTH_NAMES[this.date.getMonth()]} ${this.date.getFullYear()}</span>
             <a href="?m=${this.currentDate.getMonth() + 1}&d=${this.currentDate.getDate()}&y=${this.currentDate.getFullYear()}" class="btn btn-primary">Today</a>
             <i class="announce-button fas fa-bullhorn text-primary"></i>
@@ -164,6 +172,7 @@ export class Calendar {
             }, {});
         }
 
+        this.element.dataset.associateCount = Object.keys(this.associates).length;
 
         // Load existing time periods onto the calendar
         for (let id in this.timePeriods) {

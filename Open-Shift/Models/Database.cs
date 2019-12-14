@@ -379,7 +379,7 @@ namespace Open_Shift.Models
             int intReturnValue = -1;
 
             SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
-            SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPassword", HashPassword(u.Password), SqlDbType.NVarChar);
             SetParameter(ref cm, "@strPasswordResetToken", u.PasswordResetToken, SqlDbType.NVarChar);
 
             SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
@@ -463,7 +463,6 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
                 // NOTE: Don't allow updating the manager status here. Do it in the manager's controller actions
                 // SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
-                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.TinyInt);
 
                 SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);

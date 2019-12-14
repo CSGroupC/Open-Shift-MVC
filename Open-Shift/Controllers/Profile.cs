@@ -55,7 +55,7 @@ namespace Open_Shift.Controllers
 
                 if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
                 if (col["btnSubmit"] == "close") return RedirectToAction("Index", "Home");
-                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPassword", "Profile");
+                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPasswordRequest", "Profile");
                 if (col["btnSubmit"] == "update") return RedirectToAction("Update", "Profile");
                 return View(u);
             }
@@ -109,9 +109,7 @@ namespace Open_Shift.Controllers
                 u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
                 u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
                 u.Phonenumber = col["User.Phonenumber"];
-                u.Email = col["User.Email"];
                 u.ConfirmEmail = col["User.ConfirmEmail"];
-                u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
                 //NEW CODE
@@ -413,6 +411,7 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
+                h.User = Models.User.GetUserSession();
                 return View(h);
             }
             catch (Exception ex)

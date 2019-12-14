@@ -269,7 +269,7 @@
 /* Availability                                                                                                     */
 /* **************************************************************************************************************** */
 
-.availability-calendar .schedule-bar {
+.availability-calendar .scheduling-bar {
     display: none;
 }
 
@@ -287,39 +287,39 @@
     position: relative;
 }
 
-.schedule-calendar [data-available-associate-count='2'] .time-period-section {
+.schedule-calendar[data-associate-count='2'] .time-period-section {
     min-height: calc((36px + 5px) * 2);
 }
 
-.schedule-calendar [data-available-associate-count='3'] .time-period-section {
+.schedule-calendar[data-associate-count='3'] .time-period-section {
     min-height: calc((36px + 5px) * 3);
 }
 
-.schedule-calendar [data-available-associate-count='4'] .time-period-section {
+.schedule-calendar[data-associate-count='4'] .time-period-section {
     min-height: calc((36px + 5px) * 4);
 }
 
-.schedule-calendar [data-available-associate-count='5'] .time-period-section {
+.schedule-calendar[data-associate-count='5'] .time-period-section {
     min-height: calc((36px + 5px) * 5);
 }
 
-.schedule-calendar [data-available-associate-count='6'] .time-period-section {
+.schedule-calendar[data-associate-count='6'] .time-period-section {
     min-height: calc((36px + 5px) * 6);
 }
 
-.schedule-calendar [data-available-associate-count='7'] .time-period-section {
+.schedule-calendar[data-associate-count='7'] .time-period-section {
     min-height: calc((36px + 5px) * 7);
 }
 
-.schedule-calendar [data-available-associate-count='8'] .time-period-section {
+.schedule-calendar[data-associate-count='8'] .time-period-section {
     min-height: calc((36px + 5px) * 8);
 }
 
-.schedule-calendar [data-available-associate-count='9'] .time-period-section {
+.schedule-calendar[data-associate-count='9'] .time-period-section {
     min-height: calc((36px + 5px) * 9);
 }
 
-.schedule-calendar [data-available-associate-count='10'] .time-period-section {
+.schedule-calendar[data-associate-count='10'] .time-period-section {
     min-height: calc((36px + 5px) * 10);
 }
 
@@ -644,39 +644,39 @@
 
 
 
-    .schedule-calendar [data-available-associate-count='2'] .time-period-section {
+    .schedule-calendar[data-associate-count='2'] .time-period-section {
         min-height: calc((13px + 2px) * 2);
     }
 
-    .schedule-calendar [data-available-associate-count='3'] .time-period-section {
+    .schedule-calendar[data-associate-count='3'] .time-period-section {
         min-height: calc((13px + 2px) * 3);
     }
 
-    .schedule-calendar [data-available-associate-count='4'] .time-period-section {
+    .schedule-calendar[data-associate-count='4'] .time-period-section {
         min-height: calc((13px + 2px) * 4);
     }
 
-    .schedule-calendar [data-available-associate-count='5'] .time-period-section {
+    .schedule-calendar[data-associate-count='5'] .time-period-section {
         min-height: calc((13px + 2px) * 5);
     }
 
-    .schedule-calendar [data-available-associate-count='6'] .time-period-section {
+    .schedule-calendar[data-associate-count='6'] .time-period-section {
         min-height: calc((13px + 2px) * 6);
     }
 
-    .schedule-calendar [data-available-associate-count='7'] .time-period-section {
+    .schedule-calendar[data-associate-count='7'] .time-period-section {
         min-height: calc((13px + 2px) * 7);
     }
 
-    .schedule-calendar [data-available-associate-count='8'] .time-period-section {
+    .schedule-calendar[data-associate-count='8'] .time-period-section {
         min-height: calc((13px + 2px) * 8);
     }
 
-    .schedule-calendar [data-available-associate-count='9'] .time-period-section {
+    .schedule-calendar[data-associate-count='9'] .time-period-section {
         min-height: calc((13px + 2px) * 9);
     }
 
-    .schedule-calendar [data-available-associate-count='10'] .time-period-section {
+    .schedule-calendar[data-associate-count='10'] .time-period-section {
         min-height: calc((13px + 2px) * 10);
     }
 

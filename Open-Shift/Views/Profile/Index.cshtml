@@ -116,7 +116,7 @@
 
     <div>
         <button class="btn btn-primary" id="btnUpdate" name="btnSubmit" value="update"><i class='far fa-edit'></i> Edit</button>
-        <button class="btn btn-primary" id="btnResetPassword" name="btnSubmit" value="resetpassword">Reset Password </button>
+        <button class="btn btn-primary" id="btnResetPassword" name="btnSubmit" value="resetpassword">Reset Password</button>
 
         <button class="btn-outline-danger float-right" name="btnSubmit" value="delete" type="button" onclick="confirmDeactivate( )"><i class='far fa-trash-alt'></i> <span class="full-content">Deactivate Account</span></button>
     </div>
@@ -138,7 +138,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form action="Delete" method="POST">
+                <form action="/Profile/Delete" method="POST">
                     <button class="deactivate-button btn btn-outline-danger" name="btnSubmit" value="delete">Deactivate</button>
                 </form>
             </div>

@@ -108,10 +108,10 @@
 
                             let form = document.querySelector(".associate-form[data-associate-id='@Associate.AssociateID']");
                             let selectList = form.getElementsByClassName( "manager-status" )[0];
-                            selectList.onchange = ( ) => { updateAssociateManagerStatus( @Associate.AssociateID, selectList.value ) };
+                            selectList.onchange = function( ){ updateAssociateManagerStatus( @Associate.AssociateID, this.value ) };
 
                             selectList = form.getElementsByClassName( "status" )[0];
-                            selectList.onchange = ( ) => { updateAssociateStatus( @Associate.AssociateID, selectList.value ) };
+                            selectList.onchange = function( ){ updateAssociateStatus( @Associate.AssociateID, this.value ) };
                         </script>
                     }
                 }

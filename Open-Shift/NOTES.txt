@@ -8,7 +8,6 @@ Joe:
 
 TODO:
 1. Indicate which store a User is a manager at, and account for that
-2. Error message when you click the verification link twice
 
 Annie:
 

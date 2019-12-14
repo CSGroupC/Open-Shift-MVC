@@ -30,11 +30,15 @@ namespace Open_Shift.Controllers
             SendEmail(UserEmail, FirstName, LastName, sub, body);
         }
 
-        public static void NewAssociateVerificationManager(string token)
+        public static bool NewAssociateVerificationManager(string token)
         {
 
             Database db = new Database();
             User u = db.getNewAssociateData(token);
+            if( u == null)
+            {
+                return false;
+            }
             List<User> m = db.GetManagersAndOwners();
 
             string sub = "Please verify your new associate so they can access OpenShift!";
@@ -99,6 +103,8 @@ namespace Open_Shift.Controllers
             {
                 SendEmail(manager.Email, manager.FirstName, manager.LastName, sub, body);
             }
+
+            return true;
         }
 
         public static void NewPasswordRequest(string UserEmail, string PasswordResetToken)

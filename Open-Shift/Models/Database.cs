@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Security.Cryptography;
 
 namespace Open_Shift.Models
 {
@@ -44,8 +45,13 @@ namespace Open_Shift.Models
 
                 return users;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
+
         public bool DeleteUser(long AssociateID)
         {
             try
@@ -64,7 +70,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         //public Image GetUserImage(long AssociateID = 0, long UserImageID = 0)
@@ -177,6 +187,8 @@ namespace Open_Shift.Models
             }
             catch (Exception ex)
             {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+
 
                 throw new Exception(ex.Message);
             }
@@ -190,12 +202,37 @@ namespace Open_Shift.Models
             {
                 SqlConnection cn = null;
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                var IsManager = User.IsManagerEnum.Associate;
+                var Status = User.StatusList.InActive;
+
+                SqlDataAdapter da = new SqlDataAdapter("GET_ASSOCIATE_COUNT_BY_STORE", cn);
+                SetParameter(ref da, "@intStoreID", u.StoreID, SqlDbType.Int);
+                try
+                {
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows[0];
+                        int AssociateCount = (int)ds.Tables[0].Rows[0]["AssociateCount"];
+                        if (AssociateCount == 0)
+                        {
+                            IsManager = User.IsManagerEnum.Manager;
+                            Status = User.StatusList.Active;
+                        }
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
+                }
+
+
                 SqlCommand cm = new SqlCommand("INSERT_USER", cn);
                 int intReturnValue = -1;
                 int intAssociateID = -1;
 
                 SetParameter(ref cm, "@intAssociateID", u.AssociateID, SqlDbType.Int, Direction: ParameterDirection.Output);
-
 
                 SetParameter(ref cm, "@strFirstName", u.FirstName, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@strLastName", u.LastName, SqlDbType.NVarChar);
@@ -207,15 +244,17 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
-                SetParameter(ref cm, "@strPassword", u.Password, SqlDbType.NVarChar);
-                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.Int);
+                SetParameter(ref cm, "@strPassword", HashPassword(u.Password), SqlDbType.NVarChar);
+                SetParameter(ref cm, "@intStatusID", Status, SqlDbType.Int);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
+                SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@strEmailVerificationToken", u.EmailVerificationToken, SqlDbType.NVarChar);
 
                 cm.ExecuteReader();
 
                 intAssociateID = (int)cm.Parameters["@intAssociateID"].Value;
+
+
 
                 CloseDBConnection(ref cn);
 
@@ -232,7 +271,11 @@ namespace Open_Shift.Models
                 }
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public Models.User Login(Models.User u)
@@ -243,12 +286,14 @@ namespace Open_Shift.Models
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
                 SqlDataAdapter da = new SqlDataAdapter("LOGIN", cn);
                 DataSet ds;
-                User newUser = null;
+                User existingUser = new User();
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 SetParameter(ref da, "@strEmail", u.Email, SqlDbType.NVarChar);
-                SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
+                // NOTE: When you use password hashing, you pass in the password.
+                //       You select the password, then compare it here in this code.
+                // SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
                 {
@@ -257,8 +302,13 @@ namespace Open_Shift.Models
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         DataRow dr = ds.Tables[0].Rows[0];
-                        newUser = new User(dr);
+                        existingUser = new User(dr);
 
+                        if (VerifyPassword(u.Password, existingUser.Password) == false)
+                        {
+                            // DE-AUTHENTICATE
+                            existingUser.AssociateID = 0;
+                        }
                     }
                 }
                 catch (Exception ex2)
@@ -269,50 +319,84 @@ namespace Open_Shift.Models
                 {
                     CloseDBConnection(ref cn);
                 }
-                return newUser; //alls well in the world
+                return existingUser; //alls well in the world
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
-        //Not sure if this will work, so
-        public Models.User ResetPassword(User u)
+        public User GetUserByPasswordResetToken(string token)
         {
             try
             {
+                User user = null;
                 SqlConnection cn = new SqlConnection();
-                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlDataAdapter da = new SqlDataAdapter("UPDATE_PASSWORD", cn);
-                DataSet ds;
-                User newUser = null;
-
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                SetParameter(ref da, "@intAssociateID", u.AssociateID, SqlDbType.NVarChar);
-                SetParameter(ref da, "@strPassword", u.Password, SqlDbType.NVarChar);
 
                 try
                 {
-                    ds = new DataSet();
+                    DataSet ds = new DataSet();
+                    if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                    SqlDataAdapter da = new SqlDataAdapter("GET_USER_BY_PASSWORD_RESET_TOKEN", cn);
+
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                    SetParameter(ref da, "@strPasswordResetToken", token, SqlDbType.NVarChar);
+
                     da.Fill(ds);
-                    if (ds.Tables[0].Rows.Count > 0)
+
+                    if (ds.Tables[0].Rows.Count != 0)
                     {
-                        newUser = new User();
-                        DataRow dr = ds.Tables[0].Rows[0];
-                        newUser.AssociateID = (int)dr["AssociateID"];
-                        newUser.Email = u.Email;
-                        newUser.Password = u.Password;
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            user = new User(dr);
+                        }
                     }
                 }
                 catch (Exception ex2)
                 {
                     SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
                 }
-                finally
-                {
-                    CloseDBConnection(ref cn);
-                }
-                return newUser; //alls well in the world
+                finally { CloseDBConnection(ref cn); }
+
+
+                return user;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool ResetPassword(User u)
+        {
+            SqlConnection cn = null;
+            if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+            SqlCommand cm = new SqlCommand("UPDATE_PASSWORD", cn);
+            int intReturnValue = -1;
+
+            SetParameter(ref cm, "@strEmail", u.Email, SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPassword", HashPassword(u.Password), SqlDbType.NVarChar);
+            SetParameter(ref cm, "@strPasswordResetToken", u.PasswordResetToken, SqlDbType.NVarChar);
+
+            SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+            cm.ExecuteReader();
+
+            intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+            CloseDBConnection(ref cn);
+
+            switch (intReturnValue)
+            {
+                case 1: //new user created
+                    return true;
+                default:
+                    return false;
+            }
+
         }
 
         public User getNewAssociateData(string token)
@@ -350,7 +434,11 @@ namespace Open_Shift.Models
 
                 return UserInfo;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool UpdateUser(User u)
@@ -373,8 +461,8 @@ namespace Open_Shift.Models
                 SetParameter(ref cm, "@dtmBirthdate", u.Birthday, SqlDbType.Date);
                 SetParameter(ref cm, "@intEmployeeNumber", u.EmployeeNumber, SqlDbType.Int);
                 SetParameter(ref cm, "@intAssociateTitleID", u.AssociateTitle, SqlDbType.Int);
-                SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
-                SetParameter(ref cm, "@intStatusID", u.StatusID, SqlDbType.TinyInt);
+                // NOTE: Don't allow updating the manager status here. Do it in the manager's controller actions
+                // SetParameter(ref cm, "@blnIsManager", u.IsManager, SqlDbType.Bit);
                 SetParameter(ref cm, "@intStoreID", u.StoreID, SqlDbType.TinyInt);
 
                 SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
@@ -394,6 +482,111 @@ namespace Open_Shift.Models
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
+        public bool SetUserPasswordResetToken(string Email, string PasswordResetToken)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("SET_USER_PASSWORD_RESET_TOKEN", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@strEmail", Email, SqlDbType.NVarChar);
+                SetParameter(ref cm, "@strPasswordResetToken", PasswordResetToken, SqlDbType.NVarChar);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: //new user created
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public bool UpdateUserManagerStatus(int AssociateID, User.IsManagerEnum IsManager)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("UPDATE_USER_MANAGER_STATUS", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@blnIsManager", IsManager, SqlDbType.Bit);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: // user updated
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public bool UpdateUserStatus(int AssociateID, User.StatusList StatusID)
+        {
+            try
+            {
+                SqlConnection cn = null;
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand("SET_USER_STATUS", cn);
+                int intReturnValue = -1;
+
+                SetParameter(ref cm, "@intAssociateID", AssociateID, SqlDbType.Int);
+                SetParameter(ref cm, "@intStatusID", StatusID, SqlDbType.Int);
+
+                SetParameter(ref cm, "ReturnValue", 0, SqlDbType.Int, Direction: ParameterDirection.ReturnValue);
+
+                cm.ExecuteReader();
+
+                intReturnValue = (int)cm.Parameters["ReturnValue"].Value;
+                CloseDBConnection(ref cn);
+
+                switch (intReturnValue)
+                {
+                    case 1: // user updated
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
 
         // ====================================================================================================================================
         // Availabilities 
@@ -440,7 +633,11 @@ namespace Open_Shift.Models
                     return 0;
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         // TODO: Maybe change storeID to an int
@@ -492,7 +689,11 @@ namespace Open_Shift.Models
 
                 return availabilities;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -525,7 +726,11 @@ namespace Open_Shift.Models
                         return false;
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -534,20 +739,36 @@ namespace Open_Shift.Models
             try
             {
                 SqlConnection cn = new SqlConnection();
+                DataSet ds = new DataSet();
                 if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
-                SqlCommand cm = new SqlCommand("DELETE_AVAILABILITY", cn);
+                var da = new SqlDataAdapter("DELETE_AVAILABILITY", cn);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-                SetParameter(ref cm, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
+                SetParameter(ref da, "@intAvailabilityID", AvailabilityID, SqlDbType.Int);
 
                 try
                 {
-                    cm.ExecuteNonQuery();
+                    da.Fill(ds);
+                }
+                catch (Exception ex2)
+                {
+                    SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex2.Message);
                 }
                 finally { CloseDBConnection(ref cn); }
 
-                return true;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    return false;
+                }
+
+                else
+                    return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool ApproveNewAssociate(string token)
@@ -568,11 +789,44 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
 
 
             return true;
         }
+
+        public bool ChangeAssocToActive(int AssociateID)
+        {
+            string sqlStatement = "Update TAssociates set intStatusID = 1 where intAssociateID = " + AssociateID + ";";
+
+            try
+            {
+                SqlConnection cn = new SqlConnection();
+                if (!GetDBConnection(ref cn)) throw new Exception("Database did not connect");
+                SqlCommand cm = new SqlCommand(sqlStatement, cn);
+
+                try
+                {
+                    cm.ExecuteNonQuery();
+                }
+                finally { CloseDBConnection(ref cn); }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+
+
+            return true;
+        }
+
 
 
         public List<User> GetManagersAndOwners()
@@ -610,7 +864,11 @@ namespace Open_Shift.Models
 
                 return managers;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -667,7 +925,11 @@ namespace Open_Shift.Models
                     return 0;
 
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -720,7 +982,11 @@ namespace Open_Shift.Models
 
                 return shifts;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         // Gets the next shift by associate
@@ -759,7 +1025,11 @@ namespace Open_Shift.Models
 
                 return shift;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool DeleteShift(int ShiftID)
@@ -780,7 +1050,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -845,7 +1119,11 @@ namespace Open_Shift.Models
 
                 return stores;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 
@@ -868,7 +1146,10 @@ namespace Open_Shift.Models
                 return true;
             }
             catch (Exception ex)
-            { throw new Exception(ex.Message); }
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private bool CloseDBConnection(ref SqlConnection SQLConn)
@@ -883,7 +1164,11 @@ namespace Open_Shift.Models
                 }
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private int SetParameter(ref SqlCommand cm, string ParameterName, Object Value
@@ -907,7 +1192,11 @@ namespace Open_Shift.Models
 
                 return 0;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         private int SetParameter(ref SqlDataAdapter cm, string ParameterName, Object Value
@@ -931,7 +1220,51 @@ namespace Open_Shift.Models
 
                 return 0;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string HashPassword(string password, byte[] salt = null)
+        {
+            var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, 32, 10000);
+
+            if (salt != null)
+            {
+                rfc2898DeriveBytes.Salt = salt;
+            }
+
+            byte[] hash = rfc2898DeriveBytes.GetBytes(20);
+
+            if (salt == null)
+            {
+                salt = rfc2898DeriveBytes.Salt;
+            }
+
+            return Convert.ToBase64String(salt) + "|" + Convert.ToBase64String(hash);
+        }
+
+        // Compare the given password to the given other hash
+        public bool VerifyPassword(string password, string otherHash)
+        {
+            string[] parts = otherHash.Split('|');
+            string salt = parts[0];
+            string hash = parts[1];
+
+            string newHash = HashPassword(password, Convert.FromBase64String(salt));
+
+            newHash = HashPassword(password, Convert.FromBase64String(salt));
+
+            if (newHash == otherHash)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

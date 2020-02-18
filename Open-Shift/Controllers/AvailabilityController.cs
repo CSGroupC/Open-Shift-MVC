@@ -18,7 +18,7 @@ namespace Open_Shift.Controllers
         {
             var u = Models.User.GetUserSession();
 
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return RedirectToAction("SignIn", "Profile");
             }
@@ -43,7 +43,7 @@ namespace Open_Shift.Controllers
         public ActionResult Create()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -71,7 +71,7 @@ namespace Open_Shift.Controllers
         public ActionResult Update()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -95,7 +95,7 @@ namespace Open_Shift.Controllers
         public ActionResult Delete()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -110,9 +110,12 @@ namespace Open_Shift.Controllers
 
             var availability = Newtonsoft.Json.JsonConvert.DeserializeObject<Availability>(availabilityJson, dateTimeConverter);
 
-            availability.Delete();
-
-            return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            if (availability.Delete())
+            {
+                return Content("{\"status\": \"SUCCESS\"}", "application/json");
+            }
+            else
+                return Content("{\"status\": \"CANNOT_DELETE\"}", "application/json");
         }
     }
 }

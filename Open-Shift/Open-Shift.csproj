@@ -36,7 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>0</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AvailabilityController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\Profile.cs" />
     <Compile Include="Controllers\VerificationController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
@@ -245,7 +246,6 @@
     <Content Include="Views\Shared\ErrorLayout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Profile\Delete.cshtml" />
     <Content Include="Views\Profile\SignIn.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\SignOut.cshtml" />
@@ -271,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Log\" />
+    <Folder Include="Views\Manager\" />
     <Folder Include="Views\Sms\" />
   </ItemGroup>
   <PropertyGroup>

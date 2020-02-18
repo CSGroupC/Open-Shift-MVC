@@ -19,10 +19,23 @@ namespace Open_Shift.Controllers
         [HttpGet]
         public ActionResult EmailVerification(string token)
         {
-            EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
+            if (EmailController.NewAssociateVerificationManager(token))
+            {
+                //associate's email is verified - now send email to manager to approve
+                Models.Database db = new Database();
+                db.ApproveNewAssociate(token);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult EmailManagerApproval(int associateID)
+        {
+            // EmailController.NewAssociateVerificationManager(token); //associate's email is verified - now send email to manager to approve
 
             Models.Database db = new Database();
-            db.ApproveNewAssociate(token);
+            db.ChangeAssocToActive(associateID);
 
 
 
@@ -31,14 +44,14 @@ namespace Open_Shift.Controllers
         }
 
 
-   
-    
+
+
 
         [HttpPost]
         public ActionResult Create()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -66,7 +79,7 @@ namespace Open_Shift.Controllers
         public ActionResult Update()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -90,7 +103,7 @@ namespace Open_Shift.Controllers
         public ActionResult Delete()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }

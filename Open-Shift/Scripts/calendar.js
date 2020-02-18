@@ -44,14 +44,29 @@ export class Calendar {
         this.timePeriodResizal = null;
         this.timePeriodMovement = null;
 
+        let previousMonth = this.date.getMonth();
+        let previousYear = this.date.getFullYear();
+        if (previousMonth < 1) {
+            previousMonth = 12;
+            previousYear -= 1;
+        }
+
+        let nextMonth = this.date.getMonth() + 2;
+        let nextYear = this.date.getFullYear();
+        if (nextMonth > 12) {
+            nextMonth = 1;
+            nextYear += 1;
+        }
+
         this.element.classList.add("calendar");
         this.element.innerHTML += `
         <div class="calendar-mobile-overlay hidden"></div>
         <div class="calendar-header">
-            <a href="?m=${this.date.getMonth()}&d=${this.date.getDate()}&y=${this.date.getFullYear()}" class="calendar-month-previous"><i class="fas fa-chevron-left"></i></a>
-            <a href="?m=${this.date.getMonth() + 2}&d=${this.date.getDate()}&y=${this.date.getFullYear()}" class="calendar-month-next"><i class="fas fa-chevron-right"></i></a>
+            <a href="?m=${previousMonth}&d=${this.date.getDate()}&y=${previousYear}" class="calendar-month-previous"><i class="fas fa-chevron-left"></i></a>
+            <a href="?m=${nextMonth}&d=${this.date.getDate()}&y=${nextYear}" class="calendar-month-next"><i class="fas fa-chevron-right"></i></a>
             <span class="month-title h4">${MONTH_NAMES[this.date.getMonth()]} ${this.date.getFullYear()}</span>
             <a href="?m=${this.currentDate.getMonth() + 1}&d=${this.currentDate.getDate()}&y=${this.currentDate.getFullYear()}" class="btn btn-primary">Today</a>
+            <i class="announce-button fas fa-bullhorn text-primary"></i>
         </div>
         `;
 
@@ -157,6 +172,7 @@ export class Calendar {
             }, {});
         }
 
+        this.element.dataset.associateCount = Object.keys(this.associates).length;
 
         // Load existing time periods onto the calendar
         for (let id in this.timePeriods) {
@@ -186,6 +202,7 @@ export class Calendar {
         let handler = new Event.PointerHandler((event) => {
             this.mobileOverlay.classList.add("hidden");
             this.focusedTimePeriod.classList.remove("focused");
+            delete this.focusedTimePeriod.dataset.temporaryTooltip;
             this.focusedTimePeriod = null;
         });
 
@@ -358,9 +375,10 @@ export class AvailabilityCalendar extends Calendar {
 export class SchedulingCalendar extends Calendar {
     constructor(associate = null, storeId = 0, associateMinimum = 1, managerMinimum = 1, shifts = [], availabilities = [], closedWeekdays = [], dayStartTime = "9:00", dayEndTime = "17:00", minutesPerColumn = 15) {
         super(associate, availabilities, closedWeekdays, dayStartTime, dayEndTime, minutesPerColumn);
-        this.storeId = storeId;
 
-        this.element.classList.add("scheduling-calendar");
+        this.element.classList.add("schedule-calendar");
+
+        this.storeId = storeId;
 
         this.associateMinimum = associateMinimum;
         this.managerMinimum = managerMinimum;

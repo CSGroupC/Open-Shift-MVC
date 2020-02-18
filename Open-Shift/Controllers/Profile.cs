@@ -14,7 +14,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -45,16 +46,16 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
                 if (col["btnSubmit"] == "delete") return RedirectToAction("Delete", "Profile");
                 if (col["btnSubmit"] == "close") return RedirectToAction("Index", "Home");
-                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPassword", "Profile");
+                if (col["btnSubmit"] == "resetpassword") return RedirectToAction("ResetPasswordRequest", "Profile");
                 if (col["btnSubmit"] == "update") return RedirectToAction("Update", "Profile");
                 return View(u);
             }
@@ -69,7 +70,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -89,72 +91,67 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
                 Models.Home h = new Models.Home();
 
                 if (col["btnCancel"] == "cancel") return RedirectToAction("Index", "Profile");
 
-                {
-                    u = Models.User.GetUserSession();
+                u.FirstName = col["User.FirstName"];
+                u.LastName = col["User.LastName"];
+                u.Birthday = Convert.ToDateTime(col["User.Birthday"]);
+                u.AddressLine1 = col["User.AddressLine1"];
+                u.AddressLine2 = col["User.AddressLine2"];
+                u.PostalCode = col["User.PostalCode"];
+                u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+                u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
+                u.Phonenumber = col["User.Phonenumber"];
+                u.ConfirmEmail = col["User.ConfirmEmail"];
+                u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
 
-                    u.FirstName = col["User.FirstName"];
-                    u.LastName = col["User.LastName"];
-                    u.Birthday = Convert.ToDateTime(col["User.Birthday"]);
-                    u.AddressLine1 = col["User.AddressLine1"];
-                    u.AddressLine2 = col["User.AddressLine2"];
-                    u.PostalCode = col["User.PostalCode"];
-                    u.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-                    u.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
-                    u.Phonenumber = col["User.Phonenumber"];
-                    u.Email = col["User.Email"];
-                    u.ConfirmEmail = col["User.ConfirmEmail"];
-                    u.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
-                    u.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"].ToString());
+                //NEW CODE
 
-                    //NEW CODE
-
-                    u.Save();
-                    if (u.IsAuthenticated && u.EmailVerificationToken == "")
-                    { //user found
-                      //if (UserImage != null)
-                      //{
-                      //	u.UserImage = new Models.Image();
-                      //	u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
-                      //	u.UserImage.Primary = true;
-                      //	u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
-                      //	if (u.UserImage.IsImageFile())
-                      //	{
-                      //		u.UserImage.Size = UserImage.ContentLength;
-                      //		Stream stream = UserImage.InputStream;
-                      //		BinaryReader binaryReader = new BinaryReader(stream);
-                      //		u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
-                      //		u.UpdatePrimaryImage();
-                      //	}
-                      //}
-                        u.SaveUserSession(); //save the user session object
-                        return RedirectToAction("Index", "Profile");
-                    }
-                    else
-                    { //user failed to log in
-                        h.User.FirstName = col["User.FirstName"];
-                        h.User.LastName = col["User.LastName"];
-                        h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
-                        h.User.AddressLine1 = col["User.AddressLine1"];
-                        h.User.AddressLine2 = col["User.AddressLine2"];
-                        h.User.PostalCode = col["User.PostalCode"];
-
-                        h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
-                        h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
-                        h.User.Phonenumber = col["User.Phonenumber"];
-                        h.User.Email = col["User.Email"];
-                        h.User.ConfirmEmail = col["User.ConfirmEmail"];
-                        h.User.Password = col["User.Password"];
-                    }
+                u.Save();
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
+                { //user found
+                  //if (UserImage != null)
+                  //{
+                  //	u.UserImage = new Models.Image();
+                  //	u.UserImage.ImageID = Convert.ToInt32(col["User.UserImage.ImageID"]);
+                  //	u.UserImage.Primary = true;
+                  //	u.UserImage.FileName = Path.GetFileName(UserImage.FileName);
+                  //	if (u.UserImage.IsImageFile())
+                  //	{
+                  //		u.UserImage.Size = UserImage.ContentLength;
+                  //		Stream stream = UserImage.InputStream;
+                  //		BinaryReader binaryReader = new BinaryReader(stream);
+                  //		u.UserImage.ImageData = binaryReader.ReadBytes((int)stream.Length);
+                  //		u.UpdatePrimaryImage();
+                  //	}
+                  //}
+                    u.SaveUserSession(); //save the user session object
+                    return RedirectToAction("Index", "Profile");
                 }
+                else
+                { //user failed to log in
+                    h.User.FirstName = col["User.FirstName"];
+                    h.User.LastName = col["User.LastName"];
+                    h.User.Birthday = Convert.ToDateTime(col["User.Birthday"]);
+                    h.User.AddressLine1 = col["User.AddressLine1"];
+                    h.User.AddressLine2 = col["User.AddressLine2"];
+                    h.User.PostalCode = col["User.PostalCode"];
+
+                    h.User.EmployeeNumber = Convert.ToInt32(col["User.EmployeeNumber"]);
+                    h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"].ToString());
+                    h.User.Phonenumber = col["User.Phonenumber"];
+                    h.User.Email = col["User.Email"];
+                    h.User.ConfirmEmail = col["User.ConfirmEmail"];
+                    h.User.Password = col["User.Password"];
+                }
+
                 return View(u);
             }
             catch (Exception ex)
@@ -168,7 +165,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
@@ -188,14 +186,15 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("SignIn");
                 }
-                Models.User u = new Models.User();
+
                 if (col["btnSubmit"] == "cancel") return RedirectToAction("Index", "Profile");
-                u = Models.User.GetUserSession();
                 u.Delete();
+                u.RemoveUserSession();
                 return RedirectToAction("SignUp", "Profile");
             }
             catch (Exception ex)
@@ -209,7 +208,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Open_Shift.Models.User.StatusList.Active)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -235,7 +235,7 @@ namespace Open_Shift.Controllers
                 u = db.Login(u);
                 u.LoginAttempted = true;
 
-                if (u.IsAuthenticated && u.EmailVerificationToken == "")
+                if (u.IsAuthenticated && u.EmailVerificationToken == "" && u.StatusID == Models.User.StatusList.Active)
                 { //user found
 
                     u.SaveUserSession(); //save the user session object
@@ -245,7 +245,8 @@ namespace Open_Shift.Controllers
                 { //user failed to log in
                     Models.Home h = new Models.Home();
                     h.User = u;
-                    return View(h);
+                    // NOTE: This is required, in case we get to this line from the SignUp action
+                    return View("~/Views/Profile/SignIn.cshtml", h);
                 }
             }
             catch (Exception ex)
@@ -258,7 +259,8 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                if (!Models.User.GetUserSession().IsAuthenticated)
+                var u = Models.User.GetUserSession();
+                if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Open_Shift.Models.User.StatusList.InActive)
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -299,7 +301,6 @@ namespace Open_Shift.Controllers
         {
             try
             {
-
                 if (Models.User.GetUserSession().IsAuthenticated)
                 {
                     return RedirectToAction("Index", "Home");
@@ -320,12 +321,11 @@ namespace Open_Shift.Controllers
 
                 h.User.AssociateTitle = (Models.User.AssociateTitles)Enum.Parse(typeof(Models.User.AssociateTitles), col["User.AssociateTitle"]);
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
-                h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 h.User.StatusID = Models.User.StatusList.InActive;
 
                 if (db.CheckIfUserExists(strEmail) == 1)
                 {
-                    // TODO: Tell the user that the email is already taken
+                    h.User.EmailTaken = true;
                     return View(h);
                 }
 
@@ -333,14 +333,6 @@ namespace Open_Shift.Controllers
 
                 if (h.User.IsAuthenticated)
                 { //user found
-
-                    if (h.User.EmailVerificationToken != "")
-                    {
-                        return SignIn(h.User, col);
-                    }
-
-                    h.User.SaveUserSession(); //save the user session object
-
                     //Send text message to new user
                     Controllers.SmsController sms = new Controllers.SmsController();
                     // sms.SendSms(h.User.Phonenumber);
@@ -349,7 +341,14 @@ namespace Open_Shift.Controllers
                     //EmailController.NewAssociateEmail(h.User.Email, fullName);
                     EmailController.NewAssociateVerification(h.User.Email, h.User.FirstName, h.User.LastName, EmailVerificationToken);
 
+                    if (h.User.EmailVerificationToken != "" || h.User.StatusID == Models.User.StatusList.InActive)
+                    {
+                        return SignIn(h.User, col);
+                    }
+
                     return RedirectToAction("Index", "Home");
+
+                    h.User.SaveUserSession(); //save the user session object
                 }
                 else
                 { //user failed to log in
@@ -364,11 +363,15 @@ namespace Open_Shift.Controllers
             }
         }
 
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string token)
         {
             try
             {
-                Models.Home h = new Models.Home();
+                Models.Database db = new Database();
+
+                Home h = new Home();
+                h.User = db.GetUserByPasswordResetToken(token);
+
                 return View(h);
             }
             catch (Exception ex)
@@ -379,27 +382,19 @@ namespace Open_Shift.Controllers
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(Models.User m, FormCollection col)
+        public ActionResult ResetPassword(FormCollection col)
         {
             try
             {
                 Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-                u.ResetPassword();
-
-                if (u.IsAuthenticated && u.EmailVerificationToken == "")
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
+                h.User = new Models.User(col["User.Email"], col["User.Password"]);
+                h.User.PasswordResetToken = col["User.PasswordResetToken"];
+                if (!h.User.ResetPassword())
+                {
+                    // TODO: Handle this error
                 }
-                else
-                { //user failed to log in
-                    h.User = u;
-                    return View(h);
-                }
-                u.Save();
-                return View(h);
 
+                return View("~/Views/Profile/SignIn.cshtml", h);
             }
             catch (Exception ex)
             {
@@ -416,6 +411,7 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.Home h = new Models.Home();
+                h.User = Models.User.GetUserSession();
                 return View(h);
             }
             catch (Exception ex)
@@ -430,26 +426,15 @@ namespace Open_Shift.Controllers
         {
             try
             {
-                Models.Home h = new Models.Home();
-                Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
+                string PasswordResetToken = Guid.NewGuid().ToString();
 
-                string PasswordVerificationToken = Guid.NewGuid().ToString();
+                Models.Database db = new Database();
 
-                EmailController.NewPasswordRequest(h.User.Email, h.User.FirstName, h.User.LastName, PasswordVerificationToken);
+                db.SetUserPasswordResetToken(col["User.Email"], PasswordResetToken);
 
-                u.ResetPassword();
+                EmailController.NewPasswordRequest(col["User.Email"], PasswordResetToken);
 
-                if (u.IsAuthenticated)
-                { //user found
-                    u.SaveUserSession(); //save the user session object
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                { //user failed to log in
-                    return RedirectToAction("ResetPassword", "Profile");
-                }
-                u.Save();
-                return View(h);
+                return RedirectToAction("SignIn", "Profile");
 
             }
             catch (Exception ex)

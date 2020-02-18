@@ -1,7 +1,7 @@
 ﻿@model Open_Shift.ViewModels.ScheduleViewModel
 @using Newtonsoft.Json;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Schedule";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
@@ -9,7 +9,7 @@
     <link href="@Url.Content("~/Content/calendar.css")" rel="stylesheet" type="text/css" />
 }
 
-<h1 class="display-4 text-center mb-4">Schedule</h1>
+<h1 class="text-center mb-4">Schedule</h1>
 <div id="schedule-calendar"></div>
 <div id="schedule-data"
      data-associate="@JsonConvert.SerializeObject(Model.User)"

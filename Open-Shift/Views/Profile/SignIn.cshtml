@@ -13,11 +13,15 @@
     </div>
     <div class="form-group">
         <div>@Html.LabelFor(model => model.User.Password)</div>
-        <div>@Html.TextBoxFor(model => model.User.Password, new { @class = "form-control", type = "password" })</div>
+        <div>@Html.TextBoxFor(model => model.User.Password, new { @class = "form-control", type = "password", @Value = "" })</div>
     </div>
     if (Model.User.EmailVerificationToken != "")
     {
         <small class="validation-message form-text text-danger">Please verify your account to continue.<br />Check your inbox for an email with instructions.</small>
+    }
+    else if (Model.User.StatusID == Open_Shift.Models.User.StatusList.InActive)
+    {
+        <small class="validation-message form-text text-danger">You account is not active. <br />See your manager about activation.</small>
     }
     else if (Model.User.LoginFailed)
     {
@@ -27,7 +31,7 @@
 
     <button class="btn btn-primary mb-2" id="btnSignIn" name="btnSubmit" value="signin"><i class="fas fa-sign-in-alt"></i> Sign-In</button>
 
-    <a href="/Profile/SignUp"> First time user?</a> <br />
+    <a href="/Profile/SignUp"> First time user?</a>
     <a href="/Profile/ResetPasswordRequest"> Forgot your password?</a>
 }
 

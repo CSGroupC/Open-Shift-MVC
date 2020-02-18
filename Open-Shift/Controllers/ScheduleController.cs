@@ -18,7 +18,7 @@ namespace Open_Shift.Controllers
         {
             var u = Models.User.GetUserSession();
 
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return RedirectToAction("SignIn", "Profile");
             }
@@ -45,7 +45,7 @@ namespace Open_Shift.Controllers
         public ActionResult Create()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }
@@ -77,7 +77,7 @@ namespace Open_Shift.Controllers
         public ActionResult Delete()
         {
             var u = Models.User.GetUserSession();
-            if (!u.IsAuthenticated)
+            if (!u.IsAuthenticated || u.EmailVerificationToken != "" || u.StatusID == Models.User.StatusList.InActive)
             {
                 return Content("{\"status\": \"AUTHENTICATION_FAILED\"}", "application/json");
             }

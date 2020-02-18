@@ -51,7 +51,7 @@ namespace Open_Shift.Models
         public int? EmployeeNumber { get; set; }
 
         [DisplayName("Phone Number")]
-        [RegularExpression(@"^[+]{1}[0-9]{11,13}$", ErrorMessage = "Required format: +XXXXXXXXX")]
+        [RegularExpression(@"^[+]{1}[0-9]{11,13}$", ErrorMessage = "Required format: +XXXXXXXXXXXX")]
         [Required(AllowEmptyStrings = false)]
         public string Phonenumber { get; set; }
 
@@ -68,9 +68,9 @@ namespace Open_Shift.Models
         [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-        [DisplayName("New Password")]
+        [DisplayName("Confirm Password")]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
 
         [DisplayName("Associate Title")]
         [Required(AllowEmptyStrings = false)]
@@ -79,19 +79,21 @@ namespace Open_Shift.Models
         public StatusList StatusID { get; set; } = StatusList.NoType;
         public StoreLocationList StoreID { get; set; } = StoreLocationList.NoType; //by default
         public IsManagerEnum IsManager { get; set; } = IsManagerEnum.Associate; //by default
-        public bool LoginAttempted { get; set; } = false;
-
         public string EmailVerificationToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
-
+        public string PasswordResetToken { get; set; } = ""; //**********THIS MUST DEFAULT TO EMPTY STRING!
 
         //public Image UserImage = new Image();
+
+        // Validation properties:
+        public bool EmailTaken { get; set; } = false;
+        public bool LoginAttempted { get; set; } = false;
+
 
         public enum AssociateTitles
         {
             NoType = 0,
             Cook = 1,
-            Server = 2,
-            Owner = 3
+            Server = 2
         }
 
         public enum StatusList
@@ -172,14 +174,15 @@ namespace Open_Shift.Models
         {
             try
             {
-                User u = new User();
-                u = (User)HttpContext.Current.Session["CurrentUser"];
                 Database db = new Database();
-                Password = u.NewPassword;
                 db.ResetPassword(this);
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool RemoveUserSession()
@@ -189,7 +192,11 @@ namespace Open_Shift.Models
                 HttpContext.Current.Session["CurrentUser"] = null;
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public static User GetUserSession()
@@ -206,7 +213,11 @@ namespace Open_Shift.Models
                 //u.UserImage = db.GetUserImage(u.AssociateID);
                 return u;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile("User.cs", MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool SaveUserSession()
@@ -215,9 +226,15 @@ namespace Open_Shift.Models
             {
                 //this.UserImage = null; //don't save the user image
                 HttpContext.Current.Session["CurrentUser"] = this;
+                // One month
+                HttpContext.Current.Session.Timeout = 43800;
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Delete()
@@ -229,7 +246,11 @@ namespace Open_Shift.Models
                 RemoveUserSession();
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Save()
@@ -250,7 +271,11 @@ namespace Open_Shift.Models
 
                 return true;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         //public sbyte UpdatePrimaryImage()
@@ -339,6 +364,7 @@ namespace Open_Shift.Models
                 this.Phonenumber = dr["strPhonenumber"].ToString();
 
                 this.EmailVerificationToken = dr["strEmailVerificationToken"].ToString();
+                this.PasswordResetToken = dr["strPasswordResetToken"].ToString();
 
                 this.IsManager = (User.IsManagerEnum)Convert.ToInt32(dr["blnIsManager"].ToString() == "True");
                 this.StatusID = (User.StatusList)Enum.Parse(typeof(User.StatusList), dr["intStatusID"].ToString());
@@ -348,7 +374,11 @@ namespace Open_Shift.Models
                 // NOTE: Do this last, so authentication will fail if the above fails
                 this.AssociateID = (int)dr["intAssociateID"];
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                SysLog.UpdateLogFile(this.ToString(), MethodBase.GetCurrentMethod().Name.ToString(), ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
 

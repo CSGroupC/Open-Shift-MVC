@@ -118,7 +118,7 @@ namespace Open_Shift.Controllers
                     //NEW CODE
 
                     u.Save();
-                    if (u.IsAuthenticated && u.EmailVerificationToken != "")
+                    if (u.IsAuthenticated && u.EmailVerificationToken == "")
                     { //user found
                       //if (UserImage != null)
                       //{
@@ -229,7 +229,11 @@ namespace Open_Shift.Controllers
             try
             {
                 Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
-                u.Login();
+
+                Database db = new Database();
+
+                u = db.Login(u);
+                u.LoginAttempted = true;
 
                 if (u.IsAuthenticated && u.EmailVerificationToken == "")
                 { //user found
@@ -305,11 +309,6 @@ namespace Open_Shift.Controllers
 
                 string strEmail = col["User.Email"];
 
-                if (db.CheckIfUserExists(strEmail) == 0)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
                 Models.Home h = new Models.Home();
 
                 string EmailVerificationToken = Guid.NewGuid().ToString();
@@ -323,9 +322,23 @@ namespace Open_Shift.Controllers
                 h.User.StoreID = (Models.User.StoreLocationList)Enum.Parse(typeof(Models.User.StoreLocationList), col["User.StoreID"]);
                 h.User.IsManager = (Models.User.IsManagerEnum)Enum.Parse(typeof(Models.User.IsManagerEnum), col["User.IsManager"]);
                 h.User.StatusID = Models.User.StatusList.InActive;
+
+                if (db.CheckIfUserExists(strEmail) == 1)
+                {
+                    // TODO: Tell the user that the email is already taken
+                    return View(h);
+                }
+
                 h.User.Save();
-                if (h.User.IsAuthenticated && h.User.EmailVerificationToken != "")
+
+                if (h.User.IsAuthenticated)
                 { //user found
+
+                    if (h.User.EmailVerificationToken != "")
+                    {
+                        return SignIn(h.User, col);
+                    }
+
                     h.User.SaveUserSession(); //save the user session object
 
                     //Send text message to new user
@@ -374,7 +387,7 @@ namespace Open_Shift.Controllers
                 Models.User u = new Models.User(col["User.Email"], col["User.Password"]);
                 u.ResetPassword();
 
-                if (u.IsAuthenticated && u.EmailVerificationToken != "")
+                if (u.IsAuthenticated && u.EmailVerificationToken == "")
                 { //user found
                     u.SaveUserSession(); //save the user session object
                     return RedirectToAction("Index", "Home");

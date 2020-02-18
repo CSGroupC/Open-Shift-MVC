@@ -380,7 +380,7 @@ Signin
     }
 
     .signin-form .validation-message {
-        height: 16px;
+        height: 32px;
         margin-bottom: 10px;
         text-align: center;
     }
